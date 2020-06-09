@@ -1,0 +1,14 @@
+.sidebar-balance{
+    height: 100px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.sidebar-balance div{
+    width: 100%;
+    height: auto;
+    text-align: center;
+
+}

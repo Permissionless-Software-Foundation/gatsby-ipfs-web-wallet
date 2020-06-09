@@ -1,0 +1,22 @@
+/* Variables ============ */
+
+:root {
+  --main-color:#00A74F;
+  
+}
+.skin-blue .main-header .logo {
+	
+	background-color: var(--main-color)!important
+	
+}
+
+ .skin-blue .main-header .navbar {
+
+    background-color:  var(--main-color)!important
+
+}
+
+.btn-primary{
+  background-color: var(--main-color)!important;
+  border-color: var(--main-color)!important;
+}
