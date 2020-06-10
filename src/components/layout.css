@@ -620,3 +620,48 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+.text-center{
+  text-align: center;
+}
+.flex{
+  display: flex;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.justify-item-center{
+  justify-items: center;
+}
+
+.border-none{
+  border: none!important ;
+
+}
+.hover-shadow:hover{
+  -webkit-box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 16px -3px rgba(0, 0, 0, 0.25);
+}
+.mt-1{
+  margin-top: 1em;
+}
+.mt-2{
+  margin-top: 2em;
+}
+.mt-3{
+  margin-top: 3em;
+}
+.mb-1{
+  margin-bottom: 1em;
+}
+.mb-2{
+  margin-bottom: 2em;
+}
+.mb-3{
+  margin-bottom: 3em;
+}
+.title-icon{
+  margin-right: 7px;
+  color: var(--main-color);
+}

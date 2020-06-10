@@ -1,34 +1,72 @@
 import React from "react"
-import Example from "./example"
-import Example2 from "./example2"
-import Example3 from "./example3"
+import Audit from "./audit"
+import Configure from "./configure"
+import Icons from "./icons"
+import Portfolio from "./portfolio"
 
 import AdminLTE, { Sidebar } from "adminlte-2-react"
 
+import Layout from "../layout"
+import "./admin-lte.css"
 const { Item } = Sidebar
 
+let _this
 class AdminLTEPage extends React.Component {
-  state = {}
+  constructor(props) {
+    super(props)
+    _this = this
+    this.state = {
+      bchBalance: Math.random().toFixed(8),
+    }
+  }
 
   sidebar = [
-    <Item key="test" text="TEST" to="/test" />,
-    <Item key="img" text="IMG" to="/img" />,
-    <Item key="forms" text="FORMS" to="/forms" />,
+    <Item icon="fas-wallet" key="Portfolio" text="Portfolio" to="/Portfolio" />,
+    <Item icon="fas-icons" key="Icons" text="Icons" to="/Icons" />,
+    <Item icon="fas-cog" key="Configure" text="Configure" to="/Configure" />,
+    <Item icon="fa-tablet-alt" key="Audit" text="Audit" to="/Audit" />,
+    <Item icon="fa-link" key="Link" text="Link">
+      <Item key="Send" text="Send BCH by Email" />
+      <Item key="Faucet" text="Faucet (Free BCH)" />
+      <Item key="Exchange" text="Exchange" />
+      <Item key="Games" text="Games" />
+      <Item key="trade" text="Trade Locally" />
+    </Item>,
+    <Item icon="fa-qrcode" key="qrScanner" text="Qr Scanner" />,
   ]
 
   render() {
     return (
-      <AdminLTE
-        title={["Hello", "World"]}
-        titleShort={["He", "we"]}
-        theme="blue"
-        sidebar={this.sidebar}
-      >
-        <Example path="/test" />
-        <Example2 path="/img" />
-        <Example3 path="/forms" />
-      </AdminLTE>
+      <Layout>
+        <AdminLTE
+          title={["BCH", "JS"]}
+          titleShort={["BCH"]}
+          theme="blue"
+          /* sidebar={this.sidebar}  */
+        >
+          <Sidebar.Core>
+            <Item key="Balance" text="Balance" icon="fab-bitcoin">
+              <div className="sidebar-balance">
+                <div>
+                  <h3>BCH Balance </h3>
+
+                  <p>{_this.state.bchBalance}</p>
+                </div>
+              </div>
+            </Item>
+
+            {_this.sidebar}
+          </Sidebar.Core>
+          <Portfolio path="/Portfolio" />
+          <Icons path="/Icons" />
+          <Configure path="/Configure" />
+          <Audit path="/Audit" />
+        </AdminLTE>
+      </Layout>
     )
+  }
+  goto() {
+    console.log("go to")
   }
 }
 
