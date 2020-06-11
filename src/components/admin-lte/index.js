@@ -2,7 +2,7 @@ import React from "react"
 import Audit from "./audit"
 import Configure from "./configure"
 import Icons from "./icons"
-import Portfolio from "./portfolio"
+import Settings from "./settings"
 
 import AdminLTE, { Sidebar } from "adminlte-2-react"
 
@@ -21,7 +21,7 @@ class AdminLTEPage extends React.Component {
   }
 
   sidebar = [
-    <Item icon="fas-wallet" key="Portfolio" text="Portfolio" to="/Portfolio" />,
+    <Item icon="fas-cogs" key="Portfolio" text="Settings" to="/Settings" />,
     <Item icon="fas-icons" key="Icons" text="Icons" to="/Icons" />,
     <Item icon="fas-cog" key="Configure" text="Configure" to="/Configure" />,
     <Item icon="fa-tablet-alt" key="Audit" text="Audit" to="/Audit" />,
@@ -57,7 +57,7 @@ class AdminLTEPage extends React.Component {
 
             {_this.sidebar}
           </Sidebar.Core>
-          <Portfolio path="/Portfolio" />
+          <Settings path="/Settings" />
           <Icons path="/Icons" />
           <Configure path="/Configure" />
           <Audit path="/Audit" />
