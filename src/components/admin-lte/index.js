@@ -5,9 +5,12 @@ import Icons from "./icons"
 import Portfolio from "./portfolio"
 
 import AdminLTE, { Sidebar } from "adminlte-2-react"
+import ScannerModal from "../qr-scanner/modal"
 
 import Layout from "../layout"
 import "./admin-lte.css"
+
+//import {BrowserRouter as Router} from 'react-router-dom';
 const { Item } = Sidebar
 
 let _this
@@ -17,6 +20,7 @@ class AdminLTEPage extends React.Component {
     _this = this
     this.state = {
       bchBalance: Math.random().toFixed(8),
+      showScannerModal: true,
     }
   }
 
@@ -32,7 +36,6 @@ class AdminLTEPage extends React.Component {
       <Item key="Games" text="Games" />
       <Item key="trade" text="Trade Locally" />
     </Item>,
-    <Item icon="fa-qrcode" key="qrScanner" text="Qr Scanner" />,
   ]
 
   render() {
@@ -56,17 +59,23 @@ class AdminLTEPage extends React.Component {
             </Item>
 
             {_this.sidebar}
+            {/* <div onClick={_this.toggleScanner} className="scanner-left-menu"> */}
+            <Item
+              icon="fa-qrcode"
+              key="qrReader"
+              text="Qr Scanner"
+              to="/qrScanner"
+            />
+            {/* </div> */}
           </Sidebar.Core>
           <Portfolio path="/Portfolio" />
           <Icons path="/Icons" />
           <Configure path="/Configure" />
           <Audit path="/Audit" />
+          <ScannerModal path="/qrScanner" />
         </AdminLTE>
       </Layout>
     )
-  }
-  goto() {
-    console.log("go to")
   }
 }
 
