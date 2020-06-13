@@ -12,3 +12,6 @@
     text-align: center;
 
 }
+#import-mnemonic{
+    text-transform: lowercase;
+}
