@@ -30,3 +30,12 @@
 #import-mnemonic{
     text-transform: lowercase;
 }
+.components-container{
+    min-height: calc(100vh - 100px);
+}
+
+.sidebar-toggle:hover{
+    background-color: white!important;
+    color: var(--main-color)!important; 
+
+}

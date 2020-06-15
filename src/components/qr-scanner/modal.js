@@ -8,13 +8,12 @@ class ScannerModal extends Component {
     super(props)
     _this = this
     this.state = {
-      show: true,
     }
   }
 
   modalFooter = (
     <React.Fragment>
-      <Button text="Close" pullLeft onClick={this.onHide} />
+      <Button text="Close" pullLeft onClick={this.props.onHide} />
     </React.Fragment>
   )
 
@@ -24,40 +23,17 @@ class ScannerModal extends Component {
         title="Qr Scanner"
         modal
         modalFooter={this.modalFooter}
-        show={_this.state.show}
+        show={_this.props.show}
         modalCloseButton={true}
-        onHide={_this.onHide}
+        onHide={_this.props.onHide}
       >
         <QScanner></QScanner>
       </Content>
     )
   }
-
-  UNSAFE_componentWillUpdate() {
-    if (_this.props.show && _this.props.show !== _this.state.show) {
-      _this.setState({
-        show: _this.props.show,
-      })
-    }
-  }
-  onHide() {
-    if (_this.props.onHide) {
-      _this.props.onHide()
-    } else {
-      _this.setState({
-        show: false,
-      })
-      // redirect
-      // deleting focus from qr scanner menu
-      const pageElement = document.querySelectorAll("a[href^='/']")
-      if (pageElement.length) {
-        pageElement[0].click()
-      }
-    }
-  }
 }
 ScannerModal.propTypes = {
-  show: PropTypes.bool,
-  onHide: PropTypes.func,
+  show: PropTypes.bool.isRequired,
+  onHide: PropTypes.func.isRequired,
 }
 export default ScannerModal
