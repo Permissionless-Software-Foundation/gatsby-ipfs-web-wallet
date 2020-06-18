@@ -50,18 +50,24 @@ class NewWallet extends React.Component {
   }
   async createWallet() {
     try {
-
       const bchWalletLib = new _this.BchWallet()
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+      console.log(
+        `bchWalletLib.walletInfo: ${JSON.stringify(
+          bchWalletLib.walletInfo,
+          null,
+          2
+        )}`
+      )
+
       const walletInfo = bchWalletLib.walletInfo
       walletInfo.from = "created"
 
       const myBalance = await bchWalletLib.getBalance()
-      
+
       // Update redux state
       _this.props.setWallet(walletInfo)
       _this.props.updateBalance(myBalance)
-
     } catch (error) {
       console.error(error)
     }
