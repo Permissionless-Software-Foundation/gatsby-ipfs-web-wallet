@@ -1,7 +1,9 @@
 import React from "react"
-
+import PropTypes from "prop-types"
 import { Row, Col, Box, Button, Inputs } from "adminlte-2-react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import BchWallet from "minimal-slp-wallet"
+
 const { Text } = Inputs
 
 let _this
@@ -14,7 +16,9 @@ class ImportWallet extends React.Component {
     this.state = {
       mnemonic: "",
       privateKey: "",
+      errMsg: "",
     }
+    _this.BchWallet = BchWallet
   }
 
   render() {
@@ -44,7 +48,6 @@ class ImportWallet extends React.Component {
                         placeholder="12 word mnemonic"
                         label="12 word mnemonic"
                         labelPosition="above"
-                        maxlength={12}
                         onChange={_this.handleUpdate}
                       />
                       <Text
@@ -59,9 +62,19 @@ class ImportWallet extends React.Component {
                   </Col>
                 </Row>
               </Col>
+              <Col sm={12} className="text-center">
+                {_this.state.errMsg && (
+                  <p className="error-color">{_this.state.errMsg}</p>
+                )}
+              </Col>
 
               <Col sm={12} className="text-center mt-2 mb-2">
-                <Button text="Import" type="primary" className="btn-lg" />
+                <Button
+                  text="Import"
+                  type="primary"
+                  className="btn-lg"
+                  onClick={_this.importWallet}
+                />
               </Col>
             </Row>
           </Box>
@@ -70,10 +83,9 @@ class ImportWallet extends React.Component {
       </Row>
     )
   }
-  componentDidMount(){
+  componentDidMount() {
     // add max length property to mnemonic input
-    document.getElementById("import-mnemonic").maxLength = "12";
-
+    //document.getElementById("import-mnemonic").maxLength = "12"
   }
   handleUpdate(event) {
     let value = event.target.value
@@ -83,8 +95,66 @@ class ImportWallet extends React.Component {
     _this.setState({
       [event.target.name]: value,
     })
-    //console.log(_this.state)
+  }
+  async importWallet() {
+    try {
+      _this.validateInputs()
+
+      const bchWalletLib = new _this.BchWallet(_this.state.mnemonic)
+      await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+      const walletInfo = bchWalletLib.walletInfo
+      walletInfo.from = "imported"
+
+      const myBalance = await bchWalletLib.getBalance()
+
+      // Update redux state
+      _this.props.setWallet(walletInfo)
+      _this.props.updateBalance(myBalance)
+
+      // Reset form and component state
+      _this.resetValues()
+    } catch (error) {
+      console.warn(error)
+      _this.setState({
+        errMsg: error.message,
+      })
+    }
+  }
+
+  // Reset form and component state
+  resetValues() {
+    _this.setState({
+      mnemonic: "",
+      privateKey: "",
+      errMsg: "",
+    })
+    const mnemonicEle = document.getElementById("import-mnemonic")
+    mnemonicEle.value = ""
+
+    const privateKeyEle = document.getElementById("privateKey")
+    privateKeyEle.value = ""
+  }
+
+  validateInputs() {
+    try {
+      const { mnemonic } = _this.state
+      if (mnemonic) {
+        const spaceCount = mnemonic.split(" ").length //mnemonic.match(/ /g).length
+
+        if (spaceCount !== 12) {
+          console.log("reject")
+          throw new Error("mnemonic must contain 12 words")
+        }
+      } else {
+        throw new Error("12 word mnemonic is required")
+      }
+    } catch (error) {
+      throw error
+    }
   }
 }
-
+ImportWallet.propTypes = {
+  setWallet: PropTypes.func.isRequired,
+  updateBalance: PropTypes.func.isRequired,
+}
 export default ImportWallet

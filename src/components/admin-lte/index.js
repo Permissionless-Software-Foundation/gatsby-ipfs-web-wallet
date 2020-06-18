@@ -1,36 +1,40 @@
 import React from "react"
+import PropTypes from "prop-types"
 import Audit from "./audit"
 import Configure from "./configure"
 import Icons from "./icons"
-import Settings from "./settings"
+import Wallet from "./wallet"
 
 import AdminLTE, { Sidebar } from "adminlte-2-react"
 import ScannerModal from "../qr-scanner/modal"
 
 import Layout from "../layout"
 import "./admin-lte.css"
+import BchWallet from "minimal-slp-wallet"
 
 import { BrowserRouter as Router } from "react-router-dom"
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
-const MENU_HIDE_WIDTH = 770 
- 
+const MENU_HIDE_WIDTH = 770
+
 let _this
 class AdminLTEPage extends React.Component {
   constructor(props) {
     super(props)
     _this = this
     this.state = {
-      bchBalance: Math.random().toFixed(8),
+      bchBalance: 0,
       showScannerModal: false,
-      section: "Settings",
+      section: "Wallet",
       menuIsHide: false,
+      walletInfo: {},
     }
+    _this.BchWallet = BchWallet
   }
 
   sidebar = [
-    <Item icon="fas-cogs" key="Portfolio" text="Settings" activeOn="/" />,
+    <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
     <Item icon="fas-icons" key="Icons" text="Icons" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
     <Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
@@ -49,7 +53,7 @@ class AdminLTEPage extends React.Component {
       <>
         <AdminLTE title={["FullStack.cash"]} titleShort={["PSF"]} theme="blue">
           <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon="fab-bitcoin" >
+            <Item key="Balance" text="Balance" icon="fab-bitcoin">
               <div className="sidebar-balance">
                 <div>
                   <h3>BCH Balance </h3>
@@ -63,10 +67,16 @@ class AdminLTEPage extends React.Component {
           </Sidebar.Core>
           <Layout path="/">
             <div className="components-container">
-            {_this.state.section === "Settings" && <Settings  />}
-            {_this.state.section === "Icons" && <Icons  />}
-            {_this.state.section === "Configure" && <Configure  />}
-            {_this.state.section === "Audit" && <Audit  />}
+              {_this.state.section === "Wallet" && (
+                <Wallet
+                  setWallet={_this.props.setWallet}
+                  walletInfo={_this.props.walletInfo}
+                  updateBalance={_this.props.updateBalance}
+                />
+              )}
+              {_this.state.section === "Icons" && <Icons />}
+              {_this.state.section === "Configure" && <Configure />}
+              {_this.state.section === "Audit" && <Audit />}
             </div>
           </Layout>
         </AdminLTE>
@@ -80,12 +90,49 @@ class AdminLTEPage extends React.Component {
       </>
     )
   }
-  componentDidMount() {
+  // Get wallet balance
+  async getBalance() {
+    try {
+      const { mnemonic } = _this.props.walletInfo
+      if (mnemonic) {
+        const bchWalletLib = new _this.BchWallet(mnemonic)
+        await bchWalletLib.walletInfoPromise
+        const myBalance = await bchWalletLib.getBalance()
+        _this.props.updateBalance(myBalance)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async componentDidMount() {
     _this.customMenuItems()
     _this.dropDownBalance()
     _this.addOnClickEventToScanner()
 
-    _this.activeItemById("Settings")
+    _this.activeItemById("Wallet")
+
+    await _this.updateState()
+    setTimeout(() => {
+      _this.getBalance()
+    }, 250)
+  }
+
+  componentDidUpdate() {
+    _this.updateState()
+  }
+  // Update component state when props change
+  updateState() {
+    if (_this.props.walletInfo.mnemonic !== _this.state.walletInfo.mnemonic) {
+      _this.setState({
+        walletInfo: _this.props.walletInfo,
+      })
+    }
+    if (_this.props.bchBalance !== _this.state.bchBalance) {
+      _this.setState({
+        bchBalance: _this.props.bchBalance,
+      })
+    }
   }
 
   // Due to that it is not possible to add the "onClick" method
@@ -153,13 +200,12 @@ class AdminLTEPage extends React.Component {
     try {
       const windowWidth = window.innerWidth
       //console.log("Window Width : ",windowWidth)
-      if(windowWidth > MENU_HIDE_WIDTH) return
+      if (windowWidth > MENU_HIDE_WIDTH) return
       const toggleEle = document.getElementsByClassName("sidebar-toggle")
       toggleEle[0].click()
     } catch (error) {
       console.error(error)
     }
-
   }
 
   // Adds the "onClick" event to the QR scanner item
@@ -170,7 +216,6 @@ class AdminLTEPage extends React.Component {
     } catch (error) {
       console.error(error)
     }
-
   }
 
   // Controller to show the QR scanner
@@ -182,6 +227,14 @@ class AdminLTEPage extends React.Component {
       showScannerModal: !_this.state.showScannerModal,
     })
   }
+
+}
+// Props prvided by redux
+AdminLTEPage.propTypes = {
+  walletInfo: PropTypes.object.isRequired,
+  bchBalance: PropTypes.number.isRequired,
+  setWallet: PropTypes.func.isRequired,
+  updateBalance: PropTypes.func.isRequired,
 }
 
 export default AdminLTEPage
