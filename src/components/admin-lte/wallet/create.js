@@ -48,6 +48,7 @@ class NewWallet extends React.Component {
       </>
     )
   }
+
   async createWallet() {
     try {
       const bchWalletLib = new _this.BchWallet()
