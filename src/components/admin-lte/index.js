@@ -38,14 +38,7 @@ class AdminLTEPage extends React.Component {
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
-    <Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
-    <Item icon="fa-link" key="Link" text="Link">
-      <Item key="Send" text="Send BCH by Email" />
-      <Item key="Faucet" text="Faucet (Free BCH)" />
-      <Item key="Exchange" text="Exchange" />
-      <Item key="Games" text="Games" />
-      <Item key="trade" text="Trade Locally" />
-    </Item>,
+
 
   ]
 
@@ -239,3 +232,16 @@ AdminLTEPage.propTypes = {
 }
 
 export default AdminLTEPage
+
+/*
+CT 6/20/2020 storing code here for future reference
+
+<Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
+<Item icon="fa-link" key="Link" text="Link">
+  <Item key="Send" text="Send BCH by Email" />
+  <Item key="Faucet" text="Faucet (Free BCH)" />
+  <Item key="Exchange" text="Exchange" />
+  <Item key="Games" text="Games" />
+  <Item key="trade" text="Trade Locally" />
+</Item>,
+*/
