@@ -36,6 +36,11 @@ class Audit extends React.Component {
                       Backup your wallet first. Updating the configuration will
                       restart the app.
                     </p>
+                    <p>
+                      This is just a placeholder. This View will allow the user
+                      to pick alternate back-end servers. The default will
+                      be <a href="https://fullstack.cash" target="_blank" rel="noreferrer">FullStack.cash</a>
+                    </p>
                   </Box>
                 </Col>
               </Row>
