@@ -5,13 +5,13 @@ import Configure from "./configure"
 import Tokens from "./icons"
 import Wallet from "./wallet"
 
-import AdminLTE, { Sidebar } from "adminlte-2-react"
+import AdminLTE, { Sidebar, Navbar } from "adminlte-2-react"
 import ScannerModal from "../qr-scanner/modal"
 
 import Layout from "../layout"
 import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
-
+import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
 const { Item } = Sidebar
 
@@ -19,6 +19,7 @@ const { Item } = Sidebar
 const MENU_HIDE_WIDTH = 770
 
 let _this
+
 class AdminLTEPage extends React.Component {
   constructor(props) {
     super(props)
@@ -59,6 +60,9 @@ class AdminLTEPage extends React.Component {
 
             {_this.sidebar}
           </Sidebar.Core>
+          <Navbar.Core>
+            <VersionStatus></VersionStatus>
+          </Navbar.Core>
           <Layout path="/">
             <div className="components-container">
               {_this.state.section === "Wallet" && (
@@ -101,13 +105,14 @@ class AdminLTEPage extends React.Component {
 
   async componentDidMount() {
     _this.customMenuItems()
-    _this.dropDownBalance()
     _this.addOnClickEventToScanner()
 
     _this.activeItemById("Wallet")
 
     await _this.updateState()
     setTimeout(() => {
+      _this.dropDownBalance()
+
       _this.getBalance()
     }, 250)
   }
@@ -221,7 +226,6 @@ class AdminLTEPage extends React.Component {
       showScannerModal: !_this.state.showScannerModal,
     })
   }
-
 }
 // Props prvided by redux
 AdminLTEPage.propTypes = {
