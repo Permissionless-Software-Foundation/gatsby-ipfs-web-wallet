@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Audit from "./audit"
 import Configure from "./configure"
-import Icons from "./icons"
+import Tokens from "./icons"
 import Wallet from "./wallet"
 
 import AdminLTE, { Sidebar } from "adminlte-2-react"
@@ -35,7 +35,8 @@ class AdminLTEPage extends React.Component {
 
   sidebar = [
     <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
-    <Item icon="fas-icons" key="Icons" text="Icons" />,
+    <Item icon="fas-coins" key="Tokens" text="Tokens" />,
+    <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
     <Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
     <Item icon="fa-link" key="Link" text="Link">
@@ -45,7 +46,7 @@ class AdminLTEPage extends React.Component {
       <Item key="Games" text="Games" />
       <Item key="trade" text="Trade Locally" />
     </Item>,
-    <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
+
   ]
 
   render() {
@@ -74,7 +75,7 @@ class AdminLTEPage extends React.Component {
                   updateBalance={_this.props.updateBalance}
                 />
               )}
-              {_this.state.section === "Icons" && <Icons />}
+              {_this.state.section === "Tokens" && <Tokens />}
               {_this.state.section === "Configure" && <Configure />}
               {_this.state.section === "Audit" && <Audit />}
             </div>
