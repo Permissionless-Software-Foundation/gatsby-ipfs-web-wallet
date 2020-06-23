@@ -51,7 +51,23 @@ class NewWallet extends React.Component {
 
   async createWallet() {
     try {
+      const currentWallet = _this.props.walletInfo
+
+      if (currentWallet.mnemonic) {
+        console.warn("Wallet already exists")
+        /*
+         * TODO: notify the user that if it has an existing wallet,
+         * it will get overwritten
+         */
+      }
+
       const bchWalletLib = new _this.BchWallet()
+      const apiToken = currentWallet.JWT
+
+      if (apiToken) {
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: apiToken })
+      }
+
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
       const walletInfo = bchWalletLib.walletInfo
@@ -60,15 +76,18 @@ class NewWallet extends React.Component {
       const myBalance = await bchWalletLib.getBalance()
 
       // Update redux state
-      _this.props.setWallet(walletInfo)
+      _this.props.setWalletInfo(walletInfo)
       _this.props.updateBalance(myBalance)
+      _this.props.setBchWallet(bchWalletLib)
     } catch (error) {
       console.error(error)
     }
   }
 }
 NewWallet.propTypes = {
-  setWallet: PropTypes.func.isRequired,
+  walletInfo: PropTypes.object.isRequired,
+  setWalletInfo: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired,
+  setBchWallet: PropTypes.func.isRequired,
 }
 export default NewWallet
