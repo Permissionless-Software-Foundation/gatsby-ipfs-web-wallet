@@ -24,7 +24,7 @@ class Footer extends React.Component {
               </Col>
               <Col md={12}>
                 <p className="section-tittle">Source Code</p>
-                <FontAwesomeIcon className="" size="md" icon={faGithub} />
+                <FontAwesomeIcon className="" size="lg" icon={faGithub} />
                 <a
                   href="https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet"
                   target="_blank"
