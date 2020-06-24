@@ -10,12 +10,14 @@ import PropTypes from "prop-types"
 //import { useStaticQuery, graphql } from "gatsby"
 
 //import Header from "./header"
+
 import "./app-colors.css"
 import "./layout.css"
-import Footer from './footer'
+let Footer = typeof window !== `undefined` ? require("./footer").default : null
+//import Footer from "./footer"
 
 const Layout = ({ children }) => {
-/*   const data = useStaticQuery(graphql`
+  /*   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
@@ -27,13 +29,11 @@ const Layout = ({ children }) => {
 
   return (
     <>
-
-        <main>{children}</main>
-        <Footer></Footer>
+      <main>{children}</main>
+      {Footer && <Footer />}{" "}
     </>
   )
 }
-
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
