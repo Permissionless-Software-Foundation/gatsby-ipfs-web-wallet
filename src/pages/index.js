@@ -5,17 +5,23 @@ let AdminLTE =
   typeof window !== `undefined`
     ? require("../components/admin-lte").default
     : null
-const mapStateToProps = ({ walletInfo, bchBalance }) => {
-  return { walletInfo,bchBalance }
+// Maps the props that are going to be sended 
+// to the component connected with Redux
+const mapStateToProps = ({ walletInfo, bchBalance, bchWallet }) => {
+  return { walletInfo, bchBalance, bchWallet }
 }
 
+// Send each action of the reducer as props
+// to the component connected with Redux
 const mapDispatchToProps = dispatch => {
   return {
-    setWallet: value => dispatch({ type: `SET_WALLET`, value }),
-    updateBalance: value =>dispatch({ type: `UPDATE_BALANCE`, value })
+    setWalletInfo: value => dispatch({ type: `SET_WALLET_INFO`, value }),
+    updateBalance: value => dispatch({ type: `UPDATE_BALANCE`, value }),
+    setBchWallet: value => dispatch({ type: `SET_BCH_WALLET`, value }),
   }
 }
 
+// Component connected with redux
 let ConnectedDashboard = AdminLTE
   ? connect(mapStateToProps, mapDispatchToProps)(AdminLTE)
   : null

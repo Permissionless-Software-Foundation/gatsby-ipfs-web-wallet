@@ -39,8 +39,6 @@ class AdminLTEPage extends React.Component {
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
-
-
   ]
 
   render() {
@@ -67,13 +65,20 @@ class AdminLTEPage extends React.Component {
             <div className="components-container">
               {_this.state.section === "Wallet" && (
                 <Wallet
-                  setWallet={_this.props.setWallet}
+                  setWalletInfo={_this.props.setWalletInfo}
                   walletInfo={_this.props.walletInfo}
                   updateBalance={_this.props.updateBalance}
+                  setBchWallet={_this.props.setBchWallet}
                 />
               )}
               {_this.state.section === "Tokens" && <Tokens />}
-              {_this.state.section === "Configure" && <Configure />}
+              {_this.state.section === "Configure" && (
+                <Configure 
+                walletInfo={_this.props.walletInfo}
+                setWalletInfo={_this.props.setWalletInfo} 
+                setBchWallet={_this.props.setBchWallet}
+                />
+              )}
               {_this.state.section === "Audit" && <Audit />}
             </div>
           </Layout>
@@ -92,9 +97,11 @@ class AdminLTEPage extends React.Component {
   async getBalance() {
     try {
       const { mnemonic } = _this.props.walletInfo
-      if (mnemonic) {
-        const bchWalletLib = new _this.BchWallet(mnemonic)
+      if (mnemonic && _this.props.bchWallet) {
+
+        const bchWalletLib = _this.props.bchWallet
         await bchWalletLib.walletInfoPromise
+
         const myBalance = await bchWalletLib.getBalance()
         _this.props.updateBalance(myBalance)
       }
@@ -229,10 +236,12 @@ class AdminLTEPage extends React.Component {
 }
 // Props prvided by redux
 AdminLTEPage.propTypes = {
-  walletInfo: PropTypes.object.isRequired,
-  bchBalance: PropTypes.number.isRequired,
-  setWallet: PropTypes.func.isRequired,
-  updateBalance: PropTypes.func.isRequired,
+  walletInfo: PropTypes.object.isRequired, // wallet info
+  bchBalance: PropTypes.number.isRequired, // bch balance
+  setWalletInfo: PropTypes.func.isRequired, // set wallet info
+  updateBalance: PropTypes.func.isRequired, // update bch balance
+  setBchWallet: PropTypes.func.isRequired, // set minimal-slp-wallet instance
+  bchWallet:PropTypes.object, // get minimal-slp-wallet instance
 }
 
 export default AdminLTEPage

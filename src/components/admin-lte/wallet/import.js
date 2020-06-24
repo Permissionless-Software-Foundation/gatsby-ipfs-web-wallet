@@ -100,16 +100,34 @@ class ImportWallet extends React.Component {
     try {
       _this.validateInputs()
 
+      const currentWallet = _this.props.walletInfo
+
+      if (currentWallet.mnemonic) {
+        console.warn("Wallet already exists")
+        /*
+         * TODO: notify the user that it has an existing wallet,
+         * and it will get overwritten
+         */
+      }
+
       const bchWalletLib = new _this.BchWallet(_this.state.mnemonic)
+      const apiToken = currentWallet.JWT
+
+      if (apiToken) {
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: apiToken })
+      }
+
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+
       const walletInfo = bchWalletLib.walletInfo
       walletInfo.from = "imported"
 
       const myBalance = await bchWalletLib.getBalance()
 
       // Update redux state
-      _this.props.setWallet(walletInfo)
+      _this.props.setWalletInfo(walletInfo)
       _this.props.updateBalance(myBalance)
+      _this.props.setBchWallet(bchWalletLib)
 
       // Reset form and component state
       _this.resetValues()
@@ -154,7 +172,9 @@ class ImportWallet extends React.Component {
   }
 }
 ImportWallet.propTypes = {
-  setWallet: PropTypes.func.isRequired,
+  walletInfo: PropTypes.object.isRequired,
+  setWalletInfo: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired,
+  setBchWallet: PropTypes.func.isRequired,
 }
 export default ImportWallet

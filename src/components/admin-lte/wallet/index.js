@@ -20,7 +20,9 @@ class Wallet extends React.Component {
         <Content>
           <NewWallet
             updateBalance={_this.props.updateBalance}
-            setWallet={_this.props.setWallet}
+            setWalletInfo={_this.props.setWalletInfo}
+            setBchWallet={_this.props.setBchWallet}
+            walletInfo={_this.props.walletInfo}
           />
 
           {_this.props.walletInfo.mnemonic &&
@@ -30,7 +32,9 @@ class Wallet extends React.Component {
 
           <ImportWallet
             updateBalance={_this.props.updateBalance}
-            setWallet={_this.props.setWallet}
+            setWalletInfo={_this.props.setWalletInfo}
+            setBchWallet={_this.props.setBchWallet}
+            walletInfo={_this.props.walletInfo}
           />
 
           {_this.props.walletInfo.mnemonic &&
@@ -46,9 +50,10 @@ class Wallet extends React.Component {
 
 }
 Wallet.propTypes = {
-  setWallet: PropTypes.func.isRequired,
+  setWalletInfo: PropTypes.func.isRequired,
   walletInfo: PropTypes.object.isRequired,
   updateBalance: PropTypes.func.isRequired,
+  setBchWallet: PropTypes.func.isRequired,
 }
 
 export default Wallet
