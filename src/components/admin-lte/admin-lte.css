@@ -31,7 +31,7 @@
     text-transform: lowercase;
 }
 .components-container{
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - var(--footer-height) - 50px);
 }
 
 .sidebar-toggle:hover{

@@ -637,9 +637,14 @@ pre tt:after {
   justify-content: center;
 }
 .justify-item-center{
-  justify-items: center;
+  align-items: center;
 }
-
+.max-width{
+  width: 100%!important;
+}
+.max-height{
+  height: 100vh!important;
+}
 .border-none{
   border: none!important ;
 
