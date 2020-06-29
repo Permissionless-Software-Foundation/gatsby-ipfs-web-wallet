@@ -1,6 +1,5 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Audit from "./audit"
 import Configure from "./configure"
 import Tokens from "./tokens"
 import Wallet from "./wallet"
@@ -13,12 +12,19 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
+import { StaticQuery, graphql } from "gatsby"
+import loadable from "@loadable/component"
+
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
 const MENU_HIDE_WIDTH = 770
 
 let _this
+const MenuItemComponent = ({ component }) => {
+    const RenderedComponent = loadable(() => import("./audit"))
+    return (<RenderedComponent />)
+}
 
 class AdminLTEPage extends React.Component {
   constructor(props) {
@@ -43,58 +49,74 @@ class AdminLTEPage extends React.Component {
 
   render() {
     return (
-      <>
-        <AdminLTE title={["FullStack.cash"]} titleShort={["PSF"]} theme="blue">
-          <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon="fab-bitcoin">
-              <div className="sidebar-balance">
-                <div>
-                  <h3>BCH Balance </h3>
+      <StaticQuery
+        query={graphql`
+            query {
+                bchWalletPlugins {
+                    menuItems {
+                        title
+                        component
+                        icon
+                    }
+                }
+            }`}
+        render={data =>
+            <>
+                <AdminLTE title={["FullStack.cash"]} titleShort={["PSF"]} theme="blue">
+                  <Sidebar.Core>
+                    <Item key="Balance" text="Balance" icon="fab-bitcoin">
+                      <div className="sidebar-balance">
+                        <div>
+                          <h3>BCH Balance </h3>
 
-                  <p>{_this.state.bchBalance}</p>
-                </div>
-              </div>
-            </Item>
+                          <p>{_this.state.bchBalance}</p>
+                        </div>
+                      </div>
+                    </Item>
 
-            {_this.sidebar}
-          </Sidebar.Core>
-          <Navbar.Core>
-            <VersionStatus></VersionStatus>
-          </Navbar.Core>
-          <Layout path="/">
-            <div className="components-container">
-              {_this.state.section === "Wallet" && (
-                <Wallet
-                  setWalletInfo={_this.props.setWalletInfo}
-                  walletInfo={_this.props.walletInfo}
-                  updateBalance={_this.props.updateBalance}
-                  setBchWallet={_this.props.setBchWallet}
-                />
-              )}
-              {_this.state.section === "Tokens" &&
-               <Tokens 
-               walletInfo={_this.props.walletInfo}
-              bchWallet={_this.props.bchWallet} />
-              }
-              {_this.state.section === "Configure" && (
-                <Configure 
-                walletInfo={_this.props.walletInfo}
-                setWalletInfo={_this.props.setWalletInfo} 
-                setBchWallet={_this.props.setBchWallet}
-                />
-              )}
-              {_this.state.section === "Audit" && <Audit />}
-            </div>
-          </Layout>
-        </AdminLTE>
-        <Router>
-          <ScannerModal
-            show={_this.state.showScannerModal}
-            onHide={_this.toggleScannerModal}
-            path="/"
-          />
-        </Router>
-      </>
+                    {_this.sidebar}
+                    {data.bchWalletPlugins.menuItems.map(item => <Item icon={item.icon} key={item.title} text={item.title} />)}
+                  </Sidebar.Core>
+                  <Navbar.Core>
+                    <VersionStatus></VersionStatus>
+                  </Navbar.Core>
+                  <Layout path="/">
+                    <div className="components-container">
+                      {_this.state.section === "Wallet" && (
+                        <Wallet
+                          setWalletInfo={_this.props.setWalletInfo}
+                          walletInfo={_this.props.walletInfo}
+                          updateBalance={_this.props.updateBalance}
+                          setBchWallet={_this.props.setBchWallet}
+                        />
+                      )}
+                      {_this.state.section === "Tokens" &&
+                       <Tokens
+                       walletInfo={_this.props.walletInfo}
+                      bchWallet={_this.props.bchWallet} />
+                      }
+                      {_this.state.section === "Configure" && (
+                        <Configure
+                        walletInfo={_this.props.walletInfo}
+                        setWalletInfo={_this.props.setWalletInfo}
+                        setBchWallet={_this.props.setBchWallet}
+                        />
+                      )}
+                    {data.bchWalletPlugins.menuItems.map(item =>
+                        _this.state.section === item.title && <MenuItemComponent component={item.component} />
+                    )}
+                    </div>
+                  </Layout>
+                </AdminLTE>
+                <Router>
+                  <ScannerModal
+                    show={_this.state.showScannerModal}
+                    onHide={_this.toggleScannerModal}
+                    path="/"
+                  />
+                </Router>
+            </>
+        }/>
     )
   }
   // Get wallet balance
