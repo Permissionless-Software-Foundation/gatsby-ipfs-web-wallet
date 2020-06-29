@@ -20,6 +20,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.0.0",
+    "react-jdenticon": "0.0.8",
     "react-qr-reader": "^2.2.1",
     "react-redux": "^7.2.0"
   },

@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Audit from "./audit"
 import Configure from "./configure"
-import Tokens from "./icons"
+import Tokens from "./tokens"
 import Wallet from "./wallet"
 
 import AdminLTE, { Sidebar, Navbar } from "adminlte-2-react"
@@ -71,7 +71,11 @@ class AdminLTEPage extends React.Component {
                   setBchWallet={_this.props.setBchWallet}
                 />
               )}
-              {_this.state.section === "Tokens" && <Tokens />}
+              {_this.state.section === "Tokens" &&
+               <Tokens 
+               walletInfo={_this.props.walletInfo}
+              bchWallet={_this.props.bchWallet} />
+              }
               {_this.state.section === "Configure" && (
                 <Configure 
                 walletInfo={_this.props.walletInfo}
