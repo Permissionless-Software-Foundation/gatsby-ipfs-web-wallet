@@ -13,6 +13,7 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
+import SendReceive from "./send-receive"
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
@@ -39,6 +40,8 @@ class AdminLTEPage extends React.Component {
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
+    <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
+
   ]
 
   render() {
@@ -84,6 +87,15 @@ class AdminLTEPage extends React.Component {
                 />
               )}
               {_this.state.section === "Audit" && <Audit />}
+              {_this.state.section === "Send/Receive" && (
+                <SendReceive
+                  setWalletInfo={_this.props.setWalletInfo}
+                  walletInfo={_this.props.walletInfo}
+                  updateBalance={_this.props.updateBalance}
+                  setBchWallet={_this.props.setBchWallet}
+                  bchWallet={_this.props.bchWallet}
+                />
+              )}
             </div>
           </Layout>
         </AdminLTE>
