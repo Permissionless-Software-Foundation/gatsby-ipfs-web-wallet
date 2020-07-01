@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Content } from "adminlte-2-react"
-import { Row, Col, Box, Inputs } from "adminlte-2-react"
+import { Row, Col, Box } from "adminlte-2-react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 var QRCode = require("qrcode.react")
@@ -44,7 +44,7 @@ class Receive extends React.Component {
                         fgColor={"#333"}
                       />
                       <p>{_this.state.addr}</p>
-                      <label className="switch-address">
+                      <label className="switch-address" htmlFor="address-checkbox">
                         <input
                           id="address-checkbox"
                           type="checkbox"

@@ -30,3 +30,6 @@
 .box{
   border-color: var(--main-color)!important;
 }
+.error-color{
+  color: red;
+}
