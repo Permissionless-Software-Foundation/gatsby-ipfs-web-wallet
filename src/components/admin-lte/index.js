@@ -12,8 +12,11 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
+
 import { StaticQuery, graphql } from "gatsby"
 import loadable from "@loadable/component"
+
+import SendReceive from "./send-receive"
 
 const { Item } = Sidebar
 
@@ -45,6 +48,8 @@ class AdminLTEPage extends React.Component {
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
     <Item icon="fas-cog" key="Configure" text="Configure" />,
+    <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
+
   ]
 
   render() {
@@ -117,6 +122,7 @@ class AdminLTEPage extends React.Component {
                 </Router>
             </>
         }/>
+
     )
   }
   // Get wallet balance
