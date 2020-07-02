@@ -68,7 +68,7 @@ class Configure extends React.Component {
                   {_this.state.errMsg && (
                     <p className="error-color">{_this.state.errMsg}</p>
                   )}
-                  {_this.state.txId  &&(
+                  {_this.state.txId && (
                     <p className="">Transaction ID: {_this.state.txId}</p>
                   )}
                 </Col>
@@ -95,31 +95,25 @@ class Configure extends React.Component {
 
       const bchWalletLib = _this.props.bchWallet
       const { address, amountSat } = _this.state
-      
+
       const receivers = [
         {
           address,
           // amount in satoshis, 1 satoshi = 0.00000001 Bitcoin
-          amountSat: Number(amountSat) * 100000000,
+          amountSat: Math.floor(Number(amountSat) * 100000000),
         },
       ]
-      console.log('receivers',receivers)
+      // console.log("receivers", receivers)
+
       if (!bchWalletLib) {
         throw new Error("Wallet not found")
       }
 
+      // Ensure the wallet UTXOs are up-to-date.
+      const walletAddr = bchWalletLib.walletInfo.address
+      bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.initUtxoStore(walletAddr)
 
-
-      // The following line of code solved the 'UTXOS list empty' problem
-      // The Function below is called at creating an instance of the library
-      // https://github.com/Permissionless-Software-Foundation/minimal-slp-wallet/blob/master/lib/utxos.js#L88-L97
-      //
-      // This function stores the utxos in the variable bchUtxos
-      // I don't find the reason why the instance of the library returns an empty array
-      // console.log('bch utxos ', bchWalletLib.utxos.bchUtxos )
-
-      bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.getBchUtxos()
-
+      // Send the BCH.
       const result = await bchWalletLib.send(receivers)
       // console.log('result',result)
 
@@ -131,23 +125,21 @@ class Configure extends React.Component {
       setTimeout(async () => {
         const myBalance = await bchWalletLib.getBalance()
         _this.props.updateBalance(myBalance)
-
       }, 1000)
 
       _this.resetValues()
     } catch (error) {
       let errMsg
-      if(error.message){
+      if (error.message) {
         errMsg = error.message
-      }else if(error.error){
+      } else if (error.error) {
         errMsg = error.error
-
       }
       _this.setState(prevState => {
         return {
           ...prevState,
           errMsg,
-          txId:""
+          txId: "",
         }
       })
     }
