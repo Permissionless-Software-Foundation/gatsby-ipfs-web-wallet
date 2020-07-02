@@ -1,5 +1,3 @@
-
-
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   actions.setWebpackConfig({
     node: {
@@ -18,3 +16,26 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
     actions.replaceWebpackConfig(config)
   }
 }
+
+exports.sourceNodes = ({ actions, createNodeId, createContentDigest  }) => {
+    const { createNode  } = actions
+    const defaultMenuItems = [
+        {
+            title: "Audit",
+            icon: "fas-cog",
+            component: "./audit"
+        }
+    ]
+
+    createNode({
+        menuItems: defaultMenuItems,
+        id: `bch-wallet-plugins`,
+        parent: null,
+        children: [],
+        internal: {
+            type: `BchWalletPlugins`,
+            contentDigest: createContentDigest({})
+        }
+    })
+}
+
