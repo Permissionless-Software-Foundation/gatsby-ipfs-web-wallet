@@ -33,3 +33,6 @@
 .error-color{
   color: red;
 }
+.input-group-btn svg{
+  color : var(--main-color)
+}

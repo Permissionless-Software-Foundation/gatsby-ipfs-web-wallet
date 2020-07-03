@@ -7,8 +7,7 @@ class ScannerModal extends Component {
   constructor(props) {
     super(props)
     _this = this
-    this.state = {
-    }
+    this.state = {}
   }
 
   modalFooter = (
@@ -27,7 +26,7 @@ class ScannerModal extends Component {
         modalCloseButton={true}
         onHide={_this.props.onHide}
       >
-        <QScanner></QScanner>
+        <QScanner onError={_this.props.onError} onScan={_this.props.onScan} />
       </Content>
     )
   }
@@ -35,5 +34,7 @@ class ScannerModal extends Component {
 ScannerModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onHide: PropTypes.func.isRequired,
+  onError: PropTypes.func,
+  onScan: PropTypes.func,
 }
 export default ScannerModal
