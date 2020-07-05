@@ -58,12 +58,6 @@ class Send extends React.Component {
                         }
                       />
 
-                      <FontAwesomeIcon
-                        className="title-icon"
-                        size="lg"
-                        icon={"qrcode"}
-                      />
-
                       <Text
                         id="amountToSend"
                         name="amountSat"
