@@ -17,7 +17,7 @@ class Footer extends React.Component {
                 <a
                   href='https://psfoundation.cash/'
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                 >
                   Permissionless Software Foundation
                 </a>
@@ -28,7 +28,7 @@ class Footer extends React.Component {
                 <a
                   href='https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet'
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                 >
                   Github
                 </a>

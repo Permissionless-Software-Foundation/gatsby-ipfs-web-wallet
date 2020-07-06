@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Content } from 'adminlte-2-react'
@@ -27,7 +29,7 @@ class Wallet extends React.Component {
 
           {_this.props.walletInfo.mnemonic &&
             _this.props.walletInfo.from === 'created' && (
-              <WalletInfo walletInfo={_this.props.walletInfo} />
+            <WalletInfo walletInfo={_this.props.walletInfo} />
           )}
 
           <ImportWallet
@@ -39,7 +41,7 @@ class Wallet extends React.Component {
 
           {_this.props.walletInfo.mnemonic &&
             _this.props.walletInfo.from === 'imported' && (
-              <WalletInfo walletInfo={_this.props.walletInfo} />
+            <WalletInfo walletInfo={_this.props.walletInfo} />
           )}
 
           <InfoWallets />

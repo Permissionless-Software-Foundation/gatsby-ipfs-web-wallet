@@ -9,12 +9,11 @@
     "build": "gatsby build --prefix-paths",
     "build:normal": "gatsby build",
     "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "lint": "standard --env mocha --fix",
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "npm run lint"
   },
   "dependencies": {
     "adminlte-2-react": "^0.1.27",

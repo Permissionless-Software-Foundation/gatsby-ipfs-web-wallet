@@ -157,27 +157,25 @@ class ImportWallet extends React.Component {
   }
 
   validateInputs () {
-    try {
-      const { mnemonic } = _this.state
-      if (mnemonic) {
-        const spaceCount = mnemonic.split(' ').length // mnemonic.match(/ /g).length
+    const { mnemonic } = _this.state
+    if (mnemonic) {
+      const spaceCount = mnemonic.split(' ').length // mnemonic.match(/ /g).length
 
-        if (spaceCount !== 12) {
-          console.log('reject')
-          throw new Error('mnemonic must contain 12 words')
-        }
-      } else {
-        throw new Error('12 word mnemonic is required')
+      if (spaceCount !== 12) {
+        console.log('reject')
+        throw new Error('mnemonic must contain 12 words')
       }
-    } catch (error) {
-      throw error
+    } else {
+      throw new Error('12 word mnemonic is required')
     }
   }
 }
+
 ImportWallet.propTypes = {
   walletInfo: PropTypes.object.isRequired,
   setWalletInfo: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired,
   setBchWallet: PropTypes.func.isRequired
 }
+
 export default ImportWallet
