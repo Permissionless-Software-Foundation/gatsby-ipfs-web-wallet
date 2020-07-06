@@ -1,5 +1,3 @@
-const MenuComponents = () => {
+const MenuComponents = () => {}
 
-}
-
-export default MenuComponents;
+export default MenuComponents

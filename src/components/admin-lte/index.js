@@ -13,7 +13,7 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
-// import menuComponents from "../menu-components.js"
+import menuComponents from "../menu-components.js"
 
 import SendReceive from "./send-receive"
 
@@ -63,7 +63,7 @@ class AdminLTEPage extends React.Component {
 
             {_this.sidebar}
 
-            
+            {_this.renderNewMenuItems()}
           </Sidebar.Core>
 
           <Navbar.Core>
@@ -105,8 +105,7 @@ class AdminLTEPage extends React.Component {
                 />
               )}
 
-
-
+              {_this.renderNewViewItems()}
             </div>
           </Layout>
         </AdminLTE>
@@ -258,6 +257,32 @@ class AdminLTEPage extends React.Component {
     _this.setState({
       showScannerModal: !_this.state.showScannerModal,
     })
+  }
+
+  // Render non-default menu items. The catch ensures that the render function
+  // won't be interrupted if there is an issue porting new menu items.
+  renderNewMenuItems() {
+    try {
+      return menuComponents && menuComponents.map(m => m.menuItem)
+    } catch (err) {
+      // TODO: Figure out how to return an invisible Item.
+      return <Item style={{display: 'none'}} />
+    }
+
+  }
+
+  // Displays the View corresponding to the dynamically loaded menu item.
+  renderNewViewItems() {
+    try {
+      return(menuComponents && menuComponents.map(m => {
+        if (_this.state.section === m.key) {
+          return m.component
+        }
+        return ""
+      }))
+    } catch(err) {
+
+    }
   }
 }
 // Props prvided by redux
