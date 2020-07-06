@@ -57,6 +57,8 @@ class AdminLTEPage extends React.Component {
             </Item>
 
             {_this.sidebar}
+
+	    {_this.props.menuComponents && _this.props.menuComponents.map(m => m.menuItem)}
           </Sidebar.Core>
           <Navbar.Core>
             <VersionStatus></VersionStatus>
@@ -71,19 +73,28 @@ class AdminLTEPage extends React.Component {
                   setBchWallet={_this.props.setBchWallet}
                 />
               )}
-              {_this.state.section === "Tokens" &&
-               <Tokens 
-               walletInfo={_this.props.walletInfo}
-              bchWallet={_this.props.bchWallet} />
-              }
+              {_this.state.section === "Tokens" && (
+                <Tokens
+                  walletInfo={_this.props.walletInfo}
+                  bchWallet={_this.props.bchWallet}
+                />
+              )}
               {_this.state.section === "Configure" && (
-                <Configure 
-                walletInfo={_this.props.walletInfo}
-                setWalletInfo={_this.props.setWalletInfo} 
-                setBchWallet={_this.props.setBchWallet}
+                <Configure
+                  walletInfo={_this.props.walletInfo}
+                  setWalletInfo={_this.props.setWalletInfo}
+                  setBchWallet={_this.props.setBchWallet}
                 />
               )}
               {_this.state.section === "Audit" && <Audit />}
+
+	    {_this.props.menuComponents && _this.props.menuComponents.map(m => {
+		    const ItemComponent = m.component;
+		    if (_this.state.section === m.key) {
+			    return m.component;
+		    }
+		    return "";
+	    })}
             </div>
           </Layout>
         </AdminLTE>
@@ -102,7 +113,6 @@ class AdminLTEPage extends React.Component {
     try {
       const { mnemonic } = _this.props.walletInfo
       if (mnemonic && _this.props.bchWallet) {
-
         const bchWalletLib = _this.props.bchWallet
         await bchWalletLib.walletInfoPromise
 
@@ -245,7 +255,7 @@ AdminLTEPage.propTypes = {
   setWalletInfo: PropTypes.func.isRequired, // set wallet info
   updateBalance: PropTypes.func.isRequired, // update bch balance
   setBchWallet: PropTypes.func.isRequired, // set minimal-slp-wallet instance
-  bchWallet:PropTypes.object, // get minimal-slp-wallet instance
+  bchWallet: PropTypes.object, // get minimal-slp-wallet instance
 }
 
 export default AdminLTEPage

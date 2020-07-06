@@ -1,5 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Sidebar, Navbar } from "adminlte-2-react"
+const { Item } = Sidebar
 
 let AdminLTE =
   typeof window !== `undefined`
@@ -25,6 +27,7 @@ const mapDispatchToProps = dispatch => {
 let ConnectedDashboard = AdminLTE
   ? connect(mapStateToProps, mapDispatchToProps)(AdminLTE)
   : null
+
 
 class AdminLTEPage extends React.Component {
   state = {}
