@@ -1,4 +1,4 @@
-exports.onCreateWebpackConfig = ({ stage, actions, plugins, getConfig }) => {
+exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   actions.setWebpackConfig({
     node: {
       fs: "empty",
@@ -24,4 +24,3 @@ exports.createPages = async ({ actions }, themeOptions) => {
     component: require.resolve("./src/pages/index.js"),
   })
 }
-

@@ -1,6 +1,5 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Audit from "./audit"
 import Configure from "./configure"
 import Tokens from "./tokens"
 import Wallet from "./wallet"
@@ -14,12 +13,18 @@ import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
 import menuComponents from "../menuComponents.js"
+import SendReceive from "./send-receive"
+
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
 const MENU_HIDE_WIDTH = 770
 
 let _this
+const MenuItemComponent = ({ component }) => {
+  const RenderedComponent = loadable(() => import("./audit"))
+  return <RenderedComponent />
+}
 
 class AdminLTEPage extends React.Component {
   constructor(props) {
@@ -36,26 +41,30 @@ class AdminLTEPage extends React.Component {
   }
 
   sidebar = [
-    <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
+    <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
+    <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
-    <Item icon="fas-cog" key="Configure" text="Configure" />,
+    <Item icon="fas-cog" key="Configure" text="Configure" />
   ]
 
   render() {
-    return (
-      <>
-        <AdminLTE title={["FullStack.cash"]} titleShort={["PSF"]} theme="blue">
-          <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon="fab-bitcoin">
-              <div className="sidebar-balance">
-                <div>
-                  <h3>BCH Balance </h3>
+    return (<>
+            <AdminLTE
+              title={["FullStack.cash"]}
+              titleShort={["PSF"]}
+              theme="blue"
+            >
+              <Sidebar.Core>
+                <Item key="Balance" text="Balance" icon="fab-bitcoin">
+                  <div className="sidebar-balance">
+                    <div>
+                      <h3>BCH Balance </h3>
 
-                  <p>{_this.state.bchBalance}</p>
-                </div>
-              </div>
-            </Item>
+                      <p>{_this.state.bchBalance}</p>
+                    </div>
+                  </div>
+                </Item>
 
             {_this.sidebar}
 
@@ -67,6 +76,15 @@ class AdminLTEPage extends React.Component {
           </Navbar.Core>
           <Layout path="/">
             <div className="components-container">
+            {_this.state.section === "Send/Receive" && (
+                    <SendReceive
+                      setWalletInfo={_this.props.setWalletInfo}
+                      walletInfo={_this.props.walletInfo}
+                      updateBalance={_this.props.updateBalance}
+                      setBchWallet={_this.props.setBchWallet}
+                      bchWallet={_this.props.bchWallet}
+                    />
+                  )}
               {_this.state.section === "Wallet" && (
                 <Wallet
                   setWalletInfo={_this.props.setWalletInfo}

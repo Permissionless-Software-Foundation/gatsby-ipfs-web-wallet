@@ -30,3 +30,9 @@
 .box{
   border-color: var(--main-color)!important;
 }
+.error-color{
+  color: red;
+}
+.input-group-btn svg{
+  color : var(--main-color)
+}
