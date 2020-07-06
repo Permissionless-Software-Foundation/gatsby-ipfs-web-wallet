@@ -1,7 +1,7 @@
-import React from "react"
-import { Provider } from "react-redux"
+import React from 'react'
+import { Provider } from 'react-redux'
 
-import createStore from "./src/redux/createStore"
+import createStore from './src/redux/createStore'
 
 // eslint-disable-next-line react/display-name,react/prop-types
 export default ({ element }) => {

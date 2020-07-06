@@ -1,15 +1,15 @@
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   actions.setWebpackConfig({
     node: {
-      fs: "empty",
-    },
+      fs: 'empty'
+    }
   })
 
-  //Ignore css order
-  if (stage === "build-javascript") {
+  // Ignore css order
+  if (stage === 'build-javascript') {
     const config = getConfig()
     const miniCssExtractPlugin = config.plugins.find(
-      plugin => plugin.constructor.name === "MiniCssExtractPlugin"
+      plugin => plugin.constructor.name === 'MiniCssExtractPlugin'
     )
     if (miniCssExtractPlugin) {
       miniCssExtractPlugin.options.ignoreOrder = true
@@ -19,9 +19,9 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
 }
 
 exports.createPages = async ({ actions }, themeOptions) => {
-  const basePath = "/"
+  const basePath = '/'
   actions.createPage({
     path: basePath,
-    component: require.resolve("./src/pages/index.js"),
+    component: require.resolve('./src/pages/index.js')
   })
 }

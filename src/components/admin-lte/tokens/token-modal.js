@@ -1,23 +1,24 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Content, Row, Col, Box, Button } from "adminlte-2-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Content, Row, Col, Box, Button } from 'adminlte-2-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import "./token.css"
+import './token.css'
 let _this
 class TokenModal extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {}
+
+    this.modalFooter = (
+      <>
+        <Button text='Close' pullLeft onClick={this.props.handleOnHide} />
+      </>
+    )
   }
 
-  modalFooter = (
-    <React.Fragment>
-      <Button text="Close" pullLeft onClick={this.props.onHide} />
-    </React.Fragment>
-  )
-  render() {
+  render () {
     const token = _this.props.token
     return (
       <>
@@ -26,18 +27,18 @@ class TokenModal extends React.Component {
           modal
           modalFooter={this.modalFooter}
           show={_this.props.show}
-          modalCloseButton={true}
-          onHide={_this.props.onHide}
+          modalCloseButton
+          onHide={_this.props.handleOnHide}
         >
           <Row>
             <Col sm={12}>
-              <Box className=" border-none ">
+              <Box className=' border-none '>
                 <Row>
                   <Col
                     sm={12}
-                    className="text-center   tokenModal-info-container"
+                    className='text-center   tokenModal-info-container'
                   >
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -48,16 +49,16 @@ class TokenModal extends React.Component {
                           </Col>
                           <Col xs={2} sm={1}>
                             <FontAwesomeIcon
-                              className="icon btn-animation"
-                              size="lg"
-                              onClick={() => _this.copyToClipBoard("tokenId")}
-                              icon={"copy"}
+                              className='icon btn-animation'
+                              size='lg'
+                              onClick={() => _this.copyToClipBoard('tokenId')}
+                              icon='copy'
                             />
                           </Col>
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -66,8 +67,8 @@ class TokenModal extends React.Component {
                           <Col xs={12} sm={9}>
                             <a
                               href={`http://${token.url}`}
-                              target="_blank"
-                              rel="noreferrer"
+                              target='_blank'
+                              rel='noopener noreferrer'
                             >
                               {token.url}
                             </a>
@@ -75,7 +76,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -87,7 +88,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -99,7 +100,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -111,7 +112,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -123,7 +124,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -144,20 +145,21 @@ class TokenModal extends React.Component {
       </>
     )
   }
+
   // copy info  to clipboard
-  copyToClipBoard(key) {
+  copyToClipBoard (key) {
     const val = _this.props.token[key]
-    var textArea = document.createElement("textarea")
-    textArea.value = val //copyText.textContent;
+    var textArea = document.createElement('textarea')
+    textArea.value = val // copyText.textContent;
     document.body.appendChild(textArea)
     textArea.select()
-    document.execCommand("Copy")
+    document.execCommand('Copy')
     textArea.remove()
   }
 }
 TokenModal.propTypes = {
   token: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired
 }
 export default TokenModal

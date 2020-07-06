@@ -1,10 +1,10 @@
-import React from "react"
-import { connect } from "react-redux"
+import React from 'react'
+import { connect } from 'react-redux'
 
-let AdminLTE =
+const AdminLTE =
 
-  typeof window !== `undefined`
-    ? require("../components/admin-lte").default
+  typeof window !== 'undefined'
+    ? require('../components/admin-lte').default
     : null
 
 // Maps the props that are going to be sended
@@ -17,14 +17,14 @@ const mapStateToProps = ({ walletInfo, bchBalance, bchWallet }) => {
 // to the component connected with Redux
 const mapDispatchToProps = dispatch => {
   return {
-    setWalletInfo: value => dispatch({ type: `SET_WALLET_INFO`, value }),
-    updateBalance: value => dispatch({ type: `UPDATE_BALANCE`, value }),
-    setBchWallet: value => dispatch({ type: `SET_BCH_WALLET`, value }),
+    setWalletInfo: value => dispatch({ type: 'SET_WALLET_INFO', value }),
+    updateBalance: value => dispatch({ type: 'UPDATE_BALANCE', value }),
+    setBchWallet: value => dispatch({ type: 'SET_BCH_WALLET', value })
   }
 }
 
 // Component connected with redux
-let ConnectedDashboard = AdminLTE
+const ConnectedDashboard = AdminLTE
   ? connect(mapStateToProps, mapDispatchToProps)(AdminLTE)
   : null
 

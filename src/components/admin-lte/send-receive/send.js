@@ -1,85 +1,85 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Content, Row, Col, Box, Inputs, Button } from "adminlte-2-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import BchWallet from "minimal-slp-wallet"
-import ScannerModal from "../../qr-scanner/modal"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import BchWallet from 'minimal-slp-wallet'
+import ScannerModal from '../../qr-scanner/modal'
 const { Text } = Inputs
 
 let _this
 class Send extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     _this = this
 
     this.state = {
-      address: "",
-      amountSat: "",
-      errMsg: "",
-      txId: "",
-      showScan: false,
+      address: '',
+      amountSat: '',
+      errMsg: '',
+      txId: '',
+      showScan: false
     }
     _this.BchWallet = BchWallet
   }
 
-  render() {
+  render () {
     return (
       <>
         <Content>
           <Row>
             <Col sm={2} />
             <Col sm={8}>
-              <Box className="hover-shadow border-none mt-2">
+              <Box className='hover-shadow border-none mt-2'>
                 <Row>
-                  <Col sm={12} className="text-center">
+                  <Col sm={12} className='text-center'>
                     <h1>
                       <FontAwesomeIcon
-                        className="title-icon"
-                        size="xs"
-                        icon={"paper-plane"}
+                        className='title-icon'
+                        size='xs'
+                        icon='paper-plane'
                       />
                       <span>Send</span>
                     </h1>
-                    <Box className="border-none">
+                    <Box className='border-none'>
                       <Text
-                        id="addressToSend"
-                        name="address"
-                        placeholder="Enter bch address to send"
-                        label="BCH Address"
-                        labelPosition="above"
+                        id='addressToSend'
+                        name='address'
+                        placeholder='Enter bch address to send'
+                        label='BCH Address'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
-                        className="title-icon"
+                        className='title-icon'
                         buttonRight={
                           <Button
-                            icon="fa-qrcode"
-                            onClick={_this.toggleScanner}
+                            icon='fa-qrcode'
+                            onClick={_this.handleToggleScanner}
                           />
                         }
                       />
 
                       <Text
-                        id="amountToSend"
-                        name="amountSat"
-                        placeholder="Enter amount to send"
-                        label="Amount"
-                        labelPosition="above"
+                        id='amountToSend'
+                        name='amountSat'
+                        placeholder='Enter amount to send'
+                        label='Amount'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
                       />
                       <Button
-                        text="Send"
-                        type="primary"
-                        className="btn-lg"
-                        onClick={_this.send}
+                        text='Send'
+                        type='primary'
+                        className='btn-lg'
+                        onClick={_this.handleSend}
                       />
                     </Box>
                   </Col>
-                  <Col sm={12} className="text-center">
+                  <Col sm={12} className='text-center'>
                     {_this.state.errMsg && (
-                      <p className="error-color">{_this.state.errMsg}</p>
+                      <p className='error-color'>{_this.state.errMsg}</p>
                     )}
                     {_this.state.txId && (
-                      <p className="">Transaction ID: {_this.state.txId}</p>
+                      <p className=''>Transaction ID: {_this.state.txId}</p>
                     )}
                   </Col>
                 </Row>
@@ -89,22 +89,23 @@ class Send extends React.Component {
           </Row>
           <ScannerModal
             show={_this.state.showScan}
-            onHide={_this.toggleScanner}
-            onScan={_this.onScan}
+            onHide={_this.handleToggleScanner}
+            onScan={_this.handleOnScan}
           />
         </Content>
       </>
     )
   }
 
-  handleUpdate(event) {
-    let value = event.target.value
+  handleUpdate (event) {
+    const value = event.target.value
     _this.setState({
-      [event.target.name]: value,
+      [event.target.name]: value
     })
-    //console.log(_this.state)
+    // console.log(_this.state)
   }
-  async send() {
+
+  async handleSend () {
     try {
       _this.validateInputs()
 
@@ -115,13 +116,13 @@ class Send extends React.Component {
         {
           address,
           // amount in satoshis, 1 satoshi = 0.00000001 Bitcoin
-          amountSat: Math.floor(Number(amountSat) * 100000000),
-        },
+          amountSat: Math.floor(Number(amountSat) * 100000000)
+        }
       ]
       // console.log("receivers", receivers)
 
       if (!bchWalletLib) {
-        throw new Error("Wallet not found")
+        throw new Error('Wallet not found')
       }
 
       // Ensure the wallet UTXOs are up-to-date.
@@ -135,7 +136,7 @@ class Send extends React.Component {
       // console.log('result',result)
 
       _this.setState({
-        txId: result,
+        txId: result
       })
 
       // update balance
@@ -156,70 +157,72 @@ class Send extends React.Component {
         return {
           ...prevState,
           errMsg,
-          txId: "",
+          txId: ''
         }
       })
     }
   }
 
   // Reset form and component state
-  resetValues() {
+  resetValues () {
     _this.setState({
-      address: "",
-      amountSat: "",
-      errMsg: "",
+      address: '',
+      amountSat: '',
+      errMsg: ''
     })
-    const amountEle = document.getElementById("amountToSend")
-    amountEle.value = ""
+    const amountEle = document.getElementById('amountToSend')
+    amountEle.value = ''
 
-    const addressEle = document.getElementById("addressToSend")
-    addressEle.value = ""
+    const addressEle = document.getElementById('addressToSend')
+    addressEle.value = ''
   }
-  validateInputs() {
-    try {
-      const { address, amountSat } = _this.state
-      const amountNumber = Number(amountSat)
-      console.log(_this.state)
-      if (!address) {
-        throw new Error("Address is required")
-      }
-      if (!amountSat) {
-        throw new Error("Amount is required")
-      }
 
-      if (!amountNumber) {
-        throw new Error("Amount must be a number")
-      }
-      if (amountNumber < 0) {
-        throw new Error("Amount must be greater than zero")
-      }
-    } catch (error) {
-      throw error
+  validateInputs () {
+    const { address, amountSat } = _this.state
+    const amountNumber = Number(amountSat)
+    console.log(_this.state)
+
+    if (!address) {
+      throw new Error('Address is required')
+    }
+
+    if (!amountSat) {
+      throw new Error('Amount is required')
+    }
+
+    if (!amountNumber) {
+      throw new Error('Amount must be a number')
+    }
+
+    if (amountNumber < 0) {
+      throw new Error('Amount must be greater than zero')
     }
   }
-  toggleScanner() {
+
+  handleToggleScanner () {
     _this.setState({
-      showScan: !_this.state.showScan,
+      showScan: !_this.state.showScan
     })
-  }
-  resetAddressValue() {
-    _this.setState({
-      address: "",
-      errMsg: "",
-    })
-    const addressEle = document.getElementById("addressToSend")
-    addressEle.value = ""
   }
 
-  onScan(data) {
-    const validateAdrrs = ["bitcoincash", "simpleledger"]
+  resetAddressValue () {
+    _this.setState({
+      address: '',
+      errMsg: ''
+    })
+    const addressEle = document.getElementById('addressToSend')
+    addressEle.value = ''
+  }
+
+  handleOnScan (data) {
+    const validateAdrrs = ['bitcoincash', 'simpleledger']
     try {
       _this.resetAddressValue()
       if (!data) {
-        throw new Error("No Result!")
+        throw new Error('No Result!')
       }
-      if (typeof data !== "string") {
-        throw new Error("It should scan a bch address or slp address")
+      if (typeof data !== 'string') {
+        throw new Error('It should scan a bch address or slp address')
       }
       // Validates that the words "bitcoincash" or "simpleledger" are contained
       let isValid = false
@@ -228,28 +231,29 @@ class Send extends React.Component {
         if (isValid) {
           _this.setState({
             address: data,
-            errMsg: "",
+            errMsg: ''
           })
-          const addressEle = document.getElementById("addressToSend")
+          const addressEle = document.getElementById('addressToSend')
           addressEle.value = data
         }
       }
       if (!isValid) {
-        throw new Error("It should scan a bch address or slp address")
+        throw new Error('It should scan a bch address or slp address')
       }
-      _this.toggleScanner()
+      _this.handleToggleScanner()
     } catch (error) {
-      _this.toggleScanner()
+      _this.handleToggleScanner()
       _this.setState({
-        errMsg: error.message,
+        errMsg: error.message
       })
     }
   }
-  componentDidMount() {}
+
+  componentDidMount () {}
 }
 Send.propTypes = {
   updateBalance: PropTypes.func.isRequired,
-  bchWallet: PropTypes.object,
+  bchWallet: PropTypes.object
 }
 
 export default Send

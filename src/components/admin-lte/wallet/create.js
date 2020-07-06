@@ -1,12 +1,12 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Row, Col, Box, Button } from "adminlte-2-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import BchWallet from "minimal-slp-wallet"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Row, Col, Box, Button } from 'adminlte-2-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import BchWallet from 'minimal-slp-wallet'
 
 let _this
 class NewWallet extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {}
@@ -14,30 +14,30 @@ class NewWallet extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render() {
+  render () {
     return (
       <>
         <Row>
           <Col sm={2} />
           <Col sm={8}>
-            <Box className="hover-shadow border-none mt-2">
+            <Box className='hover-shadow border-none mt-2'>
               <Row>
-                <Col sm={12} className="text-center">
+                <Col sm={12} className='text-center'>
                   <h1>
                     <FontAwesomeIcon
-                      className="title-icon"
-                      size="xs"
-                      icon={"plus"}
+                      className='title-icon'
+                      size='xs'
+                      icon='plus'
                     />
                     <span>New Wallet</span>
                   </h1>
                 </Col>
-                <Col sm={12} className="text-center mt-2 mb-2">
+                <Col sm={12} className='text-center mt-2 mb-2'>
                   <Button
-                    text="Create Wallet"
-                    type="primary"
-                    className="btn-lg"
-                    onClick={_this.createWallet}
+                    text='Create Wallet'
+                    type='primary'
+                    className='btn-lg'
+                    onClick={_this.handleCreateWallet}
                   />
                 </Col>
               </Row>
@@ -49,12 +49,12 @@ class NewWallet extends React.Component {
     )
   }
 
-  async createWallet() {
+  async handleCreateWallet () {
     try {
       const currentWallet = _this.props.walletInfo
 
       if (currentWallet.mnemonic) {
-        console.warn("Wallet already exists")
+        console.warn('Wallet already exists')
         /*
          * TODO: notify the user that if it has an existing wallet,
          * it will get overwritten
@@ -71,7 +71,7 @@ class NewWallet extends React.Component {
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
       const walletInfo = bchWalletLib.walletInfo
-      walletInfo.from = "created"
+      walletInfo.from = 'created'
 
       const myBalance = await bchWalletLib.getBalance()
 
@@ -88,6 +88,6 @@ NewWallet.propTypes = {
   walletInfo: PropTypes.object.isRequired,
   setWalletInfo: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired,
-  setBchWallet: PropTypes.func.isRequired,
+  setBchWallet: PropTypes.func.isRequired
 }
 export default NewWallet
