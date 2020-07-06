@@ -17,25 +17,10 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   }
 }
 
-exports.sourceNodes = ({ actions, createNodeId, createContentDigest  }) => {
-    const { createNode  } = actions
-    const defaultMenuItems = [
-        {
-            title: "Audit",
-            icon: "fas-cog",
-            component: "./audit"
-        }
-    ]
-
-    createNode({
-        menuItems: defaultMenuItems,
-        id: `bch-wallet-plugins`,
-        parent: null,
-        children: [],
-        internal: {
-            type: `BchWalletPlugins`,
-            contentDigest: createContentDigest({})
-        }
-    })
+exports.createPages = async ({ actions }, themeOptions) => {
+  const basePath = "/"
+  actions.createPage({
+    path: basePath,
+    component: require.resolve("./src/pages/index.js"),
+  })
 }
-

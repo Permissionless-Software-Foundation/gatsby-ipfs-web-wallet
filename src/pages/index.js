@@ -2,10 +2,8 @@ import React from "react"
 import { connect } from "react-redux"
 
 let AdminLTE =
-  typeof window !== `undefined`
-    ? require("../components/admin-lte").default
-    : null
-// Maps the props that are going to be sended 
+  typeof window !== `undefined` ? require("../components/admin-lte").default : null
+// Maps the props that are going to be sended
 // to the component connected with Redux
 const mapStateToProps = ({ walletInfo, bchBalance, bchWallet }) => {
   return { walletInfo, bchBalance, bchWallet }
@@ -26,12 +24,12 @@ let ConnectedDashboard = AdminLTE
   ? connect(mapStateToProps, mapDispatchToProps)(AdminLTE)
   : null
 
-class AdminLTEPage extends React.Component {
-  state = {}
-
-  render() {
-    return <>{ConnectedDashboard && <ConnectedDashboard />}</>
-  }
-}
+const AdminLTEPage = props => (
+  <>
+    {ConnectedDashboard && (
+      <ConnectedDashboard menuComponents={props.pageContext.menuComponents} />
+    )}
+  </>
+)
 
 export default AdminLTEPage
