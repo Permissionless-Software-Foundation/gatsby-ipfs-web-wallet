@@ -13,6 +13,7 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
+import menuComponents from "../menuComponents.js"
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
@@ -58,7 +59,8 @@ class AdminLTEPage extends React.Component {
 
             {_this.sidebar}
 
-	    {_this.props.menuComponents && _this.props.menuComponents.map(m => m.menuItem)}
+            {menuComponents &&
+              menuComponents.map(m => m.menuItem)}
           </Sidebar.Core>
           <Navbar.Core>
             <VersionStatus></VersionStatus>
@@ -88,13 +90,13 @@ class AdminLTEPage extends React.Component {
               )}
               {_this.state.section === "Audit" && <Audit />}
 
-	    {_this.props.menuComponents && _this.props.menuComponents.map(m => {
-		    const ItemComponent = m.component;
-		    if (_this.state.section === m.key) {
-			    return m.component;
-		    }
-		    return "";
-	    })}
+              {menuComponents &&
+               menuComponents.map(m => {
+                  if (_this.state.section === m.key) {
+                    return m.component
+                  }
+                  return ""
+                })}
             </div>
           </Layout>
         </AdminLTE>
