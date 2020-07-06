@@ -1,5 +1,3 @@
-
-
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   actions.setWebpackConfig({
     node: {
@@ -17,4 +15,13 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
     }
     actions.replaceWebpackConfig(config)
   }
+}
+
+exports.createPages = async ({ actions }) => {
+  console.log('Creating pages');
+  const basePath = "/"
+  actions.createPage({
+    path: basePath,
+    component: require.resolve("./src/pages/index.js"),
+  })
 }
