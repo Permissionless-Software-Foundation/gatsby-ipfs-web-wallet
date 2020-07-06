@@ -1,72 +1,72 @@
-import React from "react"
-import "./footer.css"
-import { Row, Col } from "adminlte-2-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGithub } from "@fortawesome/free-brands-svg-icons"
+import React from 'react'
+import './footer.css'
+import { Row, Col } from 'adminlte-2-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 class Footer extends React.Component {
-  render() {
+  render () {
     return (
-      <section id="footer">
-        <Row className="footer-container">
-          <Col md={5} className="footer-section">
+      <section id='footer'>
+        <Row className='footer-container'>
+          <Col md={5} className='footer-section'>
             <Row>
-              <Col md={12} className="mb-1">
-                <p className="section-tittle">Produced By</p>
+              <Col md={12} className='mb-1'>
+                <p className='section-tittle'>Produced By</p>
 
                 <a
-                  href="https://psfoundation.cash/"
-                  target="_blank"
-                  rel="noreferrer"
+                  href='https://psfoundation.cash/'
+                  target='_blank'
+                  rel='noreferrer'
                 >
                   Permissionless Software Foundation
                 </a>
               </Col>
               <Col md={12}>
-                <p className="section-tittle">Source Code</p>
-                <FontAwesomeIcon className="" size="lg" icon={faGithub} />
+                <p className='section-tittle'>Source Code</p>
+                <FontAwesomeIcon className='' size='lg' icon={faGithub} />
                 <a
-                  href="https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet"
-                  target="_blank"
-                  rel="noreferrer"
+                  href='https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet'
+                  target='_blank'
+                  rel='noreferrer'
                 >
                   Github
                 </a>
               </Col>
             </Row>
           </Col>
-          <Col md={7} className="footer-section">
-            <div className="pull-right">
-              <span className="section-tittle">
+          <Col md={7} className='footer-section'>
+            <div className='pull-right'>
+              <span className='section-tittle'>
                 Ways to access this web-app
               </span>
               <ul>
-                <li id="web">
+                <li id='web'>
                   <span>
                     <b>Web</b>
                   </span>
                   <b>|</b>
-                  <a href="https://wallet.fullstack.cash">
+                  <a href='https://wallet.fullstack.cash'>
                     wallet.fullstack.cash
                   </a>
                 </li>
 
-                <li id="tor">
-                <span>
+                <li id='tor'>
+                  <span>
                     <b>Tor</b>
                   </span>
                   <b>|</b>
-                  <a href="http://puh2fyj2ly5b4p5m.onion/">
+                  <a href='http://puh2fyj2ly5b4p5m.onion/'>
                     puh2fyj2ly5b4p5m.onion
                   </a>
                 </li>
 
-                <li id="ipfs">
-                <span>
+                <li id='ipfs'>
+                  <span>
                     <b>IPFS</b>
                   </span>
                   <b>|</b>
-                  <a href="https://ipfs.io/ipfs/QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf/">
+                  <a href='https://ipfs.io/ipfs/QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf/'>
                     QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf
                   </a>
                 </li>
