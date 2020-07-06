@@ -73,7 +73,7 @@ class ImportWallet extends React.Component {
                   text='Import'
                   type='primary'
                   className='btn-lg'
-                  onClick={_this.importWallet}
+                  onClick={_this.handleImportWallet}
                 />
               </Col>
             </Row>
@@ -99,7 +99,7 @@ class ImportWallet extends React.Component {
     })
   }
 
-  async importWallet () {
+  async handleImportWallet () {
     try {
       _this.validateInputs()
 
