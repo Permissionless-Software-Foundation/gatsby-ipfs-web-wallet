@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Configure from "./configure"
 import Tokens from "./tokens"
 import Wallet from "./wallet"
+import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar } from "adminlte-2-react"
 import ScannerModal from "../qr-scanner/modal"
@@ -21,10 +22,6 @@ const { Item } = Sidebar
 const MENU_HIDE_WIDTH = 770
 
 let _this
-const MenuItemComponent = ({ component }) => {
-  const RenderedComponent = loadable(() => import("./audit"))
-  return <RenderedComponent />
-}
 
 class AdminLTEPage extends React.Component {
   constructor(props) {
