@@ -1,8 +1,7 @@
 import React, { Component } from "react"
-import loadable from "@loadable/component"
 import PropTypes from "prop-types"
 import "./qr-scanner.css"
-const QrReader = loadable(() => import("react-qr-reader"))
+import QrReader from "react-qr-reader"
 
 let _this
 class QScanner extends Component {
