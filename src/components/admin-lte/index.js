@@ -71,8 +71,19 @@ class AdminLTEPage extends React.Component {
           </Navbar.Core>
           <Layout path="/">
             <div className="components-container">
-              {_this.state.section === "Send/Receive" && (
-                <SendReceive
+
+            {_this.state.section === "Send/Receive" && (
+                    <SendReceive
+                      setWalletInfo={_this.props.setWalletInfo}
+                      walletInfo={_this.props.walletInfo}
+                      updateBalance={_this.props.updateBalance}
+                      setBchWallet={_this.props.setBchWallet}
+                      bchWallet={_this.props.bchWallet}
+                    />
+                  )}
+                  
+              {_this.state.section === "Wallet" && (
+                <Wallet
                   setWalletInfo={_this.props.setWalletInfo}
                   walletInfo={_this.props.walletInfo}
                   updateBalance={_this.props.updateBalance}
@@ -106,6 +117,7 @@ class AdminLTEPage extends React.Component {
               )}
 
               {_this.renderNewViewItems()}
+
             </div>
           </Layout>
         </AdminLTE>
@@ -297,15 +309,3 @@ AdminLTEPage.propTypes = {
 
 export default AdminLTEPage
 
-/*
-CT 6/20/2020 storing code here for future reference
-
-<Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
-<Item icon="fa-link" key="Link" text="Link">
-  <Item key="Send" text="Send BCH by Email" />
-  <Item key="Faucet" text="Faucet (Free BCH)" />
-  <Item key="Exchange" text="Exchange" />
-  <Item key="Games" text="Games" />
-  <Item key="trade" text="Trade Locally" />
-</Item>,
-*/
