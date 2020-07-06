@@ -4,6 +4,7 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
       fs: "empty",
     },
   })
+
   //Ignore css order
   if (stage === "build-javascript") {
     const config = getConfig()

@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import Configure from "./configure"
 import Tokens from "./tokens"
 import Wallet from "./wallet"
-import Audit from "./audit"
+// import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar } from "adminlte-2-react"
 import ScannerModal from "../qr-scanner/modal"
@@ -13,7 +13,8 @@ import "./admin-lte.css"
 import BchWallet from "minimal-slp-wallet"
 import VersionStatus from "../version-status"
 import { BrowserRouter as Router } from "react-router-dom"
-import menuComponents from "../menuComponents.js"
+import menuComponents from "../menu-components.js"
+
 import SendReceive from "./send-receive"
 
 const { Item } = Sidebar
@@ -42,37 +43,35 @@ class AdminLTEPage extends React.Component {
     <Item icon="fas-coins" key="Tokens" text="Tokens" />,
     <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
     <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
-    <Item icon="fas-cog" key="Configure" text="Configure" />
+    <Item icon="fas-cog" key="Configure" text="Configure" />,
   ]
 
   render() {
-    return (<>
-            <AdminLTE
-              title={["FullStack.cash"]}
-              titleShort={["PSF"]}
-              theme="blue"
-            >
-              <Sidebar.Core>
-                <Item key="Balance" text="Balance" icon="fab-bitcoin">
-                  <div className="sidebar-balance">
-                    <div>
-                      <h3>BCH Balance </h3>
+    return (
+      <>
+        <AdminLTE title={["FullStack.cash"]} titleShort={["PSF"]} theme="blue">
+          <Sidebar.Core>
+            <Item key="Balance" text="Balance" icon="fab-bitcoin">
+              <div className="sidebar-balance">
+                <div>
+                  <h3>BCH Balance </h3>
 
-                      <p>{_this.state.bchBalance}</p>
-                    </div>
-                  </div>
-                </Item>
+                  <p>{_this.state.bchBalance}</p>
+                </div>
+              </div>
+            </Item>
 
             {_this.sidebar}
 
-            {menuComponents &&
-              menuComponents.map(m => m.menuItem)}
+            {_this.renderNewMenuItems()}
           </Sidebar.Core>
+
           <Navbar.Core>
             <VersionStatus></VersionStatus>
           </Navbar.Core>
           <Layout path="/">
             <div className="components-container">
+
             {_this.state.section === "Send/Receive" && (
                     <SendReceive
                       setWalletInfo={_this.props.setWalletInfo}
@@ -82,6 +81,24 @@ class AdminLTEPage extends React.Component {
                       bchWallet={_this.props.bchWallet}
                     />
                   )}
+                  
+              {_this.state.section === "Wallet" && (
+                <Wallet
+                  setWalletInfo={_this.props.setWalletInfo}
+                  walletInfo={_this.props.walletInfo}
+                  updateBalance={_this.props.updateBalance}
+                  setBchWallet={_this.props.setBchWallet}
+                  bchWallet={_this.props.bchWallet}
+                />
+              )}
+
+              {_this.state.section === "Tokens" && (
+                <Tokens
+                  walletInfo={_this.props.walletInfo}
+                  bchWallet={_this.props.bchWallet}
+                />
+              )}
+
               {_this.state.section === "Wallet" && (
                 <Wallet
                   setWalletInfo={_this.props.setWalletInfo}
@@ -90,12 +107,7 @@ class AdminLTEPage extends React.Component {
                   setBchWallet={_this.props.setBchWallet}
                 />
               )}
-              {_this.state.section === "Tokens" && (
-                <Tokens
-                  walletInfo={_this.props.walletInfo}
-                  bchWallet={_this.props.bchWallet}
-                />
-              )}
+
               {_this.state.section === "Configure" && (
                 <Configure
                   walletInfo={_this.props.walletInfo}
@@ -103,15 +115,9 @@ class AdminLTEPage extends React.Component {
                   setBchWallet={_this.props.setBchWallet}
                 />
               )}
-              {_this.state.section === "Audit" && <Audit />}
 
-              {menuComponents &&
-               menuComponents.map(m => {
-                  if (_this.state.section === m.key) {
-                    return m.component
-                  }
-                  return ""
-                })}
+              {_this.renderNewViewItems()}
+
             </div>
           </Layout>
         </AdminLTE>
@@ -264,6 +270,32 @@ class AdminLTEPage extends React.Component {
       showScannerModal: !_this.state.showScannerModal,
     })
   }
+
+  // Render non-default menu items. The catch ensures that the render function
+  // won't be interrupted if there is an issue porting new menu items.
+  renderNewMenuItems() {
+    try {
+      return menuComponents && menuComponents.map(m => m.menuItem)
+    } catch (err) {
+      // TODO: Figure out how to return an invisible Item.
+      return <Item style={{display: 'none'}} />
+    }
+
+  }
+
+  // Displays the View corresponding to the dynamically loaded menu item.
+  renderNewViewItems() {
+    try {
+      return(menuComponents && menuComponents.map(m => {
+        if (_this.state.section === m.key) {
+          return m.component
+        }
+        return ""
+      }))
+    } catch(err) {
+
+    }
+  }
 }
 // Props prvided by redux
 AdminLTEPage.propTypes = {
@@ -277,15 +309,3 @@ AdminLTEPage.propTypes = {
 
 export default AdminLTEPage
 
-/*
-CT 6/20/2020 storing code here for future reference
-
-<Item icon="fa-tablet-alt" key="Audit" text="Audit" />,
-<Item icon="fa-link" key="Link" text="Link">
-  <Item key="Send" text="Send BCH by Email" />
-  <Item key="Faucet" text="Faucet (Free BCH)" />
-  <Item key="Exchange" text="Exchange" />
-  <Item key="Games" text="Games" />
-  <Item key="trade" text="Trade Locally" />
-</Item>,
-*/
