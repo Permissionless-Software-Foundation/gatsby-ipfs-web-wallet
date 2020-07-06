@@ -17,11 +17,11 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   }
 }
 
-exports.createPages = async ({ actions }) => {
-  console.log('Creating pages');
+exports.createPages = async ({ actions }, themeOptions) => {
   const basePath = "/"
   actions.createPage({
     path: basePath,
     component: require.resolve("./src/pages/index.js"),
+    context: { menuComponents: themeOptions.menuComponents }
   })
 }

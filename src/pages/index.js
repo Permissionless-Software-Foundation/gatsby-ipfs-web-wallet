@@ -29,12 +29,6 @@ let ConnectedDashboard = AdminLTE
   : null
 
 
-class AdminLTEPage extends React.Component {
-  state = {}
-
-  render() {
-    return <>{ConnectedDashboard && <ConnectedDashboard />}</>
-  }
-}
+const AdminLTEPage = ({ pageContext }) => <>{ConnectedDashboard && <ConnectedDashboard menuComponents={pageContext.menuComponents} />}</>
 
 export default AdminLTEPage

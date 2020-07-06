@@ -1,5 +1,5 @@
 {
-  "name": "@alcipir/gatsby-ipfs-web-wallet",
+  "name": "gatsby-ipfs-web-wallet-testing",
   "description": "A gatsbyjs app with adminlte2 integration and basic Bitcoin Cash wallet functionality.",
   "version": "1.0.1",
   "main": "index.js",
