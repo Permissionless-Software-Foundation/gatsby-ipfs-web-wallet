@@ -1,5 +1,5 @@
 const ipfsPrefix = process.argv.find(val => val === '--prefix-paths')
-console.log('DEBUG >> IM HERE')
+// console.log('DEBUG >> IM HERE')
 
 const ipfsConfig = [
   'gatsby-plugin-ipfs',
@@ -69,5 +69,5 @@ module.exports = {
     author: '@gatsbyjs'
   },
   pathPrefix: '__GATSBY_IPFS_PATH_PREFIX__',
-  plugins: ipfsPrefix ? ipfsConfig : normalConfig
+  plugins: ipfsPrefix ? normalConfig : ipfsConfig
 }
