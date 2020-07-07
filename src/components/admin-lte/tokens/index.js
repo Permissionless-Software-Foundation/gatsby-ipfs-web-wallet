@@ -5,6 +5,7 @@ import TokenCard from './token-card'
 import TokenModal from './token-modal'
 import Spinner from '../../../images/loader.gif'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SendTokens from './send-tokens'
 
 let _this
 class Tokens extends React.Component {
@@ -13,10 +14,12 @@ class Tokens extends React.Component {
     _this = this
     this.state = {
       tokens: [],
-      selectedToken: '',
+      selectedTokenToView: '',
       showModal: false,
       inFetch: true,
-      onEmptyTokensMsg: 'No tokens found on this wallet..'
+      onEmptyTokensMsg: 'No tokens found on this wallet..',
+      selectedTokenToSend: ''
+
     }
   }
 
@@ -61,6 +64,12 @@ class Tokens extends React.Component {
                 </Row>
               </Box>
             )}
+
+            <SendTokens
+              bchWallet={_this.props.bchWallet}
+              walletInfo={_this.props.walletInfo}
+              selectedToken={_this.state.selectedTokenToSend ? _this.state.selectedTokenToSend : {}}
+            />
             {_this.state.tokens.length && (
               <Row>
                 {_this.state.tokens.map((val, i) => {
@@ -71,6 +80,7 @@ class Tokens extends React.Component {
                         id={`token-${i}`}
                         token={val}
                         showToken={_this.showToken}
+                        selectToken={_this.selectToken}
                       />
                     </Col>
                   )
@@ -80,7 +90,7 @@ class Tokens extends React.Component {
           </Content>
         )}
         <TokenModal
-          token={_this.state.selectedToken ? _this.state.selectedToken : {}}
+          token={_this.state.selectedTokenToView ? _this.state.selectedTokenToView : {}}
           handleOnHide={_this.onHandleToggleModal}
           show={_this.state.showModal}
         />
@@ -114,12 +124,23 @@ class Tokens extends React.Component {
     })
   }
 
-  showToken (selectedToken) {
-    console.log('selectedToken', selectedToken)
+  showToken (selectedTokenToView) {
     _this.setState({
-      selectedToken
+      selectedTokenToView
     })
     _this.onHandleToggleModal()
+  }
+
+  selectToken (selectedTokenToSend) {
+    _this.setState({
+      selectedTokenToSend
+    })
+    const ele = document.getElementById('___gatsby')
+    ele.scrollIntoView(true)
+
+    setTimeout(() => {
+      console.log(_this.state.selectedTokenToSend)
+    }, 500)
   }
 
   onHandleToggleModal () {

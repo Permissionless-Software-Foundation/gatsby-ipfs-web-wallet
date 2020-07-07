@@ -39,13 +39,23 @@ class TokenCard extends React.Component {
               </div>
             </Col>
 
-            <Col sm={12} className='text-center '>
+            <Col xs={6} className='text-center mb-1'>
               <Button
-                text='Show Token'
+                text='Info'
                 type='primary'
-                className='btn-lg'
+                className='btn-lg max-width'
                 onClick={() => {
                   _this.props.showToken(token)
+                }}
+              />
+            </Col>
+            <Col xs={6} className='text-center'>
+              <Button
+                text='Send'
+                type='primary'
+                className='btn-lg max-width'
+                onClick={() => {
+                  _this.props.selectToken(token)
                 }}
               />
             </Col>
@@ -61,6 +71,7 @@ class TokenCard extends React.Component {
 }
 TokenCard.propTypes = {
   token: PropTypes.object.isRequired,
-  showToken: PropTypes.func.isRequired
+  showToken: PropTypes.func.isRequired,
+  selectToken: PropTypes.func.isRequired
 }
 export default TokenCard
