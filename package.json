@@ -4,6 +4,10 @@
   "version": "1.0.4",
   "main": "index.js",
   "author": "Chris Troutner <chris.troutner@gmail.com>",
+  "contributors": [
+    "Daniel Gonzalez <danielhumgon@gmail.com>",
+    "Andre Cabrera <andrecabrera@protonmail.ch>"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "gatsby build --prefix-paths",
