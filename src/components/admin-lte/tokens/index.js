@@ -81,7 +81,7 @@ class Tokens extends React.Component {
         )}
         <TokenModal
           token={_this.state.selectedToken ? _this.state.selectedToken : {}}
-          handleOnHide={_this.handleToggleModal}
+          handleOnHide={_this.onHandleToggleModal}
           show={_this.state.showModal}
         />
       </>
@@ -119,10 +119,10 @@ class Tokens extends React.Component {
     _this.setState({
       selectedToken
     })
-    _this.handleToggleModal()
+    _this.onHandleToggleModal()
   }
 
-  handleToggleModal () {
+  onHandleToggleModal () {
     _this.setState({
       showModal: !_this.state.showModal
     })

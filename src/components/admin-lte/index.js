@@ -40,21 +40,21 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = [
-      <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
-      <Item icon="fas-coins" key="Tokens" text="Tokens" />,
-      <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
-      <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
-      <Item icon="fas-cog" key="Configure" text="Configure" />
+      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
+      <Item icon='fas-coins' key='Tokens' text='Tokens' />,
+      <Item icon='fa-wallet' key='Wallet' text='Wallet' activeOn='/' />,
+      <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
+      <Item icon='fas-cog' key='Configure' text='Configure' />
     ]
   }
 
   render () {
     return (
       <>
-        <AdminLTE title={['FullStack.cash']} titleShort={['PSF']} theme="blue">
+        <AdminLTE title={['FullStack.cash']} titleShort={['PSF']} theme='blue'>
           <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon="fab-bitcoin">
-              <div className="sidebar-balance">
+            <Item key='Balance' text='Balance' icon='fab-bitcoin'>
+              <div className='sidebar-balance'>
                 <div>
                   <h3>BCH Balance </h3>
 
@@ -71,8 +71,8 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path="/">
-            <div className="components-container">
+          <Layout path='/'>
+            <div className='components-container'>
               {_this.state.section === 'Send/Receive' && (
                 <SendReceive
                   setWalletInfo={_this.props.setWalletInfo}
@@ -115,8 +115,8 @@ class AdminLTEPage extends React.Component {
         <Router>
           <ScannerModal
             show={_this.state.showScannerModal}
-            handleOnHide={_this.handleToggleScannerModal}
-            path="/"
+            handleOnHide={_this.onHandleToggleScannerModal}
+            path='/'
           />
         </Router>
       </>
@@ -249,14 +249,14 @@ class AdminLTEPage extends React.Component {
   addOnClickEventToScanner () {
     try {
       const qrScannerEle = document.getElementById('Qr Scanner')
-      qrScannerEle.onclick = () => _this.handleToggleScannerModal()
+      qrScannerEle.onclick = () => _this.onHandleToggleScannerModal()
     } catch (error) {
       console.error(error)
     }
   }
 
   // Controller to show the QR scanner
-  handleToggleScannerModal () {
+  onHandleToggleScannerModal () {
     if (!_this.state.showScannerModal) {
       _this.hideMenu()
     }
@@ -293,13 +293,14 @@ class AdminLTEPage extends React.Component {
       )
     } catch (err) {}
   }
+
   getInvisibleMenuItem () {
     return (
       <li style={{ display: 'none' }}>
         {/* Adding this childrens prevents console errors */}
-        <a href="#">
-          <span></span>
-          <span></span>
+        <a href='#'>
+          <span />
+          <span />
         </a>
       </li>
     )

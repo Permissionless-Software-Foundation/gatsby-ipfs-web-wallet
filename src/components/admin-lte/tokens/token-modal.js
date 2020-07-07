@@ -13,7 +13,7 @@ class TokenModal extends React.Component {
 
     this.modalFooter = (
       <>
-        <Button text="Close" pullLeft onClick={this.props.handleOnHide} />
+        <Button text='Close' pullLeft onClick={this.props.handleOnHide} />
       </>
     )
   }
@@ -32,13 +32,13 @@ class TokenModal extends React.Component {
         >
           <Row>
             <Col sm={12}>
-              <Box className=" border-none ">
+              <Box className=' border-none '>
                 <Row>
                   <Col
                     sm={12}
-                    className="text-center   tokenModal-info-container"
+                    className='text-center   tokenModal-info-container'
                   >
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -49,16 +49,16 @@ class TokenModal extends React.Component {
                           </Col>
                           <Col xs={2} sm={1}>
                             <FontAwesomeIcon
-                              className="icon btn-animation"
-                              size="lg"
+                              className='icon btn-animation'
+                              size='lg'
                               onClick={() => _this.copyToClipBoard('tokenId')}
-                              icon="copy"
+                              icon='copy'
                             />
                           </Col>
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -67,8 +67,8 @@ class TokenModal extends React.Component {
                           <Col xs={12} sm={9}>
                             <a
                               href={`http://${token.url}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                              target='_blank'
+                              rel='noopener noreferrer'
                             >
                               {token.url}
                             </a>
@@ -76,7 +76,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -88,7 +88,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -100,7 +100,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -112,7 +112,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
@@ -124,7 +124,7 @@ class TokenModal extends React.Component {
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="tokenModal-info-content mt-1 text-left">
+                    <Row className='tokenModal-info-content mt-1 text-left'>
                       <Col xs={12}>
                         <Row>
                           <Col xs={12} sm={3}>
