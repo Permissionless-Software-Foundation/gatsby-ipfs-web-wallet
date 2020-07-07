@@ -160,6 +160,6 @@ class TokenModal extends React.Component {
 TokenModal.propTypes = {
   token: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func.isRequired
+  handleOnHide: PropTypes.func.isRequired
 }
 export default TokenModal

@@ -53,7 +53,7 @@ class Send extends React.Component {
                         buttonRight={
                           <Button
                             icon='fa-qrcode'
-                            onClick={_this.handleToggleScanner}
+                            onClick={_this.handleModal}
                           />
                         }
                       />
@@ -89,8 +89,8 @@ class Send extends React.Component {
           </Row>
           <ScannerModal
             show={_this.state.showScan}
-            onHide={_this.handleToggleScanner}
-            onScan={_this.handleOnScan}
+            handleOnHide={_this.onHandleToggleScanner}
+            handleOnScan={_this.onHandleScan}
           />
         </Content>
       </>
@@ -199,7 +199,13 @@ class Send extends React.Component {
     }
   }
 
-  handleToggleScanner () {
+  onHandleToggleScanner () {
+    _this.setState({
+      showScan: !_this.state.showScan
+    })
+  }
+
+  handleModal () {
     _this.setState({
       showScan: !_this.state.showScan
     })
@@ -214,7 +220,7 @@ class Send extends React.Component {
     addressEle.value = ''
   }
 
-  handleOnScan (data) {
+  onHandleScan (data) {
     const validateAdrrs = ['bitcoincash', 'simpleledger']
     try {
       _this.resetAddressValue()
@@ -240,9 +246,9 @@ class Send extends React.Component {
       if (!isValid) {
         throw new Error('It should scan a bch address or slp address')
       }
-      _this.handleToggleScanner()
+      _this.onHandleToggleScanner()
     } catch (error) {
-      _this.handleToggleScanner()
+      _this.onHandleToggleScanner()
       _this.setState({
         errMsg: error.message
       })

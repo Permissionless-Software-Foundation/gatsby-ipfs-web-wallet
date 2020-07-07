@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Configure from './configure'
 import Tokens from './tokens'
 import Wallet from './wallet'
+
 // import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar } from 'adminlte-2-react'
@@ -72,7 +73,6 @@ class AdminLTEPage extends React.Component {
           </Navbar.Core>
           <Layout path='/'>
             <div className='components-container'>
-
               {_this.state.section === 'Send/Receive' && (
                 <SendReceive
                   setWalletInfo={_this.props.setWalletInfo}
@@ -100,15 +100,6 @@ class AdminLTEPage extends React.Component {
                 />
               )}
 
-              {_this.state.section === 'Wallet' && (
-                <Wallet
-                  setWalletInfo={_this.props.setWalletInfo}
-                  walletInfo={_this.props.walletInfo}
-                  updateBalance={_this.props.updateBalance}
-                  setBchWallet={_this.props.setBchWallet}
-                />
-              )}
-
               {_this.state.section === 'Configure' && (
                 <Configure
                   walletInfo={_this.props.walletInfo}
@@ -118,14 +109,13 @@ class AdminLTEPage extends React.Component {
               )}
 
               {_this.renderNewViewItems()}
-
             </div>
           </Layout>
         </AdminLTE>
         <Router>
           <ScannerModal
             show={_this.state.showScannerModal}
-            onHide={_this.handleToggleScannerModal}
+            handleOnHide={_this.onHandleToggleScannerModal}
             path='/'
           />
         </Router>
@@ -199,7 +189,9 @@ class AdminLTEPage extends React.Component {
           childrens[i].id = textValue
           const ignore = ignoreItems.find(val => textValue === val)
           // Ignore menu items without link to components
-          if (!ignore) { childrens[i].onclick = () => this.changeSection(textValue) }
+          if (!ignore) {
+            childrens[i].onclick = () => this.changeSection(textValue)
+          }
         }
       }
     } catch (error) {
@@ -257,20 +249,23 @@ class AdminLTEPage extends React.Component {
   addOnClickEventToScanner () {
     try {
       const qrScannerEle = document.getElementById('Qr Scanner')
-      qrScannerEle.onclick = () => _this.handleToggleScannerModal()
+      qrScannerEle.onclick = () => _this.onHandleToggleScannerModal()
     } catch (error) {
       console.error(error)
     }
   }
 
   // Controller to show the QR scanner
-  handleToggleScannerModal () {
+  onHandleToggleScannerModal () {
     if (!_this.state.showScannerModal) {
       _this.hideMenu()
     }
     _this.setState({
       showScannerModal: !_this.state.showScannerModal
     })
+    setTimeout(() => {
+      console.log(_this.state.showScannerModal)
+    }, 500)
   }
 
   // Render non-default menu items. The catch ensures that the render function
@@ -280,22 +275,35 @@ class AdminLTEPage extends React.Component {
       return menuComponents && menuComponents.map(m => m.menuItem)
     } catch (err) {
       // TODO: Figure out how to return an invisible Item.
-      return <Item style={{ display: 'none' }} />
+      return _this.getInvisibleMenuItem() // <Item style={{ display: 'none' }} />
     }
   }
 
   // Displays the View corresponding to the dynamically loaded menu item.
   renderNewViewItems () {
     try {
-      return (menuComponents && menuComponents.map(m => {
-        if (_this.state.section === m.key) {
-          return m.component
-        }
-        return ''
-      }))
-    } catch (err) {
+      return (
+        menuComponents &&
+        menuComponents.map(m => {
+          if (_this.state.section === m.key) {
+            return m.component
+          }
+          return ''
+        })
+      )
+    } catch (err) {}
+  }
 
-    }
+  getInvisibleMenuItem () {
+    return (
+      <li style={{ display: 'none' }}>
+        {/* Adding this childrens prevents console errors */}
+        <a href='#'>
+          <span />
+          <span />
+        </a>
+      </li>
+    )
   }
 }
 // Props prvided by redux
