@@ -11,6 +11,7 @@ This is a mobile-first Gatsby Theme that is [IPFS](https://ipfs.io)-ready. It in
 ## Installing a Dev Environment
 Standard workflow for setting up a development environment for working on this repo:
 
-- `git clone https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet && cd gatsby-ipfs-web-wallet`
+- `git clone https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet`
+- `cd gatsby-ipfs-web-wallet`
 - `npm install`
 - `npm start`
