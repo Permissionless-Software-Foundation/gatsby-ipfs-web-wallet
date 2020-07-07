@@ -69,5 +69,5 @@ module.exports = {
     author: '@gatsbyjs'
   },
   pathPrefix: '__GATSBY_IPFS_PATH_PREFIX__',
-  plugins: ipfsPrefix ? ipfsConfig : normalConfig
+  plugins: ipfsPrefix ? normalConfig : ipfsConfig
 }
