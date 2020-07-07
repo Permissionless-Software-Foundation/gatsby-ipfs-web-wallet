@@ -89,8 +89,8 @@ class Send extends React.Component {
           </Row>
           <ScannerModal
             show={_this.state.showScan}
-            onHide={_this.handleToggleScanner}
-            onScan={_this.handleOnScan}
+            handleOnHide={_this.handleToggleScanner}
+            handleOnScan={_this.handleOnScan}
           />
         </Content>
       </>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Configure from './configure'
 import Tokens from './tokens'
 import Wallet from './wallet'
+
 // import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar } from 'adminlte-2-react'
@@ -39,21 +40,21 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = [
-      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
-      <Item icon='fas-coins' key='Tokens' text='Tokens' />,
-      <Item icon='fa-wallet' key='Wallet' text='Wallet' activeOn='/' />,
-      <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
-      <Item icon='fas-cog' key='Configure' text='Configure' />
+      <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
+      <Item icon="fas-coins" key="Tokens" text="Tokens" />,
+      <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
+      <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
+      <Item icon="fas-cog" key="Configure" text="Configure" />
     ]
   }
 
   render () {
     return (
       <>
-        <AdminLTE title={['FullStack.cash']} titleShort={['PSF']} theme='blue'>
+        <AdminLTE title={['FullStack.cash']} titleShort={['PSF']} theme="blue">
           <Sidebar.Core>
-            <Item key='Balance' text='Balance' icon='fab-bitcoin'>
-              <div className='sidebar-balance'>
+            <Item key="Balance" text="Balance" icon="fab-bitcoin">
+              <div className="sidebar-balance">
                 <div>
                   <h3>BCH Balance </h3>
 
@@ -70,9 +71,8 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path='/'>
-            <div className='components-container'>
-
+          <Layout path="/">
+            <div className="components-container">
               {_this.state.section === 'Send/Receive' && (
                 <SendReceive
                   setWalletInfo={_this.props.setWalletInfo}
@@ -100,15 +100,6 @@ class AdminLTEPage extends React.Component {
                 />
               )}
 
-              {_this.state.section === 'Wallet' && (
-                <Wallet
-                  setWalletInfo={_this.props.setWalletInfo}
-                  walletInfo={_this.props.walletInfo}
-                  updateBalance={_this.props.updateBalance}
-                  setBchWallet={_this.props.setBchWallet}
-                />
-              )}
-
               {_this.state.section === 'Configure' && (
                 <Configure
                   walletInfo={_this.props.walletInfo}
@@ -118,15 +109,14 @@ class AdminLTEPage extends React.Component {
               )}
 
               {_this.renderNewViewItems()}
-
             </div>
           </Layout>
         </AdminLTE>
         <Router>
           <ScannerModal
             show={_this.state.showScannerModal}
-            onHide={_this.handleToggleScannerModal}
-            path='/'
+            handleOnHide={_this.handleToggleScannerModal}
+            path="/"
           />
         </Router>
       </>
@@ -199,7 +189,9 @@ class AdminLTEPage extends React.Component {
           childrens[i].id = textValue
           const ignore = ignoreItems.find(val => textValue === val)
           // Ignore menu items without link to components
-          if (!ignore) { childrens[i].onclick = () => this.changeSection(textValue) }
+          if (!ignore) {
+            childrens[i].onclick = () => this.changeSection(textValue)
+          }
         }
       }
     } catch (error) {
@@ -271,6 +263,9 @@ class AdminLTEPage extends React.Component {
     _this.setState({
       showScannerModal: !_this.state.showScannerModal
     })
+    setTimeout(() => {
+      console.log(_this.state.showScannerModal)
+    }, 500)
   }
 
   // Render non-default menu items. The catch ensures that the render function
@@ -280,22 +275,34 @@ class AdminLTEPage extends React.Component {
       return menuComponents && menuComponents.map(m => m.menuItem)
     } catch (err) {
       // TODO: Figure out how to return an invisible Item.
-      return <Item style={{ display: 'none' }} />
+      return _this.getInvisibleMenuItem() // <Item style={{ display: 'none' }} />
     }
   }
 
   // Displays the View corresponding to the dynamically loaded menu item.
   renderNewViewItems () {
     try {
-      return (menuComponents && menuComponents.map(m => {
-        if (_this.state.section === m.key) {
-          return m.component
-        }
-        return ''
-      }))
-    } catch (err) {
-
-    }
+      return (
+        menuComponents &&
+        menuComponents.map(m => {
+          if (_this.state.section === m.key) {
+            return m.component
+          }
+          return ''
+        })
+      )
+    } catch (err) {}
+  }
+  getInvisibleMenuItem () {
+    return (
+      <li style={{ display: 'none' }}>
+        {/* Adding this childrens prevents console errors */}
+        <a href="#">
+          <span></span>
+          <span></span>
+        </a>
+      </li>
+    )
   }
 }
 // Props prvided by redux

@@ -34,9 +34,9 @@ class ScannerModal extends Component {
 
 ScannerModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  OnHide: PropTypes.func.isRequired,
-  onError: PropTypes.func,
-  onScan: PropTypes.func
+  handleOnHide: PropTypes.func.isRequired,
+  handleOnError: PropTypes.func,
+  handleOnScan: PropTypes.func
 }
 
 export default ScannerModal
