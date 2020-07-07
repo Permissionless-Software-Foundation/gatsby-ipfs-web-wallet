@@ -41,21 +41,21 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = [
-      <Item icon="fa-exchange-alt" key="SendReceive" text="Send/Receive" />,
-      <Item icon="fas-coins" key="Tokens" text="Tokens" />,
-      <Item icon="fa-wallet" key="Wallet" text="Wallet" activeOn="/" />,
-      <Item icon="fa-qrcode" key="qrReader" text="Qr Scanner" />,
-      <Item icon="fas-cog" key="Configure" text="Configure" />
+      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
+      <Item icon='fas-coins' key='Tokens' text='Tokens' />,
+      <Item icon='fa-wallet' key='Wallet' text='Wallet' activeOn='/' />,
+      <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
+      <Item icon='fas-cog' key='Configure' text='Configure' />
     ]
   }
 
   render () {
     return (
       <>
-        <AdminLTE title={[siteConfig.title]} titleShort={[siteConfig.titleShort]} theme="blue">
+        <AdminLTE title={[siteConfig.title]} titleShort={[siteConfig.titleShort]} theme='blue'>
           <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon={siteConfig.balanceIcon}>
-              <div className="sidebar-balance">
+            <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
+              <div className='sidebar-balance'>
                 <div>
                   <h3>{siteConfig.balanceText}</h3>
 
@@ -72,8 +72,8 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path="/">
-            <div className="components-container">
+          <Layout path='/'>
+            <div className='components-container'>
               {_this.state.section === 'Send/Receive' && (
                 <SendReceive
                   setWalletInfo={_this.props.setWalletInfo}
@@ -117,7 +117,7 @@ class AdminLTEPage extends React.Component {
           <ScannerModal
             show={_this.state.showScannerModal}
             handleOnHide={_this.onHandleToggleScannerModal}
-            path="/"
+            path='/'
           />
         </Router>
       </>
@@ -299,7 +299,7 @@ class AdminLTEPage extends React.Component {
     return (
       <li style={{ display: 'none' }}>
         {/* Adding this childrens prevents console errors */}
-        <a href="#">
+        <a href='#'>
           <span />
           <span />
         </a>
