@@ -67,11 +67,18 @@ class SendTokens extends React.Component {
                       onChange={_this.handleUpdate}
                     />
                     <Button
+                      text='Close'
+                      type='primary'
+                      className='btn-lg mr-2'
+                      onClick={_this.props.handleBack}
+                    />
+                    <Button
                       text='Send'
                       type='primary'
-                      className='btn-lg'
+                      className='btn-lg '
                       onClick={_this.handleSend}
                     />
+
                   </Box>
                 </Col>
                 <Col sm={12} className='text-center'>
@@ -116,13 +123,13 @@ class SendTokens extends React.Component {
       if (!tokenId) {
         throw new Error('There is no token selected')
       }
-      const receivers = {
+      const receiver = {
         address,
         tokenId,
         qty: Math.floor(Number(amountSat))
       }
 
-      console.log('receivers', receivers)
+      console.log('receiver', receiver)
 
       if (!bchWalletLib) {
         throw new Error('Wallet not found')
@@ -136,8 +143,9 @@ class SendTokens extends React.Component {
       bchWalletLib.utxos.tokenUtxos = await bchWalletLib.utxos.initUtxoStore(
         walletAddr
       )
-      // Send the BCH.
-      const result = await bchWalletLib.sendTokens(receivers)
+
+      // Send token.
+      const result = await bchWalletLib.sendTokens(receiver)
       // console.log('result',result)
 
       _this.setState({
@@ -259,6 +267,7 @@ class SendTokens extends React.Component {
 SendTokens.propTypes = {
   walletInfo: PropTypes.object.isRequired, // wallet info
   bchWallet: PropTypes.object, // get minimal-slp-wallet instance
-  selectedToken: PropTypes.object
+  selectedToken: PropTypes.object,
+  handleBack: PropTypes.func.isRequired
 }
 export default SendTokens

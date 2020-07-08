@@ -18,8 +18,8 @@ class Tokens extends React.Component {
       showModal: false,
       inFetch: true,
       onEmptyTokensMsg: 'No tokens found on this wallet..',
-      selectedTokenToSend: ''
-
+      selectedTokenToSend: '',
+      showForm: false
     }
   }
 
@@ -64,38 +64,56 @@ class Tokens extends React.Component {
                 </Row>
               </Box>
             )}
-
-            <SendTokens
-              bchWallet={_this.props.bchWallet}
-              walletInfo={_this.props.walletInfo}
-              selectedToken={_this.state.selectedTokenToSend ? _this.state.selectedTokenToSend : {}}
-            />
-            {_this.state.tokens.length && (
-              <Row>
-                {_this.state.tokens.map((val, i) => {
-                  return (
-                    <Col sm={4} key={`token-${i}`}>
-                      <TokenCard
-                        key={`token-${i}`}
-                        id={`token-${i}`}
-                        token={val}
-                        showToken={_this.showToken}
-                        selectToken={_this.selectToken}
-                      />
-                    </Col>
-                  )
-                })}
-              </Row>
+            {_this.state.showForm && (
+              <SendTokens
+                bchWallet={_this.props.bchWallet}
+                walletInfo={_this.props.walletInfo}
+                handleBack={_this.onHandleForm}
+                selectedToken={
+                  _this.state.selectedTokenToSend
+                    ? _this.state.selectedTokenToSend
+                    : {}
+                }
+              />
+            )}
+            {_this.state.tokens.length > 0 && (
+              <>
+                <Row>
+                  {_this.state.tokens.map((val, i) => {
+                    return (
+                      <Col sm={4} key={`token-${i}`}>
+                        <TokenCard
+                          key={`token-${i}`}
+                          id={`token-${i}`}
+                          token={val}
+                          showToken={_this.showToken}
+                          selectToken={_this.selectToken}
+                        />
+                      </Col>
+                    )
+                  })}
+                </Row>
+              </>
             )}
           </Content>
         )}
         <TokenModal
-          token={_this.state.selectedTokenToView ? _this.state.selectedTokenToView : {}}
+          token={
+            _this.state.selectedTokenToView
+              ? _this.state.selectedTokenToView
+              : {}
+          }
           handleOnHide={_this.onHandleToggleModal}
           show={_this.state.showModal}
         />
       </>
     )
+  }
+
+  onHandleForm () {
+    _this.setState({
+      showForm: !_this.state.showForm
+    })
   }
 
   async componentDidMount () {
@@ -135,12 +153,10 @@ class Tokens extends React.Component {
     _this.setState({
       selectedTokenToSend
     })
-    const ele = document.getElementById('___gatsby')
-    ele.scrollIntoView(true)
+    !_this.state.showForm && _this.onHandleForm()
 
-    setTimeout(() => {
-      console.log(_this.state.selectedTokenToSend)
-    }, 500)
+    const ele = document.getElementById('___gatsby')
+    ele.scrollIntoView({ behavior: 'smooth' })
   }
 
   onHandleToggleModal () {
