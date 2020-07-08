@@ -735,3 +735,6 @@ pre tt:after {
 
   }
 }
+.breadcrumb{
+  display:none
+}
