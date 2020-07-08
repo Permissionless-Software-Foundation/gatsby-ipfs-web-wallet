@@ -136,8 +136,7 @@ class SendTokens extends React.Component {
 
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
-      const utxoStore = await bchWalletLib.utxos.initUtxoStore(walletAddr)
-      // console.log(`utxoStore: ${JSON.stringify(utxoStore, null, 2)}`)
+      await bchWalletLib.utxos.initUtxoStore(walletAddr)
 
       // For some reason, the utxo categories do not get populated, so we have
       // to do it manually.
