@@ -128,7 +128,7 @@ class SendTokens extends React.Component {
         qty: Math.floor(Number(amountSat))
       }
 
-      console.log('receiver', receiver)
+      // console.log('receiver', receiver)
 
       if (!bchWalletLib) {
         throw new Error('Wallet not found')
@@ -137,7 +137,7 @@ class SendTokens extends React.Component {
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
       const utxoStore = await bchWalletLib.utxos.initUtxoStore(walletAddr)
-      console.log(`utxoStore: ${JSON.stringify(utxoStore, null, 2)}`)
+      // console.log(`utxoStore: ${JSON.stringify(utxoStore, null, 2)}`)
 
       // For some reason, the utxo categories do not get populated, so we have
       // to do it manually.
@@ -145,8 +145,8 @@ class SendTokens extends React.Component {
       bchWalletLib.utxos.tokenUtxos = await bchWalletLib.utxos.getTokenUtxos()
 
       // Send token.
-      const result = await bchWalletLib.sendTokens(receiver)
-      console.log('result: ', result)
+      const result = await bchWalletLib.sendTokens(receiver, 5.0)
+      // console.log('result: ', result)
 
       _this.setState({
         txId: result
