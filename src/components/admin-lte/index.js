@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Configure from './configure'
 import Tokens from './tokens'
 import Wallet from './wallet'
+import siteConfig from '../site-config'
 
 // import Audit from "./audit"
 
@@ -51,12 +52,12 @@ class AdminLTEPage extends React.Component {
   render () {
     return (
       <>
-        <AdminLTE title={['FullStack.cash']} titleShort={['PSF']} theme='blue'>
+        <AdminLTE title={[siteConfig.title]} titleShort={[siteConfig.titleShort]} theme='blue'>
           <Sidebar.Core>
-            <Item key='Balance' text='Balance' icon='fab-bitcoin'>
+            <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
               <div className='sidebar-balance'>
                 <div>
-                  <h3>BCH Balance </h3>
+                  <h3>{siteConfig.balanceText}</h3>
 
                   <p>{_this.state.bchBalance}</p>
                 </div>
