@@ -28,6 +28,19 @@ class Tokens extends React.Component {
 
     return (
       <>
+        {_this.state.showForm && (
+          <SendTokens
+            bchWallet={_this.props.bchWallet}
+            walletInfo={_this.props.walletInfo}
+            handleBack={_this.onHandleForm}
+            selectedToken={
+              _this.state.selectedTokenToSend
+                ? _this.state.selectedTokenToSend
+                : {}
+            }
+            handleSend={_this.getTokens}
+          />
+        )}
         {_this.state.inFetch ? (
           <div className='spinner'>
             <img alt='Loading...' src={Spinner} width={100} />
@@ -64,18 +77,7 @@ class Tokens extends React.Component {
                 </Row>
               </Box>
             )}
-            {_this.state.showForm && (
-              <SendTokens
-                bchWallet={_this.props.bchWallet}
-                walletInfo={_this.props.walletInfo}
-                handleBack={_this.onHandleForm}
-                selectedToken={
-                  _this.state.selectedTokenToSend
-                    ? _this.state.selectedTokenToSend
-                    : {}
-                }
-              />
-            )}
+
             {_this.state.tokens.length > 0 && (
               <>
                 <Row>
@@ -116,7 +118,10 @@ class Tokens extends React.Component {
     })
   }
 
-  async componentDidMount () {
+  async getTokens () {
+    _this.setState({
+      inFetch: true
+    })
     const { mnemonic } = _this.props.walletInfo
     const bchWallet = _this.props.bchWallet
     let tokens = []
@@ -140,6 +145,10 @@ class Tokens extends React.Component {
       inFetch: false,
       onEmptyTokensMsg
     })
+  }
+
+  async componentDidMount () {
+    await _this.getTokens()
   }
 
   showToken (selectedTokenToView) {
