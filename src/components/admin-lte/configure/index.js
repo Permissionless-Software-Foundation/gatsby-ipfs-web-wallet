@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import BchWallet from 'minimal-slp-wallet'
-
+import Servers from './servers'
 const { Text } = Inputs
 
 let _this
@@ -104,6 +104,11 @@ class Configure extends React.Component {
             </Box>
           </Col>
         </Row>
+        <Servers
+          setWalletInfo={_this.props.setWalletInfo}
+          walletInfo={_this.props.walletInfo}
+          setBchWallet={_this.props.setBchWallet}
+        />
       </Content>
     )
   }
