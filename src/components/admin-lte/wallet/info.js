@@ -26,11 +26,11 @@ class InfoWallets extends React.Component {
 
               <Col sm={12} className='text-center mt-2 mb-2'>
                 <p>
-                  Bitcoin.com Mint is an open source, non-custodial web wallet
-                  supporting SLP and BCH. Web wallets offer user convenience,
-                  but storing large amounts of money on a web wallet is not
-                  recommended. Creating your own SLP tokens only costs a few
-                  cents worth of BCH.
+                  This is an open source, non-custodial web wallet
+                  supporting Bitcoin Cash (BHC) and SLP tokens. Web wallets
+                  offer user convenience, by they are inherently insecure.
+                  Storing large amounts of money on a web wallet is not
+                  recommended.
                 </p>
               </Col>
             </Row>
