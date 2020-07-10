@@ -135,13 +135,19 @@ class Configure extends React.Component {
 
   async handleUpdateJWT () {
     try {
-      const { mnemonic } = _this.props.walletInfo
+      const { mnemonic, selectedServer } = _this.props.walletInfo
       const apiToken = _this.state.JWT
 
       // Update instance with JWT
       if (mnemonic && apiToken) {
+        const bchjsOptions = { apiToken: apiToken }
+        if (selectedServer) {
+          bchjsOptions.restURL = selectedServer
+        }
+
+        console.log('bchjs options : ', bchjsOptions)
         const bchWalletLib = new _this.BchWallet(mnemonic)
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: apiToken })
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
         _this.props.setBchWallet(bchWalletLib)
       }
 

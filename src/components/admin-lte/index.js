@@ -4,7 +4,6 @@ import Configure from './configure'
 import Tokens from './tokens'
 import Wallet from './wallet'
 import siteConfig from '../site-config'
-
 // import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar } from 'adminlte-2-react'
@@ -52,7 +51,11 @@ class AdminLTEPage extends React.Component {
   render () {
     return (
       <>
-        <AdminLTE title={[siteConfig.title]} titleShort={[siteConfig.titleShort]} theme='blue'>
+        <AdminLTE
+          title={[siteConfig.title]}
+          titleShort={[siteConfig.titleShort]}
+          theme='blue'
+        >
           <Sidebar.Core>
             <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
               <div className='sidebar-balance'>
@@ -145,6 +148,8 @@ class AdminLTEPage extends React.Component {
     _this.addOnClickEventToScanner()
 
     _this.activeItemById('Wallet')
+
+    _this.setDefaultServers()
 
     await _this.updateState()
     setTimeout(() => {
@@ -305,6 +310,37 @@ class AdminLTEPage extends React.Component {
         </a>
       </li>
     )
+  }
+
+  // Define backends servers configuration by default
+  setDefaultServers () {
+    try {
+      const walletInfo = _this.props.walletInfo
+      const accessLocation = window.location.hostname
+      console.log('accessLocation', accessLocation)
+
+      // return if servers configurations exist
+      if (walletInfo.selectedServer) return null
+
+      const server1 = 'https://api.fullstack.cash/v3/'
+      const server2 = 'https://free-api.fullstack.cash/v3/'
+
+      const servers = [server1, server2]
+
+      let selectedServer = server1
+      // Assign the second server if the url path
+      // is different of 'wallet.fullstack.cash'
+      if (accessLocation !== 'wallet.fullstack.cash') {
+        selectedServer = server2
+      }
+
+      walletInfo.selectedServer = selectedServer
+      walletInfo.servers = servers
+
+      _this.props.setWalletInfo(walletInfo)
+    } catch (error) {
+      console.warn(error)
+    }
   }
 }
 // Props prvided by redux

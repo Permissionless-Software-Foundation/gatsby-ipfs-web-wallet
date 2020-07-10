@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import BchWallet from 'minimal-slp-wallet'
 
 const { Text, Select } = Inputs
 
@@ -19,18 +20,7 @@ class Servers extends React.Component {
       showAddField: false,
       newServer: ''
     }
-
-    // Default field options
-    this.defaultOptions = [
-      {
-        value: 'https://api.fullstaack.cash/v3/',
-        text: 'https://api.fullstaack.cash/v3/'
-      },
-      {
-        value: 'https://free-api.fullstack.cash/v3/',
-        text: 'https://free-api.fullstack.cash/v3/'
-      }
-    ]
+    _this.BchWallet = BchWallet
   }
 
   render () {
@@ -44,7 +34,7 @@ class Servers extends React.Component {
                   <FontAwesomeIcon
                     className='title-icon'
                     size='xs'
-                    icon='coins'
+                    icon='server'
                   />
                   <span>Back End Server</span>
                 </h1>
@@ -117,76 +107,71 @@ class Servers extends React.Component {
 
   // Add the new server value to the select field
   handleNewServerUrl () {
-    const { newServer, selectOptions } = _this.state
-
-    if (newServer) {
-      const alreadyExist = selectOptions.find(val => {
-        return val.value === newServer
-      })
-      // Prevent duplicate options
-      if (alreadyExist) {
-        _this.setState({
-          showAddField: false,
-          selectedServer: newServer
-        })
-        _this.resetForm()
-
-        return
-      }
-      const option = {
-        value: newServer,
-        text: newServer
-      }
-
-      // add the new select option
-      selectOptions.push(option)
-    }
-
     _this.setState({
-      selectOptions,
-      showAddField: false,
-      selectedServer: newServer || _this.state.selectedServer
+      errMsg: ''
     })
-    _this.resetForm()
+    const { newServer, selectOptions } = _this.state
+    try {
+      if (newServer) {
+        if (newServer.match(' ')) {
+          throw new Error('backend url must have no spaces')
+        }
+
+        const alreadyExist = selectOptions.find(val => {
+          return val.value === newServer
+        })
+
+        // Prevent duplicate options
+        if (alreadyExist) {
+          _this.setState({
+            showAddField: false,
+            selectedServer: newServer
+          })
+          _this.resetForm()
+
+          return
+        }
+        const option = {
+          value: newServer,
+          text: newServer
+        }
+
+        // add the new select option
+        selectOptions.push(option)
+      }
+
+      _this.setState({
+        selectOptions,
+        showAddField: false,
+        selectedServer: newServer || _this.state.selectedServer
+      })
+      _this.resetForm()
+    } catch (error) {
+      _this.setState({
+        errMsg: error.message
+      })
+    }
   }
 
   // populate select field with select options from localstorage
   populateSelect () {
     try {
       const walletInfo = _this.props.walletInfo
-      let selectOptions = _this.defaultOptions
 
-      // verify server list from localstorage
-      if (!walletInfo.servers) {
-        // add default server list to localStorage
-        walletInfo.servers = []
-        walletInfo.selectedServer = selectOptions[0].value
+      const selectOptions = []
 
-        for (let i = 0; i < selectOptions.length; i++) {
-          walletInfo.servers.push(selectOptions[i].value)
+      // populate select field with data from localstorage
+      for (let i = 0; i < walletInfo.servers.length; i++) {
+        const option = {
+          value: walletInfo.servers[i],
+          text: walletInfo.servers[i]
         }
-        _this.props.setWalletInfo(walletInfo)
-
-        _this.setState({
-          selectOptions,
-          selectedServer: selectOptions[0].value
-        })
-      } else {
-        selectOptions = []
-
-        // populate select field with data from localstorage
-        for (let i = 0; i < walletInfo.servers.length; i++) {
-          const option = {
-            value: walletInfo.servers[i],
-            text: walletInfo.servers[i]
-          }
-          selectOptions.push(option)
-        }
-        _this.setState({
-          selectOptions,
-          selectedServer: walletInfo.selectedServer
-        })
+        selectOptions.push(option)
       }
+      _this.setState({
+        selectOptions,
+        selectedServer: walletInfo.selectedServer
+      })
     } catch (error) {
       console.warn(error)
     }
@@ -207,14 +192,45 @@ class Servers extends React.Component {
     _this.handleNewServerUrl()
     // await for state update delay
     setTimeout(() => {
-      _this.saveServer()
+      _this.updateWalletInstance()
     }, 500)
+  }
+
+  // Update the wallet instance state
+  updateWalletInstance () {
+    try {
+      const { mnemonic, JWT } = _this.props.walletInfo
+      const apiToken = JWT
+      const restURL = _this.state.selectedServer
+
+      // Update instance with the selected url
+      if (mnemonic) {
+        const bchjsOptions = {}
+        if (apiToken) {
+          bchjsOptions.apiToken = apiToken
+        }
+
+        bchjsOptions.restURL = restURL
+
+        console.log('bchjs options : ', bchjsOptions)
+        const bchWalletLib = new _this.BchWallet(mnemonic)
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+        _this.props.setBchWallet(bchWalletLib)
+      }
+      _this.saveServer()
+    } catch (error) {
+      console.warn(error)
+      _this.setState({
+        errMsg: error.message
+      })
+    }
   }
 
   // store servers in the localstorage
   saveServer () {
     try {
       // store the new server in the localstorage if it does not exist
+
       const walletInfo = _this.props.walletInfo
       const { servers } = walletInfo
 
@@ -226,6 +242,7 @@ class Servers extends React.Component {
       const alreadyExist = servers.find(val => {
         return val === selectedValue
       })
+      // Prevent duplicate values
       if (!alreadyExist) {
         servers.push(selectedValue)
       }
