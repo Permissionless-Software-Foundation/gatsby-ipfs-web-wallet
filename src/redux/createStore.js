@@ -41,28 +41,37 @@ const reducer = (state, action) => {
 }
 
 // Wallet info from local storage
-const localWallet = getWalletInfo()
+const localStorageInfo = getWalletInfo()
 
 // Creates an instance  of minimal-slp-wallet, with
 // the local storage information if it exists
 const instanceWallet = () => {
   try {
-    if (!localWallet.mnemonic) return null
+    if (!localStorageInfo.mnemonic) return null
 
-    const bchWalletLib = new BchWallet(localWallet.mnemonic)
+    const bchWalletLib = new BchWallet(localStorageInfo.mnemonic)
 
-    const jwtToken = localWallet.JWT
+    const jwtToken = localStorageInfo.JWT
+    const restURL = localStorageInfo.selectedServer
+    const bchjsOptions = {}
+
     if (jwtToken) {
-      bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: jwtToken })
+      bchjsOptions.apiToken = jwtToken
     }
+    if (restURL) {
+      bchjsOptions.restURL = restURL
+    }
+    bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+
     return bchWalletLib
   } catch (error) {
     console.warn(error)
   }
 }
+
 // initial state
 const initialState = {
-  walletInfo: localWallet.mnemonic ? localWallet : {}, // Object wallet info
+  walletInfo: localStorageInfo, // Object wallet info
   bchBalance: 0, // Wallet Balance
   bchWallet: instanceWallet() // minimal-slp-wallet instance
 }

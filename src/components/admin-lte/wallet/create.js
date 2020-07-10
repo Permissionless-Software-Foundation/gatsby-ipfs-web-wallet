@@ -9,7 +9,9 @@ class NewWallet extends React.Component {
   constructor (props) {
     super(props)
     _this = this
-    this.state = {}
+    this.state = {
+      inFetch: false
+    }
 
     _this.BchWallet = BchWallet
   }
@@ -20,7 +22,10 @@ class NewWallet extends React.Component {
         <Row>
           <Col sm={2} />
           <Col sm={8}>
-            <Box className='hover-shadow border-none mt-2'>
+            <Box
+              className='hover-shadow border-none mt-2'
+              loaded={!_this.state.inFetch}
+            >
               <Row>
                 <Col sm={12} className='text-center'>
                   <h1>
@@ -60,12 +65,23 @@ class NewWallet extends React.Component {
          * it will get overwritten
          */
       }
-
+      _this.setState({
+        inFetch: true
+      })
       const bchWalletLib = new _this.BchWallet()
       const apiToken = currentWallet.JWT
+      const restURL = currentWallet.selectedServer
 
-      if (apiToken) {
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: apiToken })
+      if (apiToken || restURL) {
+        const bchjsOptions = {}
+        if (apiToken) {
+          bchjsOptions.apiToken = apiToken
+        }
+        if (restURL) {
+          bchjsOptions.restURL = restURL
+        }
+        console.log('bchjs options : ', bchjsOptions)
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
       }
 
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
@@ -73,14 +89,23 @@ class NewWallet extends React.Component {
       const walletInfo = bchWalletLib.walletInfo
       walletInfo.from = 'created'
 
+      Object.assign(currentWallet, walletInfo)
+
       const myBalance = await bchWalletLib.getBalance()
 
       // Update redux state
-      _this.props.setWalletInfo(walletInfo)
+      _this.props.setWalletInfo(currentWallet)
       _this.props.updateBalance(myBalance)
       _this.props.setBchWallet(bchWalletLib)
+
+      _this.setState({
+        inFetch: false
+      })
     } catch (error) {
       console.error(error)
+      _this.setState({
+        inFetch: false
+      })
     }
   }
 }

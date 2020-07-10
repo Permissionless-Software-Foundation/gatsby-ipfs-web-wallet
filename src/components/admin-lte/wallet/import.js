@@ -16,7 +16,9 @@ class ImportWallet extends React.Component {
     this.state = {
       mnemonic: '',
       privateKey: '',
-      errMsg: ''
+      errMsg: '',
+      inFetch: false
+
     }
     _this.BchWallet = BchWallet
   }
@@ -26,7 +28,10 @@ class ImportWallet extends React.Component {
       <Row className=''>
         <Col sm={2} />
         <Col sm={8}>
-          <Box className='hover-shadow border-none mt-2'>
+          <Box
+            className='hover-shadow border-none mt-2'
+            loaded={!_this.state.inFetch}
+          >
             <Row>
               <Col sm={12} className='text-center'>
                 <h1>
@@ -112,32 +117,49 @@ class ImportWallet extends React.Component {
          * and it will get overwritten
          */
       }
+      _this.setState({
+        inFetch: true
+      })
 
       const bchWalletLib = new _this.BchWallet(_this.state.mnemonic)
       const apiToken = currentWallet.JWT
+      const restURL = currentWallet.selectedServer
 
-      if (apiToken) {
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS({ apiToken: apiToken })
+      if (apiToken || restURL) {
+        const bchjsOptions = {}
+        if (apiToken) {
+          bchjsOptions.apiToken = apiToken
+        }
+        if (restURL) {
+          bchjsOptions.restURL = restURL
+        }
+        console.log('bchjs options : ', bchjsOptions)
+        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
       }
-
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
       const walletInfo = bchWalletLib.walletInfo
       walletInfo.from = 'imported'
 
+      Object.assign(currentWallet, walletInfo)
+
       const myBalance = await bchWalletLib.getBalance()
 
       // Update redux state
-      _this.props.setWalletInfo(walletInfo)
+      _this.props.setWalletInfo(currentWallet)
       _this.props.updateBalance(myBalance)
       _this.props.setBchWallet(bchWalletLib)
 
       // Reset form and component state
       _this.resetValues()
+      _this.setState({
+        inFetch: false
+      })
     } catch (error) {
       console.warn(error)
       _this.setState({
-        errMsg: error.message
+        errMsg: error.message,
+        inFetch: false
       })
     }
   }
