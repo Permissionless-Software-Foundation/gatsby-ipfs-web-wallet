@@ -18,7 +18,8 @@ class SendTokens extends React.Component {
       amountSat: '',
       errMsg: '',
       txId: '',
-      showScan: false
+      showScan: false,
+      inFetch: false
     }
     _this.BchWallet = BchWallet
   }
@@ -29,7 +30,7 @@ class SendTokens extends React.Component {
       <>
         <Row>
           <Col sm={12}>
-            <Box className=' border-none mt-2'>
+            <Box className=' border-none mt-2' loaded={!this.state.inFetch}>
               <Row>
                 <Col sm={12} className='text-center'>
                   <h1 id='SendTokens'>
@@ -82,7 +83,16 @@ class SendTokens extends React.Component {
                     <p className='error-color'>{_this.state.errMsg}</p>
                   )}
                   {_this.state.txId && (
-                    <p className=''>Transaction ID: {_this.state.txId}</p>
+                    <p className=''>
+                      Transaction ID:
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
+                      >
+                        {_this.state.txId}
+                      </a>
+                    </p>
                   )}
                   {name && (
                     <span>
@@ -113,11 +123,15 @@ class SendTokens extends React.Component {
 
   async handleSend () {
     try {
+      _this.setState({
+        txId: '',
+        inFetch: true
+      })
       _this.validateInputs()
 
       const bchWalletLib = _this.props.bchWallet
       const { address, amountSat } = _this.state
-      const { tokenId } = _this.props.selectedToken
+      const { tokenId, qty } = _this.props.selectedToken
 
       if (!tokenId) {
         throw new Error('There is no token selected')
@@ -127,7 +141,9 @@ class SendTokens extends React.Component {
         tokenId,
         qty: Math.floor(Number(amountSat))
       }
-
+      if (qty < receiver.qty) {
+        throw new Error('Insufficient balance')
+      }
       // console.log('receiver', receiver)
 
       if (!bchWalletLib) {
@@ -148,10 +164,14 @@ class SendTokens extends React.Component {
       // console.log('result: ', result)
 
       _this.setState({
-        txId: result
+        txId: result,
+        inFetch: false
       })
 
       _this.resetValues()
+      setTimeout(() => {
+        _this.props.handleSend()
+      }, 1000)
     } catch (error) {
       let errMsg
       if (error.message) {
@@ -163,7 +183,8 @@ class SendTokens extends React.Component {
         return {
           ...prevState,
           errMsg,
-          txId: ''
+          txId: '',
+          inFetch: false
         }
       })
     }
@@ -267,6 +288,7 @@ SendTokens.propTypes = {
   walletInfo: PropTypes.object.isRequired, // wallet info
   bchWallet: PropTypes.object, // get minimal-slp-wallet instance
   selectedToken: PropTypes.object,
-  handleBack: PropTypes.func.isRequired
+  handleBack: PropTypes.func.isRequired,
+  handleSend: PropTypes.func.isRequired
 }
 export default SendTokens
