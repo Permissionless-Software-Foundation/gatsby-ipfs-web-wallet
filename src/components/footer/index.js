@@ -4,7 +4,37 @@ import { Row, Col } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
+// Get the IPFS hash from the BCH Blockchain.
+import MemoGet from 'memo-get-gatsby'
+const memoGet = new MemoGet()
+
+let _this
+
 class Footer extends React.Component {
+  constructor (props) {
+    super(props)
+    _this = this
+
+    _this.state = {
+      ipfsHash: 'No Result',
+      ipfsHashLink: ''
+    }
+  }
+
+  async componentDidMount () {
+    const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
+    const hash = await memoGet.read(addr)
+    console.log(`hash: ${hash}`)
+    this.setState({
+      ipfsHash: hash,
+      ipfsHashLink: `https://ipfs.io/ipfs/${hash}`
+    })
+
+    // const bchjs = new BCHJS()
+    // const balance = await bchjs.Blockbook.balance(addr)
+    // console.log(`balance: ${JSON.stringify(balance, null, 2)}`)
+  }
+
   render () {
     return (
       <section id='footer'>
@@ -66,8 +96,8 @@ class Footer extends React.Component {
                     <b>IPFS</b>
                   </span>
                   <b>|</b>
-                  <a href='https://ipfs.io/ipfs/QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf/'>
-                    QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf
+                  <a href={_this.state.ipfsHashLink}>
+                    {this.state.ipfsHash}
                   </a>
                 </li>
               </ul>
