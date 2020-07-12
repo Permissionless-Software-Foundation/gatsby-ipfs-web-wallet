@@ -24,51 +24,51 @@ class ImportWallet extends React.Component {
 
   render () {
     return (
-      <Row className="">
+      <Row className=''>
         <Col sm={2} />
         <Col sm={8}>
           <Box
-            className="hover-shadow border-none mt-2"
+            className='hover-shadow border-none mt-2'
             loaded={!_this.state.inFetch}
           >
             <Row>
-              <Col sm={12} className="text-center">
+              <Col sm={12} className='text-center'>
                 <h1>
                   <FontAwesomeIcon
-                    className="title-icon"
-                    size="xs"
-                    icon="file-import"
+                    className='title-icon'
+                    size='xs'
+                    icon='file-import'
                   />
                   <span>Import Wallet</span>
                 </h1>
               </Col>
-              <Col sm={12} className="text-center mt-2 mb-2">
-                <Row className="flex justify-content-center">
+              <Col sm={12} className='text-center mt-2 mb-2'>
+                <Row className='flex justify-content-center'>
                   <Col sm={8}>
                     <div>
                       <Text
-                        id="import-mnemonic"
-                        name="mnemonic"
-                        placeholder="12 word mnemonic"
-                        label="12 word mnemonic"
-                        labelPosition="above"
+                        id='import-mnemonic'
+                        name='mnemonic'
+                        placeholder='12 word mnemonic'
+                        label='12 word mnemonic'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
                       />
                     </div>
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} className="text-center">
+              <Col sm={12} className='text-center'>
                 {_this.state.errMsg && (
-                  <p className="error-color">{_this.state.errMsg}</p>
+                  <p className='error-color'>{_this.state.errMsg}</p>
                 )}
               </Col>
 
-              <Col sm={12} className="text-center mt-2 mb-2">
+              <Col sm={12} className='text-center mt-2 mb-2'>
                 <Button
-                  text="Import"
-                  type="primary"
-                  className="btn-lg"
+                  text='Import'
+                  type='primary'
+                  className='btn-lg'
                   onClick={_this.handleImportWallet}
                 />
               </Col>
