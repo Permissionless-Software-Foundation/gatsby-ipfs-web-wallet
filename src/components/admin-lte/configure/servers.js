@@ -212,9 +212,12 @@ class Servers extends React.Component {
 
         bchjsOptions.restURL = restURL
 
-        console.log('bchjs options : ', bchjsOptions)
-        const bchWalletLib = new _this.BchWallet(mnemonic)
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+        const bchWalletLib = new _this.BchWallet(mnemonic, bchjsOptions)
+
+        // Update bchjs instances  of minimal-slp-wallet libraries
+        bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+        bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+
         _this.props.setBchWallet(bchWalletLib)
       }
       _this.saveServer()

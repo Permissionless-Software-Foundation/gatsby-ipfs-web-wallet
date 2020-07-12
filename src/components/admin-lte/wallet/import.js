@@ -24,51 +24,51 @@ class ImportWallet extends React.Component {
 
   render () {
     return (
-      <Row className="">
+      <Row className=''>
         <Col sm={2} />
         <Col sm={8}>
           <Box
-            className="hover-shadow border-none mt-2"
+            className='hover-shadow border-none mt-2'
             loaded={!_this.state.inFetch}
           >
             <Row>
-              <Col sm={12} className="text-center">
+              <Col sm={12} className='text-center'>
                 <h1>
                   <FontAwesomeIcon
-                    className="title-icon"
-                    size="xs"
-                    icon="file-import"
+                    className='title-icon'
+                    size='xs'
+                    icon='file-import'
                   />
                   <span>Import Wallet</span>
                 </h1>
               </Col>
-              <Col sm={12} className="text-center mt-2 mb-2">
-                <Row className="flex justify-content-center">
+              <Col sm={12} className='text-center mt-2 mb-2'>
+                <Row className='flex justify-content-center'>
                   <Col sm={8}>
                     <div>
                       <Text
-                        id="import-mnemonic"
-                        name="mnemonic"
-                        placeholder="12 word mnemonic"
-                        label="12 word mnemonic"
-                        labelPosition="above"
+                        id='import-mnemonic'
+                        name='mnemonic'
+                        placeholder='12 word mnemonic'
+                        label='12 word mnemonic'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
                       />
                     </div>
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} className="text-center">
+              <Col sm={12} className='text-center'>
                 {_this.state.errMsg && (
-                  <p className="error-color">{_this.state.errMsg}</p>
+                  <p className='error-color'>{_this.state.errMsg}</p>
                 )}
               </Col>
 
-              <Col sm={12} className="text-center mt-2 mb-2">
+              <Col sm={12} className='text-center mt-2 mb-2'>
                 <Button
-                  text="Import"
-                  type="primary"
-                  className="btn-lg"
+                  text='Import'
+                  type='primary'
+                  className='btn-lg'
                   onClick={_this.handleImportWallet}
                 />
               </Col>
@@ -112,21 +112,29 @@ class ImportWallet extends React.Component {
         inFetch: true
       })
 
-      const bchWalletLib = new _this.BchWallet(_this.state.mnemonic)
       const apiToken = currentWallet.JWT
       const restURL = currentWallet.selectedServer
 
+      const bchjsOptions = {}
+
       if (apiToken || restURL) {
-        const bchjsOptions = {}
         if (apiToken) {
           bchjsOptions.apiToken = apiToken
         }
         if (restURL) {
           bchjsOptions.restURL = restURL
         }
-        console.log('bchjs options : ', bchjsOptions)
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
       }
+
+      const bchWalletLib = new _this.BchWallet(
+        _this.state.mnemonic,
+        bchjsOptions
+      )
+      // Update bchjs instances  of minimal-slp-wallet libraries
+
+      bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+      bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
       const walletInfo = bchWalletLib.walletInfo
@@ -164,9 +172,6 @@ class ImportWallet extends React.Component {
     })
     const mnemonicEle = document.getElementById('import-mnemonic')
     mnemonicEle.value = ''
-
-    const privateKeyEle = document.getElementById('privateKey')
-    privateKeyEle.value = ''
   }
 
   validateInputs () {

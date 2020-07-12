@@ -10,7 +10,8 @@ class NewWallet extends React.Component {
     super(props)
     _this = this
     this.state = {
-      inFetch: false
+      inFetch: false,
+      errMsg: ''
     }
 
     _this.BchWallet = BchWallet
@@ -36,6 +37,11 @@ class NewWallet extends React.Component {
                     />
                     <span>New Wallet</span>
                   </h1>
+                </Col>
+                <Col sm={12} className='text-center '>
+                  {_this.state.errMsg && (
+                    <p className='error-color mt-2'>{_this.state.errMsg}</p>
+                  )}
                 </Col>
                 <Col sm={12} className='text-center mt-2 mb-2'>
                   <Button
@@ -68,12 +74,11 @@ class NewWallet extends React.Component {
       _this.setState({
         inFetch: true
       })
-      const bchWalletLib = new _this.BchWallet()
       const apiToken = currentWallet.JWT
       const restURL = currentWallet.selectedServer
+      const bchjsOptions = {}
 
       if (apiToken || restURL) {
-        const bchjsOptions = {}
         if (apiToken) {
           bchjsOptions.apiToken = apiToken
         }
@@ -81,8 +86,13 @@ class NewWallet extends React.Component {
           bchjsOptions.restURL = restURL
         }
         console.log('bchjs options : ', bchjsOptions)
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
       }
+
+      const bchWalletLib = new _this.BchWallet(null, bchjsOptions)
+
+      // Update bchjs instances  of minimal-slp-wallet libraries
+      bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+      bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
 
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
@@ -99,12 +109,14 @@ class NewWallet extends React.Component {
       _this.props.setBchWallet(bchWalletLib)
 
       _this.setState({
-        inFetch: false
+        inFetch: false,
+        errMsg: ''
       })
     } catch (error) {
       console.error(error)
       _this.setState({
-        inFetch: false
+        inFetch: false,
+        errMsg: error.message
       })
     }
   }
