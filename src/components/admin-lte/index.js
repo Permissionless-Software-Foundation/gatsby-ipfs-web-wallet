@@ -323,7 +323,7 @@ class AdminLTEPage extends React.Component {
       if (walletInfo.selectedServer) return null
 
       const server1 = 'https://api.fullstack.cash/v3/'
-      const server2 = 'https://free-api.fullstack.cash/v3/'
+      const server2 = 'https://free-main.fullstack.cash/v3/'
 
       const servers = [server1, server2]
 

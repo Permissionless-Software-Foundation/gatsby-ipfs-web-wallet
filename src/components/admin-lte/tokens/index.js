@@ -133,7 +133,12 @@ class Tokens extends React.Component {
         tokens = await bchWallet.listTokens()
       } catch (error) {
         console.error(error)
-        if (error.error.match('rate limits')) onEmptyTokensMsg = error.error
+        if (error.error) {
+          if (error.error.match('rate limits')) onEmptyTokensMsg = error.error
+        }
+        if (error.message) {
+          onEmptyTokensMsg = error.message
+        }
       }
     } else {
       onEmptyTokensMsg =
