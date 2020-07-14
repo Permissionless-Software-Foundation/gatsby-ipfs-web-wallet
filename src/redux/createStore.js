@@ -49,8 +49,6 @@ const instanceWallet = () => {
   try {
     if (!localStorageInfo.mnemonic) return null
 
-    const bchWalletLib = new BchWallet(localStorageInfo.mnemonic)
-
     const jwtToken = localStorageInfo.JWT
     const restURL = localStorageInfo.selectedServer
     const bchjsOptions = {}
@@ -61,7 +59,11 @@ const instanceWallet = () => {
     if (restURL) {
       bchjsOptions.restURL = restURL
     }
-    bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+    const bchWalletLib = new BchWallet(localStorageInfo.mnemonic, bchjsOptions)
+
+    // Update bchjs instances  of minimal-slp-wallet libraries
+    bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+    bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
 
     return bchWalletLib
   } catch (error) {

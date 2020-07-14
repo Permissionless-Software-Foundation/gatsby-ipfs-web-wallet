@@ -112,21 +112,29 @@ class ImportWallet extends React.Component {
         inFetch: true
       })
 
-      const bchWalletLib = new _this.BchWallet(_this.state.mnemonic)
       const apiToken = currentWallet.JWT
       const restURL = currentWallet.selectedServer
 
+      const bchjsOptions = {}
+
       if (apiToken || restURL) {
-        const bchjsOptions = {}
         if (apiToken) {
           bchjsOptions.apiToken = apiToken
         }
         if (restURL) {
           bchjsOptions.restURL = restURL
         }
-        console.log('bchjs options : ', bchjsOptions)
-        bchWalletLib.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
       }
+
+      const bchWalletLib = new _this.BchWallet(
+        _this.state.mnemonic,
+        bchjsOptions
+      )
+      // Update bchjs instances  of minimal-slp-wallet libraries
+
+      bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+      bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+
       await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
       const walletInfo = bchWalletLib.walletInfo
@@ -164,9 +172,6 @@ class ImportWallet extends React.Component {
     })
     const mnemonicEle = document.getElementById('import-mnemonic')
     mnemonicEle.value = ''
-
-    const privateKeyEle = document.getElementById('privateKey')
-    privateKeyEle.value = ''
   }
 
   validateInputs () {
