@@ -8,7 +8,7 @@ const { Text } = Inputs
 
 let _this
 class Configure extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     _this = this
@@ -21,7 +21,7 @@ class Configure extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render () {
+  render() {
     return (
       <Content>
         <Row>
@@ -113,11 +113,11 @@ class Configure extends React.Component {
     )
   }
 
-  componentDidMount () {
+  componentDidMount() {
     _this.setJwt()
   }
 
-  setJwt () {
+  setJwt() {
     const { JWT } = _this.props.walletInfo
     if (JWT) {
       const jwtElem = document.getElementById('jwt')
@@ -125,27 +125,26 @@ class Configure extends React.Component {
     }
   }
 
-  handleUpdate (event) {
+  handleUpdate(event) {
     const value = event.target.value
     _this.setState({
       [event.target.name]: value
     })
-    console.log(_this.state.JWT)
   }
 
-  async handleUpdateJWT () {
+  async handleUpdateJWT() {
     try {
       const { mnemonic, selectedServer } = _this.props.walletInfo
       const apiToken = _this.state.JWT
 
       // Update instance with JWT
-      if (mnemonic && apiToken) {
+      if (mnemonic) {
         const bchjsOptions = { apiToken: apiToken }
         if (selectedServer) {
           bchjsOptions.restURL = selectedServer
         }
 
-        console.log('bchjs options : ', bchjsOptions)
+        //console.log('bchjs options : ', bchjsOptions)
         const bchWalletLib = new _this.BchWallet(mnemonic, bchjsOptions)
 
         // Update bchjs instances  of minimal-slp-wallet libraries
@@ -161,7 +160,6 @@ class Configure extends React.Component {
 
       _this.props.setWalletInfo(walletInfo)
     } catch (error) {
-      console.warn(error)
       _this.setState({
         errMsg: error.message
       })
@@ -169,7 +167,7 @@ class Configure extends React.Component {
   }
 
   // Reset form and component state
-  resetValues () {
+  resetValues() {
     _this.setState({
       JWT: '',
       errMsg: ''

@@ -9,7 +9,7 @@ import SendTokens from './send-tokens'
 
 let _this
 class Tokens extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     _this = this
     this.state = {
@@ -17,13 +17,13 @@ class Tokens extends React.Component {
       selectedTokenToView: '',
       showModal: false,
       inFetch: true,
-      onEmptyTokensMsg: 'No tokens found on this wallet..',
+      errMsg: '',
       selectedTokenToSend: '',
       showForm: false
     }
   }
 
-  render () {
+  render() {
     const { JWT } = _this.props.walletInfo
 
     return (
@@ -46,59 +46,59 @@ class Tokens extends React.Component {
             <img alt='Loading...' src={Spinner} width={100} />
           </div>
         ) : (
-          <Content>
-            {!JWT && (
-              <Box padding='true' className='container-nofound'>
-                <Row>
-                  <Col xs={12}>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      icon='exclamation-triangle'
-                    />
-                  </Col>
+            <Content>
+              {!JWT && (
+                <Box padding='true' className='container-nofound'>
+                  <Row>
+                    <Col xs={12}>
+                      <FontAwesomeIcon
+                        className='icon btn-animation'
+                        size='lg'
+                        icon='exclamation-triangle'
+                      />
+                    </Col>
 
-                  <Col xs={12}>
-                    <em>
-                      You don't have a registered JWT, you could encounter
-                      errors viewing some of your tokens.
+                    <Col xs={12}>
+                      <em>
+                        You don't have a registered JWT, you could encounter
+                        errors viewing some of your tokens.
                     </em>
-                  </Col>
-                </Row>
-              </Box>
-            )}
-            <br />
-            {!_this.state.tokens.length && (
-              <Box padding='true' className='container-nofound'>
-                <Row>
-                  <Col xs={12}>
-                    <em>{_this.state.onEmptyTokensMsg}</em>
-                  </Col>
-                </Row>
-              </Box>
-            )}
+                    </Col>
+                  </Row>
+                </Box>
+              )}
+              <br />
+              {_this.state.errMsg && (
+                <Box padding='true' className='container-nofound'>
+                  <Row>
+                    <Col xs={12}>
+                      <em>{_this.state.errMsg}</em>
+                    </Col>
+                  </Row>
+                </Box>
+              )}
 
-            {_this.state.tokens.length > 0 && (
-              <>
-                <Row>
-                  {_this.state.tokens.map((val, i) => {
-                    return (
-                      <Col sm={4} key={`token-${i}`}>
-                        <TokenCard
-                          key={`token-${i}`}
-                          id={`token-${i}`}
-                          token={val}
-                          showToken={_this.showToken}
-                          selectToken={_this.selectToken}
-                        />
-                      </Col>
-                    )
-                  })}
-                </Row>
-              </>
-            )}
-          </Content>
-        )}
+              {_this.state.tokens.length > 0 && (
+                <>
+                  <Row>
+                    {_this.state.tokens.map((val, i) => {
+                      return (
+                        <Col sm={4} key={`token-${i}`}>
+                          <TokenCard
+                            key={`token-${i}`}
+                            id={`token-${i}`}
+                            token={val}
+                            showToken={_this.showToken}
+                            selectToken={_this.selectToken}
+                          />
+                        </Col>
+                      )
+                    })}
+                  </Row>
+                </>
+              )}
+            </Content>
+          )}
         <TokenModal
           token={
             _this.state.selectedTokenToView
@@ -112,58 +112,54 @@ class Tokens extends React.Component {
     )
   }
 
-  onHandleForm () {
+  onHandleForm() {
     _this.setState({
       showForm: !_this.state.showForm
     })
   }
 
-  async getTokens () {
+  async getTokens() {
     _this.setState({
       inFetch: true
     })
     const { mnemonic } = _this.props.walletInfo
     const bchWallet = _this.props.bchWallet
     let tokens = []
-    let { onEmptyTokensMsg } = _this.state
 
-    if (mnemonic && bchWallet) {
-      try {
-        await bchWallet.walletInfoPromise
-        tokens = await bchWallet.listTokens()
-      } catch (error) {
-        console.error(error)
-        if (error.error) {
-          if (error.error.match('rate limits')) onEmptyTokensMsg = error.error
-        }
-        if (error.message) {
-          onEmptyTokensMsg = error.message
-        }
+    try {
+      if (!mnemonic || !bchWallet)
+        throw new Error('You need to create or import a wallet first, to view tokens')
+
+      await bchWallet.walletInfoPromise
+      tokens = await bchWallet.listTokens()
+
+      if (!tokens.length) {
+        throw new Error('No tokens found on this wallet.')
+
       }
-    } else {
-      onEmptyTokensMsg =
-        'You need to create or import a wallet first, to view tokens'
+      _this.setState({
+        tokens,
+        inFetch: false,
+      })
+    } catch (error) {
+      _this.handleError(error)
     }
 
-    _this.setState({
-      tokens,
-      inFetch: false,
-      onEmptyTokensMsg
-    })
+
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await _this.getTokens()
   }
 
-  showToken (selectedTokenToView) {
+  showToken(selectedTokenToView) {
     _this.setState({
       selectedTokenToView
     })
     _this.onHandleToggleModal()
   }
 
-  selectToken (selectedTokenToSend) {
+  selectToken(selectedTokenToSend) {
     _this.setState({
       selectedTokenToSend
     })
@@ -173,10 +169,37 @@ class Tokens extends React.Component {
     ele.scrollIntoView({ behavior: 'smooth' })
   }
 
-  onHandleToggleModal () {
+  onHandleToggleModal() {
     _this.setState({
       showModal: !_this.state.showModal
     })
+  }
+  handleError(error) {
+    let errMsg = ''
+    if (error.message) {
+      errMsg = error.message
+    }
+    if (error.error) {
+      if (error.error.match('rate limits')) {
+        errMsg = <span>
+          Rate limits exceeded, increase rate limits with a JWT token from
+          <a style={{ marginLeft: '5px' }}
+            target="_blank"
+            href="https://fullstack.cash">FullStack.cash</a>
+        </span>
+      } else {
+        errMsg = error.error
+      }
+    }
+    _this.setState(prevState => {
+      return {
+        ...prevState,
+        errMsg: errMsg,
+        txId: '',
+        inFetch: false
+      }
+    })
+
   }
 }
 Tokens.propTypes = {

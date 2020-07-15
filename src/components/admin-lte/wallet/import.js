@@ -58,19 +58,18 @@ class ImportWallet extends React.Component {
                   </Col>
                 </Row>
               </Col>
-              <Col sm={12} className='text-center'>
-                {_this.state.errMsg && (
-                  <p className='error-color'>{_this.state.errMsg}</p>
-                )}
-              </Col>
-
-              <Col sm={12} className='text-center mt-2 mb-2'>
+              <Col sm={12} className='text-center mb-2'>
                 <Button
                   text='Import'
                   type='primary'
                   className='btn-lg'
                   onClick={_this.handleImportWallet}
                 />
+              </Col>
+              <Col sm={12} className='text-center'>
+                {_this.state.errMsg && (
+                  <p className='error-color'>{_this.state.errMsg}</p>
+                )}
               </Col>
             </Row>
           </Box>
@@ -155,11 +154,8 @@ class ImportWallet extends React.Component {
         inFetch: false
       })
     } catch (error) {
-      console.warn(error)
-      _this.setState({
-        errMsg: error.message,
-        inFetch: false
-      })
+      _this.handleError(error)
+  
     }
   }
 
@@ -180,12 +176,35 @@ class ImportWallet extends React.Component {
       const spaceCount = mnemonic.split(' ').length // mnemonic.match(/ /g).length
 
       if (spaceCount !== 12) {
-        console.log('reject')
+        // console.log('reject')
         throw new Error('mnemonic must contain 12 words')
       }
     } else {
       throw new Error('12 word mnemonic is required')
     }
+  }
+  handleError(error){
+    //console.error(error)
+    let errMsg = ''
+    if (error.message) {
+      errMsg = error.message
+    }
+    if (error.error) {
+      if (error.error.match('rate limits')) {
+        errMsg = <span>
+          Rate limits exceeded, increase rate limits with a JWT token from
+          <a style={{marginLeft:'5px'}}
+            target="_blank"
+            href="https://fullstack.cash">FullStack.cash</a>
+        </span>
+      } else {
+        errMsg = error.error
+      }
+    }
+    _this.setState({
+      inFetch: false,
+      errMsg: errMsg
+    })
   }
 }
 
