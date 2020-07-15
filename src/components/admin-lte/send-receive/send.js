@@ -31,9 +31,10 @@ class Send extends React.Component {
           <Row>
             <Col sm={2} />
             <Col sm={8}>
-              <Box 
-              loaded={!_this.state.inFetch}
-              className='hover-shadow border-none mt-2'>
+              <Box
+                loaded={!_this.state.inFetch}
+                className='hover-shadow border-none mt-2'
+              >
                 <Row>
                   <Col sm={12} className='text-center'>
                     <h1>
@@ -127,7 +128,7 @@ class Send extends React.Component {
         throw new Error('Wallet not found')
       }
       _this.setState({
-        inFetch:true
+        inFetch: true
       })
 
       // Ensure the wallet UTXOs are up-to-date.
@@ -152,7 +153,6 @@ class Send extends React.Component {
 
       _this.resetValues()
     } catch (error) {
-
       _this.handleError(error)
     }
   }
@@ -249,20 +249,27 @@ class Send extends React.Component {
     }
   }
 
-  handleError(error){
-    //console.error(error)
+  handleError (error) {
+    // console.error(error)
     let errMsg = ''
     if (error.message) {
       errMsg = error.message
     }
     if (error.error) {
       if (error.error.match('rate limits')) {
-        errMsg = <span>
-          Rate limits exceeded, increase rate limits with a JWT token from
-          <a style={{marginLeft:'5px'}}
-            target="_blank"
-            href="https://fullstack.cash">FullStack.cash</a>
-        </span>
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
       } else {
         errMsg = error.error
       }
@@ -272,7 +279,7 @@ class Send extends React.Component {
         ...prevState,
         errMsg,
         txId: '',
-        inFetch:false
+        inFetch: false
       }
     })
   }

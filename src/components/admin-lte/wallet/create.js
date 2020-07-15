@@ -6,7 +6,7 @@ import BchWallet from 'minimal-slp-wallet'
 
 let _this
 class NewWallet extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {
@@ -17,7 +17,7 @@ class NewWallet extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render() {
+  render () {
     return (
       <>
         <Row>
@@ -60,7 +60,7 @@ class NewWallet extends React.Component {
     )
   }
 
-  async handleCreateWallet() {
+  async handleCreateWallet () {
     try {
       const currentWallet = _this.props.walletInfo
 
@@ -115,20 +115,28 @@ class NewWallet extends React.Component {
       _this.handleError(error)
     }
   }
-  handleError(error) {
-    //console.error(error)
+
+  handleError (error) {
+    // console.error(error)
     let errMsg = ''
     if (error.message) {
       errMsg = error.message
     }
     if (error.error) {
       if (error.error.match('rate limits')) {
-        errMsg = <span>
-          Rate limits exceeded, increase rate limits with a JWT token from
-          <a style={{ marginLeft: '5px' }}
-            target="_blank"
-            href="https://fullstack.cash">FullStack.cash</a>
-        </span>
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
       } else {
         errMsg = error.error
       }

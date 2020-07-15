@@ -155,7 +155,6 @@ class ImportWallet extends React.Component {
       })
     } catch (error) {
       _this.handleError(error)
-  
     }
   }
 
@@ -183,20 +182,28 @@ class ImportWallet extends React.Component {
       throw new Error('12 word mnemonic is required')
     }
   }
-  handleError(error){
-    //console.error(error)
+
+  handleError (error) {
+    // console.error(error)
     let errMsg = ''
     if (error.message) {
       errMsg = error.message
     }
     if (error.error) {
       if (error.error.match('rate limits')) {
-        errMsg = <span>
-          Rate limits exceeded, increase rate limits with a JWT token from
-          <a style={{marginLeft:'5px'}}
-            target="_blank"
-            href="https://fullstack.cash">FullStack.cash</a>
-        </span>
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
       } else {
         errMsg = error.error
       }
