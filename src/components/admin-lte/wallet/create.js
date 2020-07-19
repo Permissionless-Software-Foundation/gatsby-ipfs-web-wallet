@@ -38,11 +38,6 @@ class NewWallet extends React.Component {
                     <span>New Wallet</span>
                   </h1>
                 </Col>
-                <Col sm={12} className='text-center '>
-                  {_this.state.errMsg && (
-                    <p className='error-color mt-2'>{_this.state.errMsg}</p>
-                  )}
-                </Col>
                 <Col sm={12} className='text-center mt-2 mb-2'>
                   <Button
                     text='Create Wallet'
@@ -50,6 +45,11 @@ class NewWallet extends React.Component {
                     className='btn-lg'
                     onClick={_this.handleCreateWallet}
                   />
+                </Col>
+                <Col sm={12} className='text-center '>
+                  {_this.state.errMsg && (
+                    <p className='error-color mt-2'>{_this.state.errMsg}</p>
+                  )}
                 </Col>
               </Row>
             </Box>
@@ -85,7 +85,6 @@ class NewWallet extends React.Component {
         if (restURL) {
           bchjsOptions.restURL = restURL
         }
-        console.log('bchjs options : ', bchjsOptions)
       }
 
       const bchWalletLib = new _this.BchWallet(null, bchjsOptions)
@@ -102,7 +101,7 @@ class NewWallet extends React.Component {
       Object.assign(currentWallet, walletInfo)
 
       const myBalance = await bchWalletLib.getBalance()
-
+      // console.log("myBalance", myBalance)
       // Update redux state
       _this.props.setWalletInfo(currentWallet)
       _this.props.updateBalance(myBalance)
@@ -113,12 +112,39 @@ class NewWallet extends React.Component {
         errMsg: ''
       })
     } catch (error) {
-      console.error(error)
-      _this.setState({
-        inFetch: false,
-        errMsg: error.message
-      })
+      _this.handleError(error)
     }
+  }
+
+  handleError (error) {
+    // console.error(error)
+    let errMsg = ''
+    if (error.message) {
+      errMsg = error.message
+    }
+    if (error.error) {
+      if (error.error.match('rate limits')) {
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
+      } else {
+        errMsg = error.error
+      }
+    }
+    _this.setState({
+      inFetch: false,
+      errMsg: errMsg
+    })
   }
 }
 NewWallet.propTypes = {

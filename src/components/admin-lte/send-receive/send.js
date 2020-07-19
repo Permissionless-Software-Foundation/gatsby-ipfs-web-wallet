@@ -18,7 +18,8 @@ class Send extends React.Component {
       amountSat: '',
       errMsg: '',
       txId: '',
-      showScan: false
+      showScan: false,
+      inFetch: false
     }
     _this.BchWallet = BchWallet
   }
@@ -30,7 +31,10 @@ class Send extends React.Component {
           <Row>
             <Col sm={2} />
             <Col sm={8}>
-              <Box className='hover-shadow border-none mt-2'>
+              <Box
+                loaded={!_this.state.inFetch}
+                className='hover-shadow border-none mt-2'
+              >
                 <Row>
                   <Col sm={12} className='text-center'>
                     <h1>
@@ -102,7 +106,6 @@ class Send extends React.Component {
     _this.setState({
       [event.target.name]: value
     })
-    // console.log(_this.state)
   }
 
   async handleSend () {
@@ -124,6 +127,9 @@ class Send extends React.Component {
       if (!bchWalletLib) {
         throw new Error('Wallet not found')
       }
+      _this.setState({
+        inFetch: true
+      })
 
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
@@ -147,19 +153,7 @@ class Send extends React.Component {
 
       _this.resetValues()
     } catch (error) {
-      let errMsg
-      if (error.message) {
-        errMsg = error.message
-      } else if (error.error) {
-        errMsg = error.error
-      }
-      _this.setState(prevState => {
-        return {
-          ...prevState,
-          errMsg,
-          txId: ''
-        }
-      })
+      _this.handleError(error)
     }
   }
 
@@ -168,7 +162,8 @@ class Send extends React.Component {
     _this.setState({
       address: '',
       amountSat: '',
-      errMsg: ''
+      errMsg: '',
+      inFetch: false
     })
     const amountEle = document.getElementById('amountToSend')
     amountEle.value = ''
@@ -180,7 +175,6 @@ class Send extends React.Component {
   validateInputs () {
     const { address, amountSat } = _this.state
     const amountNumber = Number(amountSat)
-    console.log(_this.state)
 
     if (!address) {
       throw new Error('Address is required')
@@ -255,7 +249,40 @@ class Send extends React.Component {
     }
   }
 
-  componentDidMount () {}
+  handleError (error) {
+    // console.error(error)
+    let errMsg = ''
+    if (error.message) {
+      errMsg = error.message
+    }
+    if (error.error) {
+      if (error.error.match('rate limits')) {
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
+      } else {
+        errMsg = error.error
+      }
+    }
+    _this.setState(prevState => {
+      return {
+        ...prevState,
+        errMsg,
+        txId: '',
+        inFetch: false
+      }
+    })
+  }
 }
 Send.propTypes = {
   updateBalance: PropTypes.func.isRequired,

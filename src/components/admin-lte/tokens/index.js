@@ -17,7 +17,7 @@ class Tokens extends React.Component {
       selectedTokenToView: '',
       showModal: false,
       inFetch: true,
-      onEmptyTokensMsg: 'No tokens found on this wallet..',
+      errMsg: '',
       selectedTokenToSend: '',
       showForm: false
     }
@@ -68,11 +68,11 @@ class Tokens extends React.Component {
               </Box>
             )}
             <br />
-            {!_this.state.tokens.length && (
+            {_this.state.errMsg && (
               <Box padding='true' className='container-nofound'>
                 <Row>
                   <Col xs={12}>
-                    <em>{_this.state.onEmptyTokensMsg}</em>
+                    <em>{_this.state.errMsg}</em>
                   </Col>
                 </Row>
               </Box>
@@ -125,31 +125,27 @@ class Tokens extends React.Component {
     const { mnemonic } = _this.props.walletInfo
     const bchWallet = _this.props.bchWallet
     let tokens = []
-    let { onEmptyTokensMsg } = _this.state
 
-    if (mnemonic && bchWallet) {
-      try {
-        await bchWallet.walletInfoPromise
-        tokens = await bchWallet.listTokens()
-      } catch (error) {
-        console.error(error)
-        if (error.error) {
-          if (error.error.match('rate limits')) onEmptyTokensMsg = error.error
-        }
-        if (error.message) {
-          onEmptyTokensMsg = error.message
-        }
+    try {
+      if (!mnemonic || !bchWallet) {
+        throw new Error(
+          'You need to create or import a wallet first, to view tokens'
+        )
       }
-    } else {
-      onEmptyTokensMsg =
-        'You need to create or import a wallet first, to view tokens'
-    }
 
-    _this.setState({
-      tokens,
-      inFetch: false,
-      onEmptyTokensMsg
-    })
+      await bchWallet.walletInfoPromise
+      tokens = await bchWallet.listTokens()
+
+      if (!tokens.length) {
+        throw new Error('No tokens found on this wallet.')
+      }
+      _this.setState({
+        tokens,
+        inFetch: false
+      })
+    } catch (error) {
+      _this.handleError(error)
+    }
   }
 
   async componentDidMount () {
@@ -176,6 +172,40 @@ class Tokens extends React.Component {
   onHandleToggleModal () {
     _this.setState({
       showModal: !_this.state.showModal
+    })
+  }
+
+  handleError (error) {
+    let errMsg = ''
+    if (error.message) {
+      errMsg = error.message
+    }
+    if (error.error) {
+      if (error.error.match('rate limits')) {
+        errMsg = (
+          <span>
+            Rate limits exceeded, increase rate limits with a JWT token from
+            <a
+              style={{ marginLeft: '5px' }}
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
+            >
+              FullStack.cash
+            </a>
+          </span>
+        )
+      } else {
+        errMsg = error.error
+      }
+    }
+    _this.setState(prevState => {
+      return {
+        ...prevState,
+        errMsg: errMsg,
+        txId: '',
+        inFetch: false
+      }
     })
   }
 }
