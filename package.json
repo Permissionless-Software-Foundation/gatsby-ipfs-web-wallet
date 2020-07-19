@@ -31,7 +31,7 @@
     "gatsby-source-filesystem": "^2.3.8",
     "gatsby-transformer-sharp": "2.5.3",
     "memo-get-gatsby": "^1.0.2",
-    "minimal-slp-wallet": "1.3.10",
+    "minimal-slp-wallet": "1.3.12",
     "prop-types": "^15.7.2",
     "qrcode.react": "^1.0.0",
     "react": "^16.12.0",
