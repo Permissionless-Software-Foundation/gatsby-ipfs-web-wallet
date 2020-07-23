@@ -27,7 +27,7 @@ class Footer extends React.Component {
     console.log(`hash: ${hash}`)
     this.setState({
       ipfsHash: hash,
-      ipfsHashLink: `https://ipfs.io/ipfs/${hash}`
+      ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
     })
 
     // const bchjs = new BCHJS()
