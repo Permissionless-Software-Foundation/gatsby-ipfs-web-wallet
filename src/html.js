@@ -1,56 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Loader from './images/loader.gif' // https://loading.io/
+import { withPrefix, Link } from 'gatsby'
+
+// window && typeof window !== 'undefined' && window.test = 'testing'
 
 export default function HTML (props) {
   return (
     <html {...props.htmlAttributes}>
       <head>
-        <meta charSet='utf-8' />
-        <meta httpEquiv='x-ua-compatible' content='ie=edge' />
+        <meta charSet="utf-8" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1, shrink-to-fit=no'
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+
+        {/* minimal-slp-wallet-web */}
+        <script src="https://unpkg.com/minimal-slp-wallet-web" />
+
         {props.headComponents}
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
         <div
-          key='loader'
-          id='___loader'
-          style={{
-            alignItems: 'center',
-            backgroundColor: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 9000,
-            flexDirection: 'column'
-          }}
-        >
-          <img src={Loader} alt='' width='150' />
-          <span>Loading...</span>
-        </div>
-        <div
-          key='body'
-          id='___gatsby'
+          key={'body'}
+          id="___gatsby"
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                setTimeout(function() {
-                    document.getElementById("___loader").style.display = "none"
-                }, 1500)
-            `
-          }}
-        />
       </body>
     </html>
   )

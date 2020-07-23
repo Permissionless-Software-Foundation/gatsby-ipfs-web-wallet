@@ -11,7 +11,7 @@ import ScannerModal from '../qr-scanner/modal'
 
 import Layout from '../layout'
 import './admin-lte.css'
-import BchWallet from 'minimal-slp-wallet'
+// import BchWallet from 'minimal-slp-wallet'
 import VersionStatus from '../version-status'
 import { BrowserRouter as Router } from 'react-router-dom'
 import menuComponents from '../menu-components.js'
@@ -22,6 +22,11 @@ const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
 const MENU_HIDE_WIDTH = 770
+
+const BchWallet =
+typeof window !== 'undefined'
+  ? window.SlpWallet
+  : null
 
 let _this
 

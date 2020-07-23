@@ -2,7 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import BchWallet from 'minimal-slp-wallet'
+// import BchWallet from 'minimal-slp-wallet'
+
+const BchWallet =
+typeof window !== 'undefined'
+  ? window.SlpWallet
+  : null
 
 const { Text, Select } = Inputs
 
