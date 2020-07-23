@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withPrefix, Link } from 'gatsby'
+// import { withPrefix, Link } from 'gatsby'
 
 // window && typeof window !== 'undefined' && window.test = 'testing'
 
@@ -8,23 +8,23 @@ export default function HTML (props) {
   return (
     <html {...props.htmlAttributes}>
       <head>
-        <meta charSet="utf-8" />
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <meta charSet='utf-8' />
+        <meta httpEquiv='x-ua-compatible' content='ie=edge' />
         <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          name='viewport'
+          content='width=device-width, initial-scale=1, shrink-to-fit=no'
         />
 
         {/* minimal-slp-wallet-web */}
-        <script src="https://unpkg.com/minimal-slp-wallet-web" />
+        <script src='https://unpkg.com/minimal-slp-wallet-web' />
 
         {props.headComponents}
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
         <div
-          key={'body'}
-          id="___gatsby"
+          key='body'
+          id='___gatsby'
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}

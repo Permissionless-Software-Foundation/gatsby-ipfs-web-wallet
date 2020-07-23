@@ -41,6 +41,7 @@
     "react-redux": "^7.2.0"
   },
   "devDependencies": {
+    "husky": "^4.2.5",
     "prettier": "2.0.5",
     "semantic-release": "^17.1.1",
     "standard": "^14.3.4"
@@ -56,5 +57,10 @@
   },
   "bugs": {
     "url": "https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
