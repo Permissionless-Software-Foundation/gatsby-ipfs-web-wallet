@@ -20,7 +20,6 @@ import SendReceive from './send-receive'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
@@ -34,7 +33,7 @@ const BchWallet =
 let _this
 
 class AdminLTEPage extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {
@@ -58,7 +57,7 @@ class AdminLTEPage extends React.Component {
     ]
   }
 
-  render() {
+  render () {
     return (
       <>
         <AdminLTE
@@ -75,23 +74,24 @@ class AdminLTEPage extends React.Component {
                 <div className='sidebar-balance'>
                   <div>
 
-                    {!_this.state.inFetch && <div className="siderbar-balance-content" >
-                      <span >
-                      <h3>{siteConfig.balanceText}</h3>
+                    {!_this.state.inFetch && (
+                      <div className='siderbar-balance-content'>
+                        <span>
+                          <h3>{siteConfig.balanceText}</h3>
 
-                        <span style={{ fontSize: "18px" }}>
-                          {_this.state.bchBalance}
+                          <span style={{ fontSize: '18px' }}>
+                            {_this.state.bchBalance}
+                          </span>
+                          <small>USD:  ${_this.state.usdBalance}</small>
+
                         </span>
-                        <small>USD:  ${_this.state.usdBalance}</small>
-
-                      </span>
-                      <FontAwesomeIcon
-                        className='ml-1 icon'
-                        size='lg'
-                        icon='redo'
-                        onClick={_this.getBalance}
-                      />
-                    </div>}
+                        <FontAwesomeIcon
+                          className='ml-1 icon'
+                          size='lg'
+                          icon='redo'
+                          onClick={_this.handleGetBalance}
+                        />
+                      </div>)}
                   </div>
                 </div>
               </Box>
@@ -159,7 +159,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Get wallet balance
-  async getBalance() {
+  async handleGetBalance () {
     try {
       _this.setState({
         inFetch: true
@@ -186,7 +186,7 @@ class AdminLTEPage extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     _this.customMenuItems()
     _this.addOnClickEventToScanner()
 
@@ -198,16 +198,16 @@ class AdminLTEPage extends React.Component {
     setTimeout(() => {
       _this.dropDownBalance()
 
-      _this.getBalance()
+      _this.handleGetBalance()
     }, 250)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     _this.updateState()
   }
 
   // Update component state when props change
-  updateState() {
+  updateState () {
     if (_this.props.walletInfo.mnemonic !== _this.state.walletInfo.mnemonic) {
       _this.setState({
         walletInfo: _this.props.walletInfo
@@ -223,7 +223,7 @@ class AdminLTEPage extends React.Component {
 
   // Due to that it is not possible to add the "onClick" method
   // directly to the <Item> component we do it using JS
-  customMenuItems() {
+  customMenuItems () {
     try {
       // Ignore menu items without link to components
       const ignoreItems = ['Balance', 'Qr Scanner', 'Link']
@@ -250,7 +250,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Displays the BCH balance by default
-  dropDownBalance() {
+  dropDownBalance () {
     try {
       const balanceEle = document.getElementById('Balance')
       balanceEle.children[0].click()
@@ -262,7 +262,7 @@ class AdminLTEPage extends React.Component {
   // Section change, renders the corresponding component
   // to the selected section. each menu item corresponds
   // to a section.
-  changeSection(section) {
+  changeSection (section) {
     _this.activeItemById(section)
     _this.setState({
       section: section
@@ -271,7 +271,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Adds a visual mark to the selected item on the menu
-  activeItemById(id) {
+  activeItemById (id) {
     try {
       const elementActived = document.getElementsByClassName('active')
       elementActived[0].className = ''
@@ -283,7 +283,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Hides the side menu when clicking on mobile devices
-  hideMenu() {
+  hideMenu () {
     try {
       const windowWidth = window.innerWidth
       // console.log("Window Width : ",windowWidth)
@@ -296,7 +296,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Adds the "onClick" event to the QR scanner item
-  addOnClickEventToScanner() {
+  addOnClickEventToScanner () {
     try {
       const qrScannerEle = document.getElementById('Qr Scanner')
       qrScannerEle.onclick = () => _this.onHandleToggleScannerModal()
@@ -306,7 +306,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Controller to show the QR scanner
-  onHandleToggleScannerModal() {
+  onHandleToggleScannerModal () {
     if (!_this.state.showScannerModal) {
       _this.hideMenu()
     }
@@ -320,7 +320,7 @@ class AdminLTEPage extends React.Component {
 
   // Render non-default menu items. The catch ensures that the render function
   // won't be interrupted if there is an issue porting new menu items.
-  renderNewMenuItems() {
+  renderNewMenuItems () {
     try {
       return menuComponents && menuComponents.map(m => m.menuItem)
     } catch (err) {
@@ -330,7 +330,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Displays the View corresponding to the dynamically loaded menu item.
-  renderNewViewItems() {
+  renderNewViewItems () {
     try {
       return (
         menuComponents &&
@@ -344,7 +344,7 @@ class AdminLTEPage extends React.Component {
     } catch (err) { }
   }
 
-  getInvisibleMenuItem() {
+  getInvisibleMenuItem () {
     return (
       <li style={{ display: 'none' }}>
         {/* Adding this childrens prevents console errors */}
@@ -357,7 +357,7 @@ class AdminLTEPage extends React.Component {
   }
 
   // Define backends servers configuration by default
-  setDefaultServers() {
+  setDefaultServers () {
     try {
       const walletInfo = _this.props.walletInfo
       const accessLocation = window.location.hostname

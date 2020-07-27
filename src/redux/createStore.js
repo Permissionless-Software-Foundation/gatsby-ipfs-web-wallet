@@ -36,7 +36,6 @@ const reducer = (state, action) => {
     const _usdBalance = bchBalance * (currentRate / 100)
     const usdBalance = Number(_usdBalance.toFixed(2)) // usd balance
 
-
     return Object.assign({}, state, {
       bchBalance: { bchBalance, usdBalance }
     })

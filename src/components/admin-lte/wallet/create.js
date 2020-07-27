@@ -11,7 +11,7 @@ const BchWallet =
 
 let _this
 class NewWallet extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {
@@ -22,7 +22,7 @@ class NewWallet extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render() {
+  render () {
     return (
       <>
         <Row>
@@ -65,7 +65,7 @@ class NewWallet extends React.Component {
     )
   }
 
-  async handleCreateWallet() {
+  async handleCreateWallet () {
     try {
       const currentWallet = _this.props.walletInfo
 
@@ -125,7 +125,7 @@ class NewWallet extends React.Component {
     }
   }
 
-  handleError(error) {
+  handleError (error) {
     // console.error(error)
     let errMsg = ''
     if (error.message) {

@@ -13,7 +13,7 @@ const { Text } = Inputs
 
 let _this
 class ImportWallet extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     _this = this
@@ -27,7 +27,7 @@ class ImportWallet extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render() {
+  render () {
     return (
       <Row className=''>
         <Col sm={2} />
@@ -84,12 +84,12 @@ class ImportWallet extends React.Component {
     )
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // add max length property to mnemonic input
     // document.getElementById("import-mnemonic").maxLength = "12"
   }
 
-  handleUpdate(event) {
+  handleUpdate (event) {
     let value = event.target.value
     if (event.target.name === 'mnemonic') {
       value = value.toLowerCase()
@@ -99,7 +99,7 @@ class ImportWallet extends React.Component {
     })
   }
 
-  async handleImportWallet() {
+  async handleImportWallet () {
     try {
       _this.validateInputs()
 
@@ -166,7 +166,7 @@ class ImportWallet extends React.Component {
   }
 
   // Reset form and component state
-  resetValues() {
+  resetValues () {
     _this.setState({
       mnemonic: '',
       privateKey: '',
@@ -176,7 +176,7 @@ class ImportWallet extends React.Component {
     mnemonicEle.value = ''
   }
 
-  validateInputs() {
+  validateInputs () {
     const { mnemonic } = _this.state
     if (mnemonic) {
       const spaceCount = mnemonic.split(' ').length // mnemonic.match(/ /g).length
@@ -190,7 +190,7 @@ class ImportWallet extends React.Component {
     }
   }
 
-  handleError(error) {
+  handleError (error) {
     // console.error(error)
     let errMsg = ''
     if (error.message) {
