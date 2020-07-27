@@ -153,7 +153,9 @@ class Send extends React.Component {
       // update balance
       setTimeout(async () => {
         const myBalance = await bchWalletLib.getBalance()
-        _this.props.updateBalance(myBalance)
+        const bchjs = bchWalletLib.bchjs
+        const currentRate = await bchjs.Price.current('usd')
+        _this.props.updateBalance({ myBalance, currentRate })
       }, 1000)
 
       _this.resetValues()

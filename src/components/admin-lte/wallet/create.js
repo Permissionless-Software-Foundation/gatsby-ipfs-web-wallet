@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import BchWallet from 'minimal-slp-wallet'
 
 const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+  typeof window !== 'undefined'
+    ? window.SlpWallet
+    : null
 
 let _this
 class NewWallet extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     _this = this
     this.state = {
@@ -22,7 +22,7 @@ class NewWallet extends React.Component {
     _this.BchWallet = BchWallet
   }
 
-  render () {
+  render() {
     return (
       <>
         <Row>
@@ -65,7 +65,7 @@ class NewWallet extends React.Component {
     )
   }
 
-  async handleCreateWallet () {
+  async handleCreateWallet() {
     try {
       const currentWallet = _this.props.walletInfo
 
@@ -106,10 +106,14 @@ class NewWallet extends React.Component {
       Object.assign(currentWallet, walletInfo)
 
       const myBalance = await bchWalletLib.getBalance()
+
+      const bchjs = bchWalletLib.bchjs
+      const currentRate = await bchjs.Price.current('usd')
+
       // console.log("myBalance", myBalance)
       // Update redux state
       _this.props.setWalletInfo(currentWallet)
-      _this.props.updateBalance(myBalance)
+      _this.props.updateBalance({ myBalance, currentRate })
       _this.props.setBchWallet(bchWalletLib)
 
       _this.setState({
@@ -121,7 +125,7 @@ class NewWallet extends React.Component {
     }
   }
 
-  handleError (error) {
+  handleError(error) {
     // console.error(error)
     let errMsg = ''
     if (error.message) {

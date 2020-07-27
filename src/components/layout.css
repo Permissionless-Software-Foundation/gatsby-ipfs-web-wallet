@@ -738,3 +738,6 @@ pre tt:after {
 .breadcrumb{
   display:none
 }
+.background-none{
+  background: none!important;
+}

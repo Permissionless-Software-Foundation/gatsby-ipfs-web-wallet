@@ -12,6 +12,22 @@
     text-align: center;
 
 }
+.sidebar-balance .siderbar-balance-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+.sidebar-balance span{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar-balance .siderbar-balance-content svg{
+    margin-bottom: 1em!important;
+}
+
 
 .scanner-left-menu {
     padding: 5px 5px 5px 18px;
