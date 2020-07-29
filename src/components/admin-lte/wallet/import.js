@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import BchWallet from 'minimal-slp-wallet'
 
 const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+  typeof window !== 'undefined'
+    ? window.SlpWallet
+    : null
 
 const { Text } = Inputs
 
@@ -147,10 +147,12 @@ class ImportWallet extends React.Component {
       Object.assign(currentWallet, walletInfo)
 
       const myBalance = await bchWalletLib.getBalance()
+      const bchjs = bchWalletLib.bchjs
+      const currentRate = await bchjs.Price.current('usd')
 
       // Update redux state
       _this.props.setWalletInfo(currentWallet)
-      _this.props.updateBalance(myBalance)
+      _this.props.updateBalance({ myBalance, currentRate })
       _this.props.setBchWallet(bchWalletLib)
 
       // Reset form and component state
