@@ -3,9 +3,9 @@ import { createStore as reduxCreateStore } from 'redux'
 import { getWalletInfo, setWalletInfo } from '../components/localWallet'
 // import BchWallet from 'minimal-slp-wallet'
 const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+  typeof window !== 'undefined'
+    ? window.SlpWallet
+    : null
 
 const reducer = (state, action) => {
   // Update walletInfo state property
@@ -27,11 +27,17 @@ const reducer = (state, action) => {
   // Update bchBalance state property
   if (action.type === 'UPDATE_BALANCE') {
     // Convert satoshis to bch
-    const satoshis = action.value
+    const { myBalance, currentRate } = action.value
+
+    const satoshis = myBalance
     const bch = satoshis / 100000000
 
+    const bchBalance = Number(bch.toFixed(8))
+    const _usdBalance = bchBalance * (currentRate / 100)
+    const usdBalance = Number(_usdBalance.toFixed(2)) // usd balance
+
     return Object.assign({}, state, {
-      bchBalance: Number(bch.toFixed(8))
+      bchBalance: { bchBalance, usdBalance }
     })
   }
   // Adds the minimal-slp-wallet instance to the Redux state
@@ -78,7 +84,7 @@ const instanceWallet = () => {
 // initial state
 const initialState = {
   walletInfo: localStorageInfo, // Object wallet info
-  bchBalance: 0, // Wallet Balance
+  bchBalance: { bchBalance: 0, usdBalance: 0 }, // Wallet Balance
   bchWallet: instanceWallet() // minimal-slp-wallet instance
 }
 

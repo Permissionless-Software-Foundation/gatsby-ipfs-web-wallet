@@ -6,7 +6,7 @@ import Wallet from './wallet'
 import siteConfig from '../site-config'
 // import Audit from "./audit"
 
-import AdminLTE, { Sidebar, Navbar } from 'adminlte-2-react'
+import AdminLTE, { Sidebar, Navbar, Box } from 'adminlte-2-react'
 import ScannerModal from '../qr-scanner/modal'
 
 import Layout from '../layout'
@@ -18,15 +18,17 @@ import menuComponents from '../menu-components.js'
 
 import SendReceive from './send-receive'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 const { Item } = Sidebar
 
 // Screen width to hide the side menu on click
 const MENU_HIDE_WIDTH = 770
 
 const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+  typeof window !== 'undefined'
+    ? window.SlpWallet
+    : null
 
 let _this
 
@@ -39,7 +41,9 @@ class AdminLTEPage extends React.Component {
       showScannerModal: false,
       section: 'Wallet',
       menuIsHide: false,
-      walletInfo: {}
+      walletInfo: {},
+      inFetch: false,
+      usdBalance: 0
     }
 
     _this.BchWallet = BchWallet
@@ -63,13 +67,35 @@ class AdminLTEPage extends React.Component {
         >
           <Sidebar.Core>
             <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
-              <div className='sidebar-balance'>
-                <div>
-                  <h3>{siteConfig.balanceText}</h3>
+              <Box
+                className='hover-shadow border-none background-none'
+                loaded={!_this.state.inFetch}
+              >
+                <div className='sidebar-balance'>
+                  <div>
 
-                  <p>{_this.state.bchBalance}</p>
+                    {!_this.state.inFetch && (
+                      <div className='siderbar-balance-content'>
+                        <span>
+                          <h3>{siteConfig.balanceText}</h3>
+
+                          <span style={{ fontSize: '18px' }}>
+                            {_this.state.bchBalance}
+                          </span>
+                          <small>USD:  ${_this.state.usdBalance}</small>
+
+                        </span>
+                        <FontAwesomeIcon
+                          className='ml-1 icon'
+                          size='lg'
+                          icon='redo'
+                          onClick={_this.handleGetBalance}
+                        />
+                      </div>)}
+                  </div>
                 </div>
-              </div>
+              </Box>
+
             </Item>
 
             {_this.sidebar}
@@ -133,18 +159,30 @@ class AdminLTEPage extends React.Component {
   }
 
   // Get wallet balance
-  async getBalance () {
+  async handleGetBalance () {
     try {
+      _this.setState({
+        inFetch: true
+      })
       const { mnemonic } = _this.props.walletInfo
       if (mnemonic && _this.props.bchWallet) {
         const bchWalletLib = _this.props.bchWallet
         await bchWalletLib.walletInfoPromise
-
         const myBalance = await bchWalletLib.getBalance()
-        _this.props.updateBalance(myBalance)
+
+        const bchjs = bchWalletLib.bchjs
+        const currentRate = await bchjs.Price.current('usd')
+        _this.props.updateBalance({ myBalance, currentRate })
       }
+
+      _this.setState({
+        inFetch: false
+      })
     } catch (error) {
       console.error(error)
+      _this.setState({
+        inFetch: false
+      })
     }
   }
 
@@ -160,7 +198,7 @@ class AdminLTEPage extends React.Component {
     setTimeout(() => {
       _this.dropDownBalance()
 
-      _this.getBalance()
+      _this.handleGetBalance()
     }, 250)
   }
 
@@ -175,9 +213,10 @@ class AdminLTEPage extends React.Component {
         walletInfo: _this.props.walletInfo
       })
     }
-    if (_this.props.bchBalance !== _this.state.bchBalance) {
+    if (_this.props.bchBalance.bchBalance !== _this.state.bchBalance) {
       _this.setState({
-        bchBalance: _this.props.bchBalance
+        bchBalance: _this.props.bchBalance.bchBalance,
+        usdBalance: _this.props.bchBalance.usdBalance
       })
     }
   }
@@ -302,7 +341,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) {}
+    } catch (err) { }
   }
 
   getInvisibleMenuItem () {
@@ -351,7 +390,7 @@ class AdminLTEPage extends React.Component {
 // Props prvided by redux
 AdminLTEPage.propTypes = {
   walletInfo: PropTypes.object.isRequired, // wallet info
-  bchBalance: PropTypes.number.isRequired, // bch balance
+  bchBalance: PropTypes.object.isRequired, // bch balance
   setWalletInfo: PropTypes.func.isRequired, // set wallet info
   updateBalance: PropTypes.func.isRequired, // update bch balance
   setBchWallet: PropTypes.func.isRequired, // set minimal-slp-wallet instance
