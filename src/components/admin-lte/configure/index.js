@@ -4,6 +4,7 @@ import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import BchWallet from 'minimal-slp-wallet'
 import Servers from './servers'
+import { setWalletInfo } from '../../localWallet'
 const { Text } = Inputs
 
 const BchWallet =
@@ -66,6 +67,12 @@ class Configure extends React.Component {
                         FullStack.cash
                       </a>
                     </p>
+                    <Button
+                      text='Clear LocalStorage'
+                      type='primary'
+                      className='btn-lg mt-1'
+                      onClick={_this.handleClearLocalStorage}
+                    />
                   </Box>
                 </Col>
               </Row>
@@ -116,6 +123,12 @@ class Configure extends React.Component {
         />
       </Content>
     )
+  }
+
+  // Clear localstorage info
+  handleClearLocalStorage () {
+    setWalletInfo({})
+    window.location.reload()
   }
 
   componentDidMount () {
