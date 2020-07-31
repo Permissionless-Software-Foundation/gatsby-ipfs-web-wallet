@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
+import { Content, Row, Col, Box, Inputs, Button, ButtonGroup } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import MenuComponents from './menu-components'
 // import BchWallet from 'minimal-slp-wallet'
 import Servers from './servers'
 import { setWalletInfo } from '../../localWallet'
+
 const { Text } = Inputs
 
 const BchWallet =
@@ -20,6 +22,7 @@ class Configure extends React.Component {
     _this = this
 
     this.state = {
+      menuItem: 'Configure',
       JWT: '',
       errMsg: ''
     }
@@ -30,6 +33,19 @@ class Configure extends React.Component {
   render () {
     return (
       <Content>
+            {MenuComponents.length > 0 && 
+            <ButtonGroup margin>
+             <Button margin
+                      text='General'
+                      type='primary'
+                      className='btn-md mt-1'
+                      onClick={() => _this.setState({ menuItem: 'Configure' })}
+            />
+
+            {MenuComponents.map(menuItem => <Button key={menuItem.key} margin className='btn-md mt-1' type="primary" onClick={() => _this.setState({ menuItem: menuItem.key })} text={menuItem.key}/>)}
+            </ButtonGroup>}
+        {_this.state.menuItem === 'Configure' && 
+        <>
         <Row>
           <Col sm={12}>
             <Box className='hover-shadow border-none mt-2'>
@@ -121,6 +137,8 @@ class Configure extends React.Component {
           walletInfo={_this.props.walletInfo}
           setBchWallet={_this.props.setBchWallet}
         />
+        </>}
+      {_this.state.menuItem !== 'Configure' && MenuComponents.filter(menuItem => menuItem.key === _this.state.menuItem)[0].component}
       </Content>
     )
   }
