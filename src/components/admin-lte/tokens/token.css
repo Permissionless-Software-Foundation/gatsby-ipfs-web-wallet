@@ -9,6 +9,9 @@
 #token-card .info-container .info-content b{
     margin-right: 15px;
 }
+#token-card .info-container .info-content span{
+    text-align: end;
+}
 #token-card .divider{
     width: 100%;
     border-bottom: 1px solid black;
@@ -48,3 +51,24 @@
       justify-content: center;
       align-items: center;
   }
+  .btn-send-token{
+      width: 120px;
+  }
+  .token-botton-container{
+    max-width: 70%;
+    margin: 0 auto;
+  }
+  .btn-send-token{
+    min-width: 100%;
+}
+  @media (max-width: 740px) {
+    .token-botton-container{
+        max-width: 100%;
+    }
+    .btn-send-token{
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+  }
+ 

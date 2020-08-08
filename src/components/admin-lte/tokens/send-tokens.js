@@ -24,7 +24,8 @@ class SendTokens extends React.Component {
       errMsg: '',
       txId: '',
       showScan: false,
-      inFetch: false
+      inFetch: false,
+      tokenId: ''
     }
     _this.BchWallet = BchWallet
   }
@@ -66,21 +67,37 @@ class SendTokens extends React.Component {
                       name='amountSat'
                       placeholder='Enter amount to send'
                       label='Amount'
+                      value={_this.state.amountSat}
                       labelPosition='above'
                       onChange={_this.handleUpdate}
                     />
-                    <Button
-                      text='Close'
-                      type='primary'
-                      className='btn-lg mr-2'
-                      onClick={_this.props.handleBack}
-                    />
-                    <Button
-                      text='Send'
-                      type='primary'
-                      className='btn-lg '
-                      onClick={_this.handleSend}
-                    />
+                    <Row className='token-botton-container'>
+                      <Col xs={12} sm={4}>
+                        <Button
+                          text='Send'
+                          type='primary'
+                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          onClick={_this.handleSend}
+                        />
+                      </Col>
+                      <Col xs={12} sm={4}>
+                        <Button
+                          text='Send Max'
+                          type='primary'
+                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          onClick={_this.handleSendMax}
+                        />
+                      </Col>
+                      <Col xs={12} sm={4}>
+                        <Button
+                          text='Close'
+                          type='primary'
+                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          onClick={_this.props.handleBack}
+                        />
+                      </Col>
+                    </Row>
+
                   </Box>
                 </Col>
                 <Col sm={12} className='text-center'>
@@ -124,6 +141,13 @@ class SendTokens extends React.Component {
       [event.target.name]: value
     })
     // console.log(_this.state)
+  }
+
+  async handleSendMax () {
+    const { qty } = _this.props.selectedToken
+    _this.setState({
+      amountSat: qty
+    })
   }
 
   async handleSend () {
@@ -306,6 +330,22 @@ class SendTokens extends React.Component {
         inFetch: false
       }
     })
+  }
+
+  componentDidMount () {
+    _this.setState({
+      tokenId: _this.props.selectedToken.tokenId
+
+    })
+  }
+
+  componentDidUpdate () {
+    if (_this.props.selectedToken.tokenId !== _this.state.tokenId) {
+      _this.setState({
+        tokenId: _this.props.selectedToken.tokenId,
+        amountSat: ''
+      })
+    }
   }
 }
 SendTokens.propTypes = {
