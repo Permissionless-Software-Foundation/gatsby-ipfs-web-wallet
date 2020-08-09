@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Content, Row, Col, Box, Inputs, Button, ButtonGroup } from 'adminlte-2-react'
+import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import MenuComponents from './menu-components'
 // import BchWallet from 'minimal-slp-wallet'
 import Servers from './servers'
 import { setWalletInfo } from '../../localWallet'
+import TabsMenu from './TabsMenu'
 
 const { Text } = Inputs
 
@@ -28,23 +29,16 @@ class Configure extends React.Component {
     }
 
     _this.BchWallet = BchWallet
+
+    this.handleSelect = key => {
+      _this.setState({ menuItem: key }); 
+    }
   }
 
   render () {
     return (
       <Content>
-        {MenuComponents.length > 0 &&
-          <ButtonGroup margin>
-            <Button
-              margin
-              text='General'
-              type='primary'
-              className='btn-md mt-1'
-              onClick={() => _this.setState({ menuItem: 'Configure' })}
-            />
-
-            {MenuComponents.map(menuItem => <Button key={menuItem.key} margin className='btn-md mt-1' type='primary' onClick={() => _this.setState({ menuItem: menuItem.key })} text={menuItem.key} />)}
-          </ButtonGroup>}
+        <TabsMenu onSelect={this.handleSelect} />
         {_this.state.menuItem === 'Configure' &&
           <>
             <Row>
