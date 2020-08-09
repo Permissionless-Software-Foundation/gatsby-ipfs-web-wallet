@@ -3,17 +3,13 @@ import PropTypes from 'prop-types'
 import { Content, Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import MenuComponents from './menu-components'
-// import BchWallet from 'minimal-slp-wallet'
 import Servers from './servers'
 import { setWalletInfo } from '../../localWallet'
 import TabsMenu from './TabsMenu'
 
 const { Text } = Inputs
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 class Configure extends React.Component {
@@ -31,7 +27,7 @@ class Configure extends React.Component {
     _this.BchWallet = BchWallet
 
     this.handleSelect = key => {
-      _this.setState({ menuItem: key }); 
+      _this.setState({ menuItem: key })
     }
   }
 
@@ -39,7 +35,7 @@ class Configure extends React.Component {
     return (
       <Content>
         <TabsMenu onSelect={this.handleSelect} />
-        {_this.state.menuItem === 'Configure' &&
+        {_this.state.menuItem === 'Configure' && (
           <>
             <Row>
               <Col sm={12}>
@@ -61,21 +57,22 @@ class Configure extends React.Component {
                             size='xs'
                             icon='exclamation-triangle'
                           />
-                      Be Careful
+                          Be Careful
                         </h3>
                         <p>
-                      Backup your wallet first. Updating the configuration will
-                      restart the app.
+                          Backup your wallet first. Updating the configuration
+                          will restart the app.
                         </p>
                         <p>
-                      This is just a placeholder. This View will allow the user
-                      to pick alternate back-end servers. The default will be{' '}
+                          This is just a placeholder. This View will allow the
+                          user to pick alternate back-end servers. The default
+                          will be{' '}
                           <a
                             href='https://fullstack.cash'
                             target='_blank'
                             rel='noopener noreferrer'
                           >
-                        FullStack.cash
+                            FullStack.cash
                           </a>
                         </p>
                         <Button
@@ -132,8 +129,12 @@ class Configure extends React.Component {
               walletInfo={_this.props.walletInfo}
               setBchWallet={_this.props.setBchWallet}
             />
-          </>}
-        {_this.state.menuItem !== 'Configure' && MenuComponents.filter(menuItem => menuItem.key === _this.state.menuItem)[0].component}
+          </>
+        )}
+        {_this.state.menuItem !== 'Configure' &&
+          MenuComponents.filter(
+            menuItem => menuItem.key === _this.state.menuItem
+          )[0].component}
       </Content>
     )
   }
