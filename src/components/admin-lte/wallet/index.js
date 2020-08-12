@@ -2,7 +2,7 @@
 
 import React from 'react'
 // import PropTypes from 'prop-types'
-import { Content } from 'adminlte-2-react'
+// import { Content } from 'adminlte-2-react'
 // import ImportWallet from './import'
 // import NewWallet from './create'
 // import InfoWallets from './info'
@@ -10,18 +10,16 @@ import { Content } from 'adminlte-2-react'
 
 let _this
 class Wallet extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     _this = this
     this.state = {}
   }
 
-  render () {
+  render() {
     return (
       <>
-        <Content>
-          <p>Wallet Component</p>
-        </Content>
+        <p>Wallet Component</p>
       </>
     )
   }
@@ -30,6 +28,8 @@ class Wallet extends React.Component {
 // {_this.props.walletInfo.mnemonic &&(
 //     <WalletInfo walletInfo={_this.props.walletInfo} />
 //   )}
+
+// <Content>  </Content>
 
 // <NewWallet
 //   updateBalance={_this.props.updateBalance}
