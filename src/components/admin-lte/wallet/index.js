@@ -2,7 +2,7 @@
 
 import React from 'react'
 // import PropTypes from 'prop-types'
-// import { Content } from 'adminlte-2-react'
+import { Content } from 'adminlte-2-react'
 // import ImportWallet from './import'
 // import NewWallet from './create'
 // import InfoWallets from './info'
@@ -18,9 +18,10 @@ class Wallet extends React.Component {
 
   render() {
     return (
-      <>
+      <Content>
         <p>Wallet Component</p>
-      </>
+        {this.props.importComponents}
+      </Content>
     )
   }
 }
@@ -29,7 +30,7 @@ class Wallet extends React.Component {
 //     <WalletInfo walletInfo={_this.props.walletInfo} />
 //   )}
 
-// <Content>  </Content>
+//
 
 // <NewWallet
 //   updateBalance={_this.props.updateBalance}
@@ -47,7 +48,7 @@ class Wallet extends React.Component {
 //
 // <InfoWallets />
 
-// {this.props.importComponents}
+
 
 // Wallet.propTypes = {
 //   setWalletInfo: PropTypes.func.isRequired,
