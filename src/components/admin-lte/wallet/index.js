@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Content } from 'adminlte-2-react'
 import ImportWallet from './import'
 import NewWallet from './create'
@@ -45,11 +45,12 @@ class Wallet extends React.Component {
     )
   }
 }
-Wallet.propTypes = {
-  setWalletInfo: PropTypes.func.isRequired,
-  walletInfo: PropTypes.object.isRequired,
-  updateBalance: PropTypes.func.isRequired,
-  setBchWallet: PropTypes.func.isRequired
-}
+
+// Wallet.propTypes = {
+//   setWalletInfo: PropTypes.func.isRequired,
+//   walletInfo: PropTypes.object.isRequired,
+//   updateBalance: PropTypes.func.isRequired,
+//   setBchWallet: PropTypes.func.isRequired
+// }
 
 export default Wallet
