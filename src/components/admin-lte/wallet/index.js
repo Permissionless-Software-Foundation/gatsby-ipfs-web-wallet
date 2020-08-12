@@ -38,6 +38,8 @@ class Wallet extends React.Component {
           />
 
           <InfoWallets />
+
+          {this.props.importComponents}
         </Content>
       </>
     )

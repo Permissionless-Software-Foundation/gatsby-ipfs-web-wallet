@@ -5,7 +5,6 @@ import MenuComponents from './menu-components'
 import Servers from './servers'
 import JsonWebTokens from './jwt'
 import ConfigureInfo from './info'
-
 import TabsMenu from './TabsMenu'
 
 const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
@@ -32,6 +31,7 @@ class Configure extends React.Component {
     return (
       <Content>
         <TabsMenu onSelect={this.handleSelect} />
+        // Default View
         {_this.state.menuItem === 'Configure' && (
           <>
             <ConfigureInfo />
@@ -49,6 +49,8 @@ class Configure extends React.Component {
             />
           </>
         )}
+
+        // Load Plugin Views
         {_this.state.menuItem !== 'Configure' &&
           MenuComponents.filter(
             menuItem => menuItem.key === _this.state.menuItem
