@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Content, Row, Col, Box } from 'adminlte-2-react'
+import { Content, Row, Col, Box, Button } from 'adminlte-2-react'
 import TokenCard from './token-card'
 import TokenModal from './token-modal'
 import Spinner from '../../../images/loader.gif'
@@ -28,6 +28,13 @@ class Tokens extends React.Component {
 
     return (
       <>
+        <Button 
+          text='Refresh'
+          icon='fa-redo' 
+          type='primary'
+          className='btn-md ml-1 mt-1 mb-1'
+          onClick={_this.getTokens}
+        />
         {_this.state.showForm && (
           <SendTokens
             bchWallet={_this.props.bchWallet}
