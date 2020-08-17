@@ -39,7 +39,7 @@ class AdminLTEPage extends React.Component {
     this.state = {
       bchBalance: 0,
       showScannerModal: false,
-      section: 'Wallet',
+      section: 'Tokens',
       menuIsHide: false,
       walletInfo: {},
       inFetch: false,
@@ -50,8 +50,8 @@ class AdminLTEPage extends React.Component {
 
     _this.sidebar = [
       <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
-      <Item icon='fas-coins' key='Tokens' text='Tokens' />,
-      <Item icon='fa-wallet' key='Wallet' text='Wallet' activeOn='/' />,
+      <Item icon='fas-coins' key='Tokens' text='Tokens' activeOn='/' />,
+      <Item icon='fa-wallet' key='Wallet' text='Wallet' />,
       <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
       <Item icon='fas-cog' key='Configure' text='Configure' />
     ]
@@ -190,7 +190,7 @@ class AdminLTEPage extends React.Component {
     _this.customMenuItems()
     _this.addOnClickEventToScanner()
 
-    _this.activeItemById('Wallet')
+    _this.activeItemById('Tokens')
 
     _this.setDefaultServers()
 
