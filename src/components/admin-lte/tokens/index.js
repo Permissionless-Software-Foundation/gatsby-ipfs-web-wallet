@@ -28,12 +28,12 @@ class Tokens extends React.Component {
 
     return (
       <>
-        <Button 
+        <Button
           text='Refresh'
-          icon='fa-redo' 
+          icon='fa-redo'
           type='primary'
           className='btn-md ml-1 mt-1 mb-1'
-          onClick={_this.getTokens}
+          onClick={_this.handleGetTokens}
         />
         {_this.state.showForm && (
           <SendTokens
@@ -45,7 +45,7 @@ class Tokens extends React.Component {
                 ? _this.state.selectedTokenToSend
                 : {}
             }
-            handleSend={_this.getTokens}
+            handleSend={_this.onHandleGetTokens}
           />
         )}
         {_this.state.inFetch ? (
@@ -125,7 +125,7 @@ class Tokens extends React.Component {
     })
   }
 
-  async getTokens () {
+  async handleGetTokens () {
     _this.setState({
       inFetch: true
     })
@@ -155,8 +155,13 @@ class Tokens extends React.Component {
     }
   }
 
+  // Wrapper for handleGetTokens()
+  async onHandleGetTokens () {
+    return this.handleGetTokens()
+  }
+
   async componentDidMount () {
-    await _this.getTokens()
+    await _this.handleGetTokens()
   }
 
   showToken (selectedTokenToView) {
