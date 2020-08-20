@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ScannerModal from '../../qr-scanner/modal'
 const { Text } = Inputs
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 class Send extends React.Component {
@@ -38,57 +35,57 @@ class Send extends React.Component {
             <Col sm={8}>
               <Box
                 loaded={!_this.state.inFetch}
-                className='hover-shadow border-none mt-2'
+                className="hover-shadow border-none mt-2"
               >
                 <Row>
-                  <Col sm={12} className='text-center'>
+                  <Col sm={12} className="text-center">
                     <h1>
                       <FontAwesomeIcon
-                        className='title-icon'
-                        size='xs'
-                        icon='paper-plane'
+                        className="title-icon"
+                        size="xs"
+                        icon="paper-plane"
                       />
                       <span>Send</span>
                     </h1>
-                    <Box className='border-none'>
+                    <Box className="border-none">
                       <Text
-                        id='addressToSend'
-                        name='address'
-                        placeholder='Enter bch address to send'
-                        label='BCH Address'
-                        labelPosition='above'
+                        id="addressToSend"
+                        name="address"
+                        placeholder="Enter bch address to send"
+                        label="BCH Address"
+                        labelPosition="above"
                         onChange={_this.handleUpdate}
-                        className='title-icon'
+                        className="title-icon"
                         buttonRight={
                           <Button
-                            icon='fa-qrcode'
+                            icon="fa-qrcode"
                             onClick={_this.handleModal}
                           />
                         }
                       />
 
                       <Text
-                        id='amountToSend'
-                        name='amountSat'
-                        placeholder='Enter amount to send'
-                        label='Amount'
-                        labelPosition='above'
+                        id="amountToSend"
+                        name="amountSat"
+                        placeholder="Enter amount to send"
+                        label="Amount"
+                        labelPosition="above"
                         onChange={_this.handleUpdate}
                       />
                       <Button
-                        text='Send'
-                        type='primary'
-                        className='btn-lg'
+                        text="Send"
+                        type="primary"
+                        className="btn-lg"
                         onClick={_this.handleSend}
                       />
                     </Box>
                   </Col>
-                  <Col sm={12} className='text-center'>
+                  <Col sm={12} className="text-center">
                     {_this.state.errMsg && (
-                      <p className='error-color'>{_this.state.errMsg}</p>
+                      <p className="error-color">{_this.state.errMsg}</p>
                     )}
                     {_this.state.txId && (
-                      <p className=''>Transaction ID: {_this.state.txId}</p>
+                      <p className="">Transaction ID: {_this.state.txId}</p>
                     )}
                   </Col>
                 </Row>
@@ -138,9 +135,16 @@ class Send extends React.Component {
 
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
-      bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.initUtxoStore(
-        walletAddr
-      )
+      await bchWalletLib.utxos.initUtxoStore(walletAddr)
+
+      // Used for debugging.
+      // console.log(
+      //   `bchWalletLib.utxos.bchUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.bchUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
 
       // Send the BCH.
       const result = await bchWalletLib.send(receivers)
@@ -269,9 +273,9 @@ class Send extends React.Component {
             Rate limits exceeded, increase rate limits with a JWT token from
             <a
               style={{ marginLeft: '5px' }}
-              target='_blank'
-              href='https://fullstack.cash'
-              rel='noopener noreferrer'
+              target="_blank"
+              href="https://fullstack.cash"
+              rel="noopener noreferrer"
             >
               FullStack.cash
             </a>
