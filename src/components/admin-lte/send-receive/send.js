@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ScannerModal from '../../qr-scanner/modal'
 const { Text } = Inputs
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 class Send extends React.Component {
@@ -138,9 +135,16 @@ class Send extends React.Component {
 
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
-      bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.initUtxoStore(
-        walletAddr
-      )
+      await bchWalletLib.utxos.initUtxoStore(walletAddr)
+
+      // Used for debugging.
+      // console.log(
+      //   `bchWalletLib.utxos.bchUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.bchUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
 
       // Send the BCH.
       const result = await bchWalletLib.send(receivers)
