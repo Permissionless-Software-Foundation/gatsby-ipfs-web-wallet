@@ -31,7 +31,7 @@ class Configure extends React.Component {
     return (
       <Content>
         <TabsMenu onSelect={this.handleSelect} />
-        // Default View
+        {/* // Default View */}
         {_this.state.menuItem === 'Configure' && (
           <>
             <ConfigureInfo />
@@ -50,7 +50,7 @@ class Configure extends React.Component {
           </>
         )}
 
-        // Load Plugin Views
+        {/* // Load Plugin Views */}
         {_this.state.menuItem !== 'Configure' &&
           MenuComponents.filter(
             menuItem => menuItem.key === _this.state.menuItem
