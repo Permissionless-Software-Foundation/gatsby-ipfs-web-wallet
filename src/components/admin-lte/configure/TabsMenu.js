@@ -13,9 +13,9 @@ function TabsMenu (props) {
         >
           <Tab title='General' eventKey='Configure' />
 
-          {MenuComponents.map(menuItem => (
+          {MenuComponents.map((menuItem, i) => (
             <Tab
-              key={menuItem.id}
+              key={`${menuItem.id}-${i}`}
               eventKey={menuItem.key}
               title={menuItem.key}
             />
