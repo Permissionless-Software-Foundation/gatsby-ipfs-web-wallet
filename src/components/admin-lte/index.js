@@ -132,6 +132,8 @@ class AdminLTEPage extends React.Component {
                 <Tokens
                   walletInfo={_this.props.walletInfo}
                   bchWallet={_this.props.bchWallet}
+                  setTokensInfo={_this.props.setTokensInfo}
+                  tokensInfo={_this.props.tokensInfo}
                 />
               )}
 
@@ -394,7 +396,9 @@ AdminLTEPage.propTypes = {
   setWalletInfo: PropTypes.func.isRequired, // set wallet info
   updateBalance: PropTypes.func.isRequired, // update bch balance
   setBchWallet: PropTypes.func.isRequired, // set minimal-slp-wallet instance
-  bchWallet: PropTypes.object // get minimal-slp-wallet instance
+  bchWallet: PropTypes.object, // get minimal-slp-wallet instance
+  setTokensInfo: PropTypes.func.isRequired, // set tokens info
+  tokensInfo: PropTypes.array // tokens info
 }
 
 export default AdminLTEPage

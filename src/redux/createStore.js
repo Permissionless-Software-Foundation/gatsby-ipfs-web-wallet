@@ -47,6 +47,13 @@ const reducer = (state, action) => {
     })
   }
 
+  // Get or update tokens information 
+  if (action.type === 'SET_TOKENS_INFO') {
+    return Object.assign({}, state, {
+      tokensInfo: action.value
+    })
+  }
+
   return state
 }
 
@@ -85,7 +92,8 @@ const instanceWallet = () => {
 const initialState = {
   walletInfo: localStorageInfo, // Object wallet info
   bchBalance: { bchBalance: 0, usdBalance: 0 }, // Wallet Balance
-  bchWallet: instanceWallet() // minimal-slp-wallet instance
+  bchWallet: instanceWallet(), // minimal-slp-wallet instance
+  tokensInfo: []
 }
 
 const createStore = () => reduxCreateStore(reducer, initialState)

@@ -125,7 +125,7 @@ class Tokens extends React.Component {
     })
   }
 
-  async handleGetTokens () {
+  async handleGetTokens (refresh = null) {
     _this.setState({
       inFetch: true
     })
@@ -141,7 +141,12 @@ class Tokens extends React.Component {
       }
 
       await bchWallet.walletInfoPromise
-      tokens = await bchWallet.listTokens()
+
+      if(_this.props.tokensInfo.length > 0 && refresh === null) {
+        tokens = _this.props.tokensInfo
+      } else {
+        tokens = await bchWallet.listTokens()
+      }
 
       if (!tokens.length) {
         throw new Error('No tokens found on this wallet.')
@@ -150,6 +155,9 @@ class Tokens extends React.Component {
         tokens,
         inFetch: false
       })
+
+      _this.props.setTokensInfo(tokens)
+      
     } catch (error) {
       _this.handleError(error)
     }
@@ -223,6 +231,8 @@ class Tokens extends React.Component {
 }
 Tokens.propTypes = {
   walletInfo: PropTypes.object.isRequired, // wallet info
-  bchWallet: PropTypes.object // get minimal-slp-wallet instance
+  bchWallet: PropTypes.object, // get minimal-slp-wallet instance
+  setTokensInfo: PropTypes.func.isRequired, // set tokens info
+  tokensInfo: PropTypes.array // tokens info
 }
 export default Tokens
