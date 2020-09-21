@@ -142,7 +142,7 @@ class Tokens extends React.Component {
 
       await bchWallet.walletInfoPromise
 
-      if(_this.props.tokensInfo.length > 0 && refresh === null) {
+      if (_this.props.tokensInfo.length > 0 && refresh === null) {
         tokens = _this.props.tokensInfo
       } else {
         tokens = await bchWallet.listTokens()
@@ -157,7 +157,6 @@ class Tokens extends React.Component {
       })
 
       _this.props.setTokensInfo(tokens)
-      
     } catch (error) {
       _this.handleError(error)
     }

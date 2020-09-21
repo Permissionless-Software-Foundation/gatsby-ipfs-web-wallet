@@ -47,7 +47,7 @@ const reducer = (state, action) => {
     })
   }
 
-  // Get or update tokens information 
+  // Get or update tokens information
   if (action.type === 'SET_TOKENS_INFO') {
     return Object.assign({}, state, {
       tokensInfo: action.value
