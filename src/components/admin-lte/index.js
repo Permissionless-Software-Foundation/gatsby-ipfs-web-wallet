@@ -49,8 +49,8 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = [
-      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
       <Item icon='fas-coins' key='Tokens' text='Tokens' activeOn='/' />,
+      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
       <Item icon='fa-wallet' key='Wallet' text='Wallet' />,
       <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
       <Item icon='fas-cog' key='Configure' text='Configure' />

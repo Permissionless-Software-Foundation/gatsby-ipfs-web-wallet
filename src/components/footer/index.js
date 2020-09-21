@@ -22,13 +22,24 @@ class Footer extends React.Component {
   }
 
   async componentDidMount () {
-    const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
-    const hash = await memoGet.read(addr)
-    console.log(`hash: ${hash}`)
-    this.setState({
-      ipfsHash: hash,
-      ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
-    })
+    try {
+      const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
+      const hash = await memoGet.read(addr)
+      console.log(`hash: ${hash}`)
+      this.setState({
+        ipfsHash: hash,
+        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+      })
+    } catch (err) {
+      console.error('Error trying to retrieve IPFS hash for the site: ', err)
+
+      // Manually set an old hash.
+      const hash = 'QmVm1y1MX4YPzmgQiAafY96Pq7j6GTNMFNuvHki1jAwxYg'
+      this.setState({
+        ipfsHash: hash,
+        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+      })
+    }
 
     // const bchjs = new BCHJS()
     // const balance = await bchjs.Blockbook.balance(addr)
@@ -96,9 +107,7 @@ class Footer extends React.Component {
                     <b>IPFS</b>
                   </span>
                   <b>|</b>
-                  <a href={_this.state.ipfsHashLink}>
-                    {this.state.ipfsHash}
-                  </a>
+                  <a href={_this.state.ipfsHashLink}>{this.state.ipfsHash}</a>
                 </li>
               </ul>
             </div>

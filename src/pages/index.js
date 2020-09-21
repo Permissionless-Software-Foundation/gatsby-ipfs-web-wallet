@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setWalletInfo: value => dispatch({ type: 'SET_WALLET_INFO', value }),
     updateBalance: value => dispatch({ type: 'UPDATE_BALANCE', value }),
-    setBchWallet: value => dispatch({ type: 'SET_BCH_WALLET', value }), 
+    setBchWallet: value => dispatch({ type: 'SET_BCH_WALLET', value }),
     setTokensInfo: value => dispatch({ type: 'SET_TOKENS_INFO', value })
   }
 }
