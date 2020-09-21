@@ -20,3 +20,6 @@ Standard workflow for setting up a development environment for working on this r
 - `cd gatsby-ipfs-web-wallet`
 - `npm install`
 - `npm start`
+
+## License
+MIT
