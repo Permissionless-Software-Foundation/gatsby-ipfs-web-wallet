@@ -22,4 +22,4 @@ Standard workflow for setting up a development environment for working on this r
 - `npm start`
 
 ## License
-MIT
+[MIT](./LICENSE.md)
