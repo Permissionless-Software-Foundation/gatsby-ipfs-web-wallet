@@ -3,10 +3,10 @@ import './footer.css'
 import { Row, Col } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { getWalletInfo } from '../localWallet'
 
 // Get the IPFS hash from the BCH Blockchain.
 import MemoGet from 'memo-get-gatsby'
-const memoGet = new MemoGet()
 
 let _this
 
@@ -19,12 +19,14 @@ class Footer extends React.Component {
       ipfsHash: 'No Result',
       ipfsHashLink: ''
     }
+    //  memo-get-gatsby Instance
+    this.memoGet = _this.instantiateMemoLib()
   }
 
   async componentDidMount () {
     try {
       const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
-      const hash = await memoGet.read(addr)
+      const hash = await _this.memoGet.read(addr)
       console.log(`hash: ${hash}`)
       this.setState({
         ipfsHash: hash,
@@ -44,6 +46,26 @@ class Footer extends React.Component {
     // const bchjs = new BCHJS()
     // const balance = await bchjs.Blockbook.balance(addr)
     // console.log(`balance: ${JSON.stringify(balance, null, 2)}`)
+  }
+
+  //  Instantiate the library with the
+  //  bchjs options established in the configuration section
+  instantiateMemoLib () {
+    // Get wallet info
+    const localStorageInfo = getWalletInfo()
+
+    // Get bchjs options
+    const jwtToken = localStorageInfo.JWT
+    const restURL = localStorageInfo.selectedServer
+    const bchjsOptions = {}
+
+    if (jwtToken) {
+      bchjsOptions.apiToken = jwtToken
+    }
+    if (restURL) {
+      bchjsOptions.restURL = restURL
+    }
+    return new MemoGet(bchjsOptions)
   }
 
   render () {
