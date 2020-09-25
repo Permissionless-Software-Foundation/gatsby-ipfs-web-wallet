@@ -34,19 +34,19 @@ class Configure extends React.Component {
         {/* // Default View */}
         {_this.state.menuItem === 'Configure' && (
           <>
-            <ConfigureInfo />
-
+            <Servers
+              setWalletInfo={_this.props.setWalletInfo}
+              walletInfo={_this.props.walletInfo}
+              setBchWallet={_this.props.setBchWallet}
+            />
+          
             <JsonWebTokens
               setWalletInfo={_this.props.setWalletInfo}
               walletInfo={_this.props.walletInfo}
               setBchWallet={_this.props.setBchWallet}
             />
 
-            <Servers
-              setWalletInfo={_this.props.setWalletInfo}
-              walletInfo={_this.props.walletInfo}
-              setBchWallet={_this.props.setBchWallet}
-            />
+            <ConfigureInfo />
           </>
         )}
 

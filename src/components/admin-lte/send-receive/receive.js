@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Content, Row, Col, Box } from 'adminlte-2-react'
+import copy from 'copy-to-clipboard'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -12,7 +13,8 @@ class Receive extends React.Component {
     super(props)
     _this = this
     this.state = {
-      addr: _this.props.walletInfo.cashAddress
+      addr: _this.props.walletInfo.cashAddress,
+      copySuccess: false
     }
   }
 
@@ -37,11 +39,17 @@ class Receive extends React.Component {
                       </h1>
                     </Col>
                     <Col sm={12} className='text-center mt-2 mb-2'>
+                      {_this.state.copySuccess &&
+                        <div className='copied-message'>
+                          Copied!
+                        </div>}
                       <QRCode
+                        className='qr-code'
                         value={_this.state.addr}
                         size={256}
                         includeMargin
                         fgColor='#333'
+                        onClick={_this.handleCopyAddres}
                       />
                       <p>{_this.state.addr}</p>
                       <label className='switch-address' htmlFor='address-checkbox'>
@@ -77,6 +85,16 @@ class Receive extends React.Component {
     _this.setState({
       addr
     })
+  }
+
+  handleCopyAddres () {
+    const address = _this.state.addr
+    copy(address)
+    _this.setState({ copySuccess: true })
+
+    setTimeout(function () {
+      _this.setState({ copySuccess: false })
+    }, 1500)
   }
 }
 Receive.propTypes = {
