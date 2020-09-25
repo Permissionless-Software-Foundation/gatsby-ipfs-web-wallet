@@ -57,3 +57,11 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  .qr-code {
+    cursor: pointer; 
+  }
+
+  .copied-message {
+    color: #00AA57; 
+  }
