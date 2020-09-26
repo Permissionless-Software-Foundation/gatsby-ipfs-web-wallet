@@ -39,7 +39,7 @@ class Configure extends React.Component {
               walletInfo={_this.props.walletInfo}
               setBchWallet={_this.props.setBchWallet}
             />
-          
+
             <JsonWebTokens
               setWalletInfo={_this.props.setWalletInfo}
               walletInfo={_this.props.walletInfo}
