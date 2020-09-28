@@ -85,7 +85,13 @@ class Send extends React.Component {
                       <p className='error-color'>{_this.state.errMsg}</p>
                     )}
                     {_this.state.txId && (
-                      <p className=''>Transaction ID: {_this.state.txId}</p>
+                      <a
+                        target='_blank'
+                        rel="noopener noreferrer"
+                        href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
+                      >
+                      Transaction ID: {_this.state.txId}
+                      </a>
                     )}
                   </Col>
                 </Row>
