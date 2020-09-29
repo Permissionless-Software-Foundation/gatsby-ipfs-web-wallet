@@ -43,7 +43,8 @@ class AdminLTEPage extends React.Component {
       menuIsHide: false,
       walletInfo: {},
       inFetch: false,
-      usdBalance: 0
+      usdBalance: 0, 
+      currentRate: 0
     }
 
     _this.BchWallet = BchWallet
@@ -115,6 +116,7 @@ class AdminLTEPage extends React.Component {
                   updateBalance={_this.props.updateBalance}
                   setBchWallet={_this.props.setBchWallet}
                   bchWallet={_this.props.bchWallet}
+                  currentRate={_this.state.currentRate}
                 />
               )}
 
@@ -174,6 +176,9 @@ class AdminLTEPage extends React.Component {
 
         const bchjs = bchWalletLib.bchjs
         const currentRate = await bchjs.Price.current('usd')
+        _this.setState({
+          currentRate: currentRate
+        })
         _this.props.updateBalance({ myBalance, currentRate })
       }
 
