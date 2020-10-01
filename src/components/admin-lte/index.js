@@ -43,7 +43,7 @@ class AdminLTEPage extends React.Component {
       menuIsHide: false,
       walletInfo: {},
       inFetch: false,
-      usdBalance: 0, 
+      usdBalance: 0,
       currentRate: 0
     }
 

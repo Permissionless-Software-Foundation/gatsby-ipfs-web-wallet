@@ -81,12 +81,12 @@ class Send extends React.Component {
                         }
                       />
                       <div className="text-left pb-4">
-                      <p>
-                        { _this.state.sendCurrency === 'BCH'
-                            ? `USD: ${ (_this.state.amountSat * (_this.props.currentRate / 100).toFixed(2)) }`
-                            : `BCH: ${ (_this.state.amountSat / (_this.props.currentRate / 100).toFixed(2)) }`
-                        }
-                      </p>
+                        <p>
+                          { _this.state.sendCurrency === 'BCH'
+                              ? `USD: ${ (_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2) }`
+                              : `BCH: ${ (_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8) }`
+                          }
+                        </p>
                       </div>
                       <Button
                         text='Send'
@@ -149,7 +149,11 @@ class Send extends React.Component {
       _this.validateInputs()
 
       const bchWalletLib = _this.props.bchWallet
-      const { address, amountSat } = _this.state
+      let { address, amountSat } = _this.state
+
+      if(_this.state.sendCurrency === 'USD') {
+        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8); 
+      }
 
       const receivers = [
         {
