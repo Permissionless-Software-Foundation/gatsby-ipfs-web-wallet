@@ -7,13 +7,13 @@ import siteConfig from '../site-config'
 // import Audit from "./audit"
 
 import AdminLTE, { Sidebar, Navbar, Box } from 'adminlte-2-react'
-import ScannerModal from '../qr-scanner/modal'
+// import ScannerModal from '../qr-scanner/modal'
 
 import Layout from '../layout'
 import './admin-lte.css'
 // import BchWallet from 'minimal-slp-wallet'
 import VersionStatus from '../version-status'
-import { BrowserRouter as Router } from 'react-router-dom'
+// import { BrowserRouter as Router } from 'react-router-dom'
 import menuComponents from '../menu-components.js'
 
 import SendReceive from './send-receive'
@@ -52,7 +52,7 @@ class AdminLTEPage extends React.Component {
       <Item icon='fas-coins' key='Tokens' text='Tokens' activeOn='/' />,
       <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
       <Item icon='fa-wallet' key='Wallet' text='Wallet' />,
-      <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />,
+      /* <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />, */
       <Item icon='fas-cog' key='Configure' text='Configure' />
     ]
   }
@@ -149,13 +149,15 @@ class AdminLTEPage extends React.Component {
             </div>
           </Layout>
         </AdminLTE>
+        {/*
         <Router>
           <ScannerModal
             show={_this.state.showScannerModal}
             handleOnHide={_this.onHandleToggleScannerModal}
             path='/'
           />
-        </Router>
+        </Router> */
+        }
       </>
     )
   }
@@ -190,7 +192,7 @@ class AdminLTEPage extends React.Component {
 
   async componentDidMount () {
     _this.customMenuItems()
-    _this.addOnClickEventToScanner()
+    // _this.addOnClickEventToScanner()
 
     _this.activeItemById('Tokens')
 

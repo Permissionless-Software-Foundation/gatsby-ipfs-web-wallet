@@ -56,7 +56,7 @@
   }
   .token-botton-container{
     max-width: 70%;
-    margin: 0 auto;
+    margin: 0 auto!important;
   }
   .btn-send-token{
     min-width: 100%;
