@@ -87,7 +87,7 @@ class Send extends React.Component {
                     {_this.state.txId && (
                       <a
                         target='_blank'
-                        rel="noopener noreferrer"
+                        rel='noopener noreferrer'
                         href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
                       >
                       Transaction ID: {_this.state.txId}
