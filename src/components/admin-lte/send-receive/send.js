@@ -68,7 +68,7 @@ class Send extends React.Component {
                       <Text
                         id='amountToSend'
                         name='amountSat'
-                        value={ _this.state.amountSat }
+                        value={_this.state.amountSat}
                         placeholder={`Enter amount to send in ${_this.state.sendCurrency}`}
                         label='Amount'
                         labelPosition='above'
@@ -130,7 +130,7 @@ class Send extends React.Component {
       _this.setState({
         sendCurrency: 'BCH'
       })
-      if(_this.state.amountSat > 0) { 
+      if (_this.state.amountSat > 0) {
         _this.setState({
           amountSat: (_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8)
         })
@@ -139,7 +139,7 @@ class Send extends React.Component {
       _this.setState({
         sendCurrency: 'USD'
       })
-      if(_this.state.amountSat > 0) { 
+      if (_this.state.amountSat > 0) {
         _this.setState({
           amountSat: (_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2)
         })
