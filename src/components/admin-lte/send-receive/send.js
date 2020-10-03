@@ -68,6 +68,7 @@ class Send extends React.Component {
                       <Text
                         id='amountToSend'
                         name='amountSat'
+                        value={ _this.state.amountSat }
                         placeholder={`Enter amount to send in ${_this.state.sendCurrency}`}
                         label='Amount'
                         labelPosition='above'
@@ -80,12 +81,11 @@ class Send extends React.Component {
                           />
                         }
                       />
-                      <div className="text-left pb-4">
+                      <div className='text-left pb-4'>
                         <p>
-                          { _this.state.sendCurrency === 'BCH'
-                              ? `USD: ${ (_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2) }`
-                              : `BCH: ${ (_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8) }`
-                          }
+                          {_this.state.sendCurrency === 'BCH'
+                            ? `USD: ${(_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2)}`
+                            : `BCH: ${(_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8)}`}
                         </p>
                       </div>
                       <Button
@@ -103,7 +103,7 @@ class Send extends React.Component {
                     {_this.state.txId && (
                       <a
                         target='_blank'
-                        rel="noopener noreferrer"
+                        rel='noopener noreferrer'
                         href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
                       >
                       Transaction ID: {_this.state.txId}
@@ -126,14 +126,24 @@ class Send extends React.Component {
   }
 
   handleChangeCurrency () {
-    if(_this.state.sendCurrency === 'USD') {
+    if (_this.state.sendCurrency === 'USD') {
       _this.setState({
         sendCurrency: 'BCH'
       })
+      if(_this.state.amountSat > 0) { 
+        _this.setState({
+          amountSat: (_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8)
+        })
+      }
     } else {
       _this.setState({
         sendCurrency: 'USD'
       })
+      if(_this.state.amountSat > 0) { 
+        _this.setState({
+          amountSat: (_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2)
+        })
+      }
     }
   }
 
@@ -151,8 +161,8 @@ class Send extends React.Component {
       const bchWalletLib = _this.props.bchWallet
       let { address, amountSat } = _this.state
 
-      if(_this.state.sendCurrency === 'USD') {
-        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8); 
+      if (_this.state.sendCurrency === 'USD') {
+        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
       }
 
       const receivers = [
