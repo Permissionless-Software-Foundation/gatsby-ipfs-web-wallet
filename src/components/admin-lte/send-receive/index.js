@@ -23,6 +23,7 @@ class SendReceive extends React.Component {
             <Send
               updateBalance={_this.props.updateBalance}
               bchWallet={_this.props.bchWallet}
+              currentRate={_this.props.currentRate}
             />
           </Content>
         ) : (
@@ -45,7 +46,8 @@ SendReceive.propTypes = {
   walletInfo: PropTypes.object.isRequired,
   updateBalance: PropTypes.func.isRequired,
   setBchWallet: PropTypes.func.isRequired,
-  bchWallet: PropTypes.object
+  bchWallet: PropTypes.object,
+  currentRate: PropTypes.number
 }
 
 export default SendReceive
