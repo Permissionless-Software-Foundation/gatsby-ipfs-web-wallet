@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Configure from './configure'
-import Tokens from './tokens'
-import Wallet from './wallet'
+
 import siteConfig from '../site-config'
 // import Audit from "./audit"
 
@@ -15,8 +13,6 @@ import './admin-lte.css'
 import VersionStatus from '../version-status'
 // import { BrowserRouter as Router } from 'react-router-dom'
 import menuComponents from '../menu-components.js'
-
-import SendReceive from './send-receive'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -50,11 +46,7 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = [
-      <Item icon='fas-coins' key='Tokens' text='Tokens' activeOn='/' />,
-      <Item icon='fa-exchange-alt' key='SendReceive' text='Send/Receive' />,
-      <Item icon='fa-wallet' key='Wallet' text='Wallet' />,
-      /* <Item icon='fa-qrcode' key='qrReader' text='Qr Scanner' />, */
-      <Item icon='fas-cog' key='Configure' text='Configure' />
+
     ]
   }
 
@@ -101,7 +93,7 @@ class AdminLTEPage extends React.Component {
 
             {_this.sidebar}
 
-            {_this.renderNewMenuItems()}
+            {_this.renderNewMenuItems(_this.props)}
           </Sidebar.Core>
 
           <Navbar.Core>
@@ -109,45 +101,7 @@ class AdminLTEPage extends React.Component {
           </Navbar.Core>
           <Layout path='/'>
             <div className='components-container'>
-              {_this.state.section === 'Send/Receive' && (
-                <SendReceive
-                  setWalletInfo={_this.props.setWalletInfo}
-                  walletInfo={_this.props.walletInfo}
-                  updateBalance={_this.props.updateBalance}
-                  setBchWallet={_this.props.setBchWallet}
-                  bchWallet={_this.props.bchWallet}
-                  currentRate={_this.state.currentRate}
-                />
-              )}
-
-              {_this.state.section === 'Wallet' && (
-                <Wallet
-                  setWalletInfo={_this.props.setWalletInfo}
-                  walletInfo={_this.props.walletInfo}
-                  updateBalance={_this.props.updateBalance}
-                  setBchWallet={_this.props.setBchWallet}
-                  bchWallet={_this.props.bchWallet}
-                />
-              )}
-
-              {_this.state.section === 'Tokens' && (
-                <Tokens
-                  walletInfo={_this.props.walletInfo}
-                  bchWallet={_this.props.bchWallet}
-                  setTokensInfo={_this.props.setTokensInfo}
-                  tokensInfo={_this.props.tokensInfo}
-                />
-              )}
-
-              {_this.state.section === 'Configure' && (
-                <Configure
-                  walletInfo={_this.props.walletInfo}
-                  setWalletInfo={_this.props.setWalletInfo}
-                  setBchWallet={_this.props.setBchWallet}
-                />
-              )}
-
-              {_this.renderNewViewItems()}
+              {_this.renderNewViewItems(_this.props)}
             </div>
           </Layout>
         </AdminLTE>
@@ -329,9 +283,10 @@ class AdminLTEPage extends React.Component {
 
   // Render non-default menu items. The catch ensures that the render function
   // won't be interrupted if there is an issue porting new menu items.
-  renderNewMenuItems () {
+  renderNewMenuItems (props) {
     try {
-      return menuComponents && menuComponents.map(m => m.menuItem)
+      const _menuComponents = menuComponents(props)
+      return _menuComponents && _menuComponents.map(m => m.menuItem)
     } catch (err) {
       // TODO: Figure out how to return an invisible Item.
       return _this.getInvisibleMenuItem() // <Item style={{ display: 'none' }} />
@@ -339,11 +294,12 @@ class AdminLTEPage extends React.Component {
   }
 
   // Displays the View corresponding to the dynamically loaded menu item.
-  renderNewViewItems () {
+  renderNewViewItems (props) {
     try {
+      const _menuComponents = menuComponents(props)
       return (
-        menuComponents &&
-        menuComponents.map(m => {
+        _menuComponents &&
+        _menuComponents.map(m => {
           if (_this.state.section === m.key) {
             return m.component
           }
