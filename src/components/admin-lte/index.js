@@ -21,10 +21,7 @@ const { Item } = Sidebar
 // Screen width to hide the side menu on click
 const MENU_HIDE_WIDTH = 770
 
-const BchWallet =
-  typeof window !== 'undefined'
-    ? window.SlpWallet
-    : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 
@@ -45,9 +42,7 @@ class AdminLTEPage extends React.Component {
 
     _this.BchWallet = BchWallet
 
-    _this.sidebar = [
-
-    ]
+    _this.sidebar = []
   }
 
   render () {
@@ -66,7 +61,6 @@ class AdminLTEPage extends React.Component {
               >
                 <div className='sidebar-balance'>
                   <div>
-
                     {!_this.state.inFetch && (
                       <div className='siderbar-balance-content'>
                         <span>
@@ -75,8 +69,7 @@ class AdminLTEPage extends React.Component {
                           <span style={{ fontSize: '18px' }}>
                             {_this.state.bchBalance}
                           </span>
-                          <small>USD:  ${_this.state.usdBalance}</small>
-
+                          <small>USD: ${_this.state.usdBalance}</small>
                         </span>
                         <FontAwesomeIcon
                           className='ml-1 icon'
@@ -84,11 +77,11 @@ class AdminLTEPage extends React.Component {
                           icon='redo'
                           onClick={_this.handleGetBalance}
                         />
-                      </div>)}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Box>
-
             </Item>
 
             {_this.sidebar}
@@ -112,8 +105,7 @@ class AdminLTEPage extends React.Component {
             handleOnHide={_this.onHandleToggleScannerModal}
             path='/'
           />
-        </Router> */
-        }
+        </Router> */}
       </>
     )
   }
@@ -306,7 +298,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) { }
+    } catch (err) {}
   }
 
   getInvisibleMenuItem () {

@@ -8,27 +8,31 @@ import SendReceive from './admin-lte/send-receive'
 
 const { Item } = Sidebar
 
-const MenuComponents = (props) => {
+const MenuComponents = props => {
   return [
     {
-      key: 'Send/Receive',
-      component: <SendReceive key='Send/Receive' {...props} />,
-      menuItem: <Item icon='fa-exchange-alt' key='Send/Receive' text='Send/Receive' />
+      key: 'Tokens',
+      component: <Tokens key="Tokens" {...props} />,
+      menuItem: (
+        <Item icon="fas-coins" key="Tokens" text="Tokens" activeOn="/" />
+      )
     },
     {
-      key: 'Tokens',
-      component: <Tokens key='Tokens' {...props} />,
-      menuItem: <Item icon='fas-coins' key='Tokens' text='Tokens' activeOn='/' />
+      key: 'Send/Receive BCH',
+      component: <SendReceive key="Send/Receive BCH" {...props} />,
+      menuItem: (
+        <Item icon="fa-exchange-alt" key="Send/Receive BCH" text="Send/Receive BCH" />
+      )
     },
     {
       key: 'Wallet',
-      component: <Wallet key='Wallet' {...props} />,
-      menuItem: <Item icon='fa-wallet' key='Wallet' text='Wallet' />
+      component: <Wallet key="Wallet" {...props} />,
+      menuItem: <Item icon="fa-wallet" key="Wallet" text="Wallet" />
     },
     {
       key: 'Configure',
-      component: <Configure key='Configure' {...props} />,
-      menuItem: <Item icon='fas-cog' key='Configure' text='Configure' />
+      component: <Configure key="Configure" {...props} />,
+      menuItem: <Item icon="fas-cog" key="Configure" text="Configure" />
     }
   ]
 }
