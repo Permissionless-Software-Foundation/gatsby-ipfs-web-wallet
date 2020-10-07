@@ -32,7 +32,7 @@ class AdminLTEPage extends React.Component {
     this.state = {
       bchBalance: 0,
       showScannerModal: false,
-      section: 'Tokens',
+      section: '',
       menuIsHide: false,
       walletInfo: {},
       inFetch: false,
@@ -43,6 +43,12 @@ class AdminLTEPage extends React.Component {
     _this.BchWallet = BchWallet
 
     _this.sidebar = []
+
+    // This variables don't get added to
+    // the state to avoid 'setState()' errors inside render()
+    _this.activedItem = ''
+    _this.menuLoaded = false
+    _this.defaultSection = 'Tokens'
   }
 
   render () {
@@ -145,8 +151,6 @@ class AdminLTEPage extends React.Component {
     _this.customMenuItems()
     // _this.addOnClickEventToScanner()
 
-    _this.activeItemById('Tokens')
-
     _this.setDefaultServers()
 
     await _this.updateState()
@@ -159,6 +163,17 @@ class AdminLTEPage extends React.Component {
 
   componentDidUpdate () {
     _this.updateState()
+  }
+
+  componentWillUpdate () {
+    // Update state with the active item-menu selected in component-menu.js
+    if (_this.menuLoaded && !_this.state.section) {
+      if (_this.activedItem) {
+        _this.changeSection(_this.activedItem)
+      } else {
+        _this.changeSection(_this.defaultSection)
+      }
+    }
   }
 
   // Update component state when props change
@@ -194,7 +209,7 @@ class AdminLTEPage extends React.Component {
           childrens[i].id = textValue
           const ignore = ignoreItems.find(val => textValue === val)
           // Ignore menu items without link to components
-          if (!ignore) {
+          if (!ignore && childrens[i]) {
             childrens[i].onclick = () => this.changeSection(textValue)
           }
         }
@@ -218,6 +233,7 @@ class AdminLTEPage extends React.Component {
   // to the selected section. each menu item corresponds
   // to a section.
   changeSection (section) {
+    if (_this.state.section === section) return
     _this.activeItemById(section)
     _this.setState({
       section: section
@@ -229,9 +245,9 @@ class AdminLTEPage extends React.Component {
   activeItemById (id) {
     try {
       const elementActived = document.getElementsByClassName('active')
-      elementActived[0].className = ''
+      if (elementActived[0]) { elementActived[0].className = '' }
       const element = document.getElementById(id)
-      element.className = `${element.className} active`
+      if (element) element.className = `${element.className} active`
     } catch (error) {
       console.error(error)
     }
@@ -278,7 +294,15 @@ class AdminLTEPage extends React.Component {
   renderNewMenuItems (props) {
     try {
       const _menuComponents = menuComponents(props)
-      return _menuComponents && _menuComponents.map(m => m.menuItem)
+      return _menuComponents && _menuComponents.map((m, i) => {
+        if (m.active && !_this.activedItem && !_this.menuLoaded) {
+          _this.activedItem = m.key // Prevents this action from being repeated
+        }
+        if (!_this.menuLoaded && i === _menuComponents.length - 1) {
+          _this.menuLoaded = true
+        }
+        return m.menuItem
+      })
     } catch (err) {
       // TODO: Figure out how to return an invisible Item.
       return _this.getInvisibleMenuItem() // <Item style={{ display: 'none' }} />
@@ -298,7 +322,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) {}
+    } catch (err) { }
   }
 
   getInvisibleMenuItem () {
