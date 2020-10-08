@@ -84,8 +84,14 @@ class Send extends React.Component {
                       <div className='text-left pb-4'>
                         <p>
                           {_this.state.sendCurrency === 'BCH'
-                            ? `USD: ${(_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2)}`
-                            : `BCH: ${(_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8)}`}
+                            ? `USD: ${(
+                                _this.state.amountSat *
+                                (_this.props.currentRate / 100)
+                              ).toFixed(2)}`
+                            : `BCH: ${(
+                                _this.state.amountSat /
+                                (_this.props.currentRate / 100)
+                              ).toFixed(8)}`}
                         </p>
                       </div>
                       <Button
@@ -106,7 +112,7 @@ class Send extends React.Component {
                         rel='noopener noreferrer'
                         href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
                       >
-                      Transaction ID: {_this.state.txId}
+                        Transaction ID: {_this.state.txId}
                       </a>
                     )}
                   </Col>
@@ -132,7 +138,10 @@ class Send extends React.Component {
       })
       if (_this.state.amountSat > 0) {
         _this.setState({
-          amountSat: (_this.state.amountSat / (_this.props.currentRate / 100)).toFixed(8)
+          amountSat: (
+            _this.state.amountSat /
+            (_this.props.currentRate / 100)
+          ).toFixed(8)
         })
       }
     } else {
@@ -141,7 +150,10 @@ class Send extends React.Component {
       })
       if (_this.state.amountSat > 0) {
         _this.setState({
-          amountSat: (_this.state.amountSat * (_this.props.currentRate / 100)).toFixed(2)
+          amountSat: (
+            _this.state.amountSat *
+            (_this.props.currentRate / 100)
+          ).toFixed(2)
         })
       }
     }
@@ -274,7 +286,6 @@ class Send extends React.Component {
   }
 
   onHandleScan (data) {
-    const validateAdrrs = ['bitcoincash', 'simpleledger']
     try {
       _this.resetAddressValue()
       if (!data) {
@@ -283,22 +294,14 @@ class Send extends React.Component {
       if (typeof data !== 'string') {
         throw new Error('It should scan a bch address or slp address')
       }
-      // Validates that the words "bitcoincash" or "simpleledger" are contained
-      let isValid = false
-      for (let i = 0; i < validateAdrrs.length; i++) {
-        isValid = isValid ? true : data.match(validateAdrrs[i])
-        if (isValid) {
-          _this.setState({
-            address: data,
-            errMsg: ''
-          })
-          const addressEle = document.getElementById('addressToSend')
-          addressEle.value = data
-        }
-      }
-      if (!isValid) {
-        throw new Error('It should scan a bch address or slp address')
-      }
+
+      _this.setState({
+        address: data,
+        errMsg: ''
+      })
+      const addressEle = document.getElementById('addressToSend')
+      addressEle.value = data
+
       _this.onHandleToggleScanner()
     } catch (error) {
       _this.onHandleToggleScanner()
