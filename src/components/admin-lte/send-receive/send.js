@@ -36,52 +36,52 @@ class Send extends React.Component {
             <Col sm={8}>
               <Box
                 loaded={!_this.state.inFetch}
-                className="hover-shadow border-none mt-2"
+                className='hover-shadow border-none mt-2'
               >
                 <Row>
-                  <Col sm={12} className="text-center">
+                  <Col sm={12} className='text-center'>
                     <h1>
                       <FontAwesomeIcon
-                        className="title-icon"
-                        size="xs"
-                        icon="paper-plane"
+                        className='title-icon'
+                        size='xs'
+                        icon='paper-plane'
                       />
                       <span>Send</span>
                     </h1>
-                    <Box className="border-none">
+                    <Box className='border-none'>
                       <Text
-                        id="addressToSend"
-                        name="address"
-                        placeholder="Enter bch address to send"
-                        label="BCH Address"
-                        labelPosition="above"
+                        id='addressToSend'
+                        name='address'
+                        placeholder='Enter bch address to send'
+                        label='BCH Address'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
-                        className="title-icon"
+                        className='title-icon'
                         buttonRight={
                           <Button
-                            icon="fa-qrcode"
+                            icon='fa-qrcode'
                             onClick={_this.handleModal}
                           />
                         }
                       />
 
                       <Text
-                        id="amountToSend"
-                        name="amountSat"
+                        id='amountToSend'
+                        name='amountSat'
                         value={_this.state.amountSat}
                         placeholder={`Enter amount to send in ${_this.state.sendCurrency}`}
-                        label="Amount"
-                        labelPosition="above"
+                        label='Amount'
+                        labelPosition='above'
                         onChange={_this.handleUpdate}
                         addonRight={_this.state.sendCurrency}
                         buttonRight={
                           <Button
-                            icon="fa-random"
+                            icon='fa-random'
                             onClick={_this.handleChangeCurrency}
                           />
                         }
                       />
-                      <div className="text-left pb-4">
+                      <div className='text-left pb-4'>
                         <p>
                           {_this.state.sendCurrency === 'BCH'
                             ? `USD: ${(
@@ -95,21 +95,21 @@ class Send extends React.Component {
                         </p>
                       </div>
                       <Button
-                        text="Send"
-                        type="primary"
-                        className="btn-lg"
+                        text='Send'
+                        type='primary'
+                        className='btn-lg'
                         onClick={_this.handleSend}
                       />
                     </Box>
                   </Col>
-                  <Col sm={12} className="text-center">
+                  <Col sm={12} className='text-center'>
                     {_this.state.errMsg && (
-                      <p className="error-color">{_this.state.errMsg}</p>
+                      <p className='error-color'>{_this.state.errMsg}</p>
                     )}
                     {_this.state.txId && (
                       <a
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        target='_blank'
+                        rel='noopener noreferrer'
                         href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
                       >
                         Transaction ID: {_this.state.txId}
@@ -324,9 +324,9 @@ class Send extends React.Component {
             Rate limits exceeded, increase rate limits with a JWT token from
             <a
               style={{ marginLeft: '5px' }}
-              target="_blank"
-              href="https://fullstack.cash"
-              rel="noopener noreferrer"
+              target='_blank'
+              href='https://fullstack.cash'
+              rel='noopener noreferrer'
             >
               FullStack.cash
             </a>
