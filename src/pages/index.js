@@ -9,8 +9,8 @@ const AdminLTE =
 
 // Maps the props that are going to be sended
 // to the component connected with Redux
-const mapStateToProps = ({ walletInfo, bchBalance, bchWallet, tokensInfo }) => {
-  return { walletInfo, bchBalance, bchWallet, tokensInfo }
+const mapStateToProps = ({ walletInfo, bchBalance, bchWallet, tokensInfo, currentRate }) => {
+  return { walletInfo, bchBalance, bchWallet, tokensInfo, currentRate }
 }
 
 // Send each action of the reducer as props
