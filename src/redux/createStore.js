@@ -37,7 +37,8 @@ const reducer = (state, action) => {
     const usdBalance = Number(_usdBalance.toFixed(2)) // usd balance
 
     return Object.assign({}, state, {
-      bchBalance: { bchBalance, usdBalance }
+      bchBalance: { bchBalance, usdBalance },
+      currentRate
     })
   }
   // Adds the minimal-slp-wallet instance to the Redux state
@@ -93,7 +94,8 @@ const initialState = {
   walletInfo: localStorageInfo, // Object wallet info
   bchBalance: { bchBalance: 0, usdBalance: 0 }, // Wallet Balance
   bchWallet: instanceWallet(), // minimal-slp-wallet instance
-  tokensInfo: []
+  tokensInfo: [],
+  currentRate: 0
 }
 
 const createStore = () => reduxCreateStore(reducer, initialState)
