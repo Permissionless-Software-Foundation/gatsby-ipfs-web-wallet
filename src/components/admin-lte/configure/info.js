@@ -49,20 +49,9 @@ class ConfigureInfo extends React.Component {
                     Be Careful
                   </h3>
                   <p>
-                    Backup your wallet first. Updating the configuration
+                    Backup your wallet first, by writing down your 12-word mnemonic.
+                    Updating the configuration
                     will restart the app.
-                  </p>
-                  <p>
-                    This is just a placeholder. This View will allow the
-                    user to pick alternate back-end servers. The default
-                    will be{' '}
-                    <a
-                      href='https://fullstack.cash'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                    >
-                      FullStack.cash
-                    </a>
                   </p>
                   <Button
                     text='Clear LocalStorage'

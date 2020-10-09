@@ -4,7 +4,7 @@ import { Content, Row, Col, Box, Button } from 'adminlte-2-react'
 import TokenCard from './token-card'
 import TokenModal from './token-modal'
 import Spinner from '../../../images/loader.gif'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SendTokens from './send-tokens'
 
 let _this
@@ -24,7 +24,7 @@ class Tokens extends React.Component {
   }
 
   render () {
-    const { JWT } = _this.props.walletInfo
+    // const { JWT } = _this.props.walletInfo
 
     return (
       <>
@@ -54,27 +54,6 @@ class Tokens extends React.Component {
           </div>
         ) : (
           <Content>
-            {!JWT && (
-              <Box padding='true' className='container-nofound'>
-                <Row>
-                  <Col xs={12}>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      icon='exclamation-triangle'
-                    />
-                  </Col>
-
-                  <Col xs={12}>
-                    <em>
-                      You don't have a registered JWT, you could encounter
-                      errors viewing some of your tokens.
-                    </em>
-                  </Col>
-                </Row>
-              </Box>
-            )}
-            <br />
             {_this.state.errMsg && (
               <Box padding='true' className='container-nofound'>
                 <Row>
@@ -163,8 +142,8 @@ class Tokens extends React.Component {
   }
 
   // Wrapper for handleGetTokens()
-  async onHandleGetTokens () {
-    return _this.handleGetTokens()
+  async onHandleGetTokens (refresh = null) {
+    return _this.handleGetTokens(refresh)
   }
 
   async componentDidMount () {

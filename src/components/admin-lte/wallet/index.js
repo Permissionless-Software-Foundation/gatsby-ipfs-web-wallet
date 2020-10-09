@@ -19,6 +19,8 @@ class Wallet extends React.Component {
   render() {
     return (
       <Content>
+        <InfoWallets />
+
         {_this.props.walletInfo.mnemonic && (
           <WalletInfo walletInfo={_this.props.walletInfo} />
         )}
@@ -36,8 +38,6 @@ class Wallet extends React.Component {
           setBchWallet={_this.props.setBchWallet}
           walletInfo={_this.props.walletInfo}
         />
-
-        <InfoWallets />
 
         {this.props.importComponents}
       </Content>
