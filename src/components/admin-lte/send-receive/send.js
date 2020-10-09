@@ -177,11 +177,14 @@ class Send extends React.Component {
         amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
       }
 
+      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      console.log(`Sending ${amountToSend} satoshis to ${address}`)
+
       const receivers = [
         {
           address,
           // amount in satoshis, 1 satoshi = 0.00000001 Bitcoin
-          amountSat: Math.floor(Number(amountSat) * 100000000)
+          amountSat: amountToSend
         }
       ]
       // console.log("receivers", receivers)
