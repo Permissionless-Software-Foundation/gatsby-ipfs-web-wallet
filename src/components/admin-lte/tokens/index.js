@@ -163,8 +163,8 @@ class Tokens extends React.Component {
   }
 
   // Wrapper for handleGetTokens()
-  async onHandleGetTokens () {
-    return _this.handleGetTokens()
+  async onHandleGetTokens (refresh = null) {
+    return _this.handleGetTokens(refresh)
   }
 
   async componentDidMount () {
