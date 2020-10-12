@@ -17,14 +17,17 @@ class WalletInfo extends React.Component {
       address: '',
       slpAddress: '',
       legacyAddress: '',
-      hdPath: ''
+      hdPath: '', 
+      blurredMnemonic: true
     }
   }
 
   render () {
+    const eyeIcon = _this.state.blurredMnemonic ? 'eye-slash' : 'eye'
+
     return (
       <Row>
-        <Col sm={2} />
+        <Col sm={3} lg={2} />
         <Col sm={8}>
           <Box className='hover-shadow border-none mt-2'>
             <Row>
@@ -41,14 +44,20 @@ class WalletInfo extends React.Component {
 
               <Col sm={12} className='text-center   wallet-info-container'>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Mnemonic:</b> {_this.state.mnemonic}
+                      <b>Mnemonic:</b> <span className={ _this.state.blurredMnemonic ? 'blurred' : '' }> {_this.state.mnemonic} </span>
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
+                      size='lg'
+                      onClick={() => _this.blurMnemonic()}
+                      icon={eyeIcon}
+                    />
+                    <FontAwesomeIcon
+                      className='icon btn-animation ml-1'
                       size='lg'
                       onClick={() => _this.copyToClipBoard('mnemonic')}
                       icon='copy'
@@ -56,12 +65,12 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>Private Key: </b> {_this.state.privateKey}
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -71,12 +80,12 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>Cash Address: </b> {_this.state.cashAddress}
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -86,12 +95,12 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>Address: </b> {_this.state.address}
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -101,12 +110,12 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>Slp Address: </b> {_this.state.slpAddress}
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -116,12 +125,12 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>Legacy Address: </b> {_this.state.legacyAddress}
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -131,13 +140,13 @@ class WalletInfo extends React.Component {
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={10} sm={11}>
+                  <Col xs={8} sm={9} lg={10}>
                     <span>
                       <b>HD Path: </b>
                       <span id='hdpathValue'>{_this.state.hdPath}</span>
                     </span>
                   </Col>
-                  <Col xs={2} sm={1}>
+                  <Col xs={4} sm={3} lg={2} className="text-right">
                     <FontAwesomeIcon
                       className='icon btn-animation'
                       size='lg'
@@ -150,9 +159,15 @@ class WalletInfo extends React.Component {
             </Row>
           </Box>
         </Col>
-        <Col sm={2} />
+        <Col sm={3} lg={2} />
       </Row>
     )
+  }
+
+  blurMnemonic () { 
+    _this.setState({
+      blurredMnemonic: (!_this.state.blurredMnemonic)
+    })
   }
 
   // copy info  to clipboard
