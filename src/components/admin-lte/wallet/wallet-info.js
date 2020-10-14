@@ -18,16 +18,16 @@ class WalletInfo extends React.Component {
       slpAddress: '',
       legacyAddress: '',
       hdPath: '',
-      blurredMnemonic: true, 
+      blurredMnemonic: true,
       blurredPrivateKey: true
     }
   }
 
   render () {
     const eyeIcon = {
-      mnemonic: _this.state.blurredMnemonic ? 'eye-slash' : 'eye', 
-      privateKey: _this.state.blurredPrivateKey ? 'eye-slash' : 'eye',
-    } 
+      mnemonic: _this.state.blurredMnemonic ? 'eye-slash' : 'eye',
+      privateKey: _this.state.blurredPrivateKey ? 'eye-slash' : 'eye'
+    }
 
     return (
       <Row>
@@ -179,6 +179,7 @@ class WalletInfo extends React.Component {
       blurredMnemonic: (!_this.state.blurredMnemonic)
     })
   }
+
   blurPrivateKey () {
     _this.setState({
       blurredPrivateKey: (!_this.state.blurredPrivateKey)
