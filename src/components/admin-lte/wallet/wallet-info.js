@@ -18,12 +18,16 @@ class WalletInfo extends React.Component {
       slpAddress: '',
       legacyAddress: '',
       hdPath: '',
-      blurredMnemonic: true
+      blurredMnemonic: true,
+      blurredPrivateKey: true
     }
   }
 
   render () {
-    const eyeIcon = _this.state.blurredMnemonic ? 'eye-slash' : 'eye'
+    const eyeIcon = {
+      mnemonic: _this.state.blurredMnemonic ? 'eye-slash' : 'eye',
+      privateKey: _this.state.blurredPrivateKey ? 'eye-slash' : 'eye'
+    }
 
     return (
       <Row>
@@ -54,7 +58,7 @@ class WalletInfo extends React.Component {
                       className='icon btn-animation'
                       size='lg'
                       onClick={() => _this.blurMnemonic()}
-                      icon={eyeIcon}
+                      icon={eyeIcon.mnemonic}
                     />
                     <FontAwesomeIcon
                       className='icon btn-animation ml-1'
@@ -67,12 +71,18 @@ class WalletInfo extends React.Component {
                 <Row className='wallet-info-content mt-1 text-left'>
                   <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Private Key: </b> {_this.state.privateKey}
+                      <b>Private Key: </b> <span className={_this.state.blurredPrivateKey ? 'blurred' : ''}> {_this.state.privateKey} </span>
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
                     <FontAwesomeIcon
                       className='icon btn-animation'
+                      size='lg'
+                      onClick={() => _this.blurPrivateKey()}
+                      icon={eyeIcon.privateKey}
+                    />
+                    <FontAwesomeIcon
+                      className='icon btn-animation ml-1'
                       size='lg'
                       onClick={() => _this.copyToClipBoard('privateKey')}
                       icon='copy'
@@ -167,6 +177,12 @@ class WalletInfo extends React.Component {
   blurMnemonic () {
     _this.setState({
       blurredMnemonic: (!_this.state.blurredMnemonic)
+    })
+  }
+
+  blurPrivateKey () {
+    _this.setState({
+      blurredPrivateKey: (!_this.state.blurredPrivateKey)
     })
   }
 
