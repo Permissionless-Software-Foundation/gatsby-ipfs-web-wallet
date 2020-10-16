@@ -201,6 +201,7 @@ class SendTokens extends React.Component {
 
       setTimeout(() => {
         _this.props.handleSend(true)
+        _this.props.handleBack()
       }, 3000)
     } catch (error) {
       _this.handleError(error)
