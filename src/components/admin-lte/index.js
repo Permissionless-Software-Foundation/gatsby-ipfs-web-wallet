@@ -245,7 +245,9 @@ class AdminLTEPage extends React.Component {
   activeItemById (id) {
     try {
       const elementActived = document.getElementsByClassName('active')
-      if (elementActived[0]) { elementActived[0].className = '' }
+      if (elementActived[0]) {
+        elementActived[0].className = ''
+      }
       const element = document.getElementById(id)
       if (element) element.className = `${element.className} active`
     } catch (error) {
@@ -294,15 +296,18 @@ class AdminLTEPage extends React.Component {
   renderNewMenuItems (props) {
     try {
       const _menuComponents = menuComponents(props)
-      return _menuComponents && _menuComponents.map((m, i) => {
-        if (m.active && !_this.activedItem && !_this.menuLoaded) {
-          _this.activedItem = m.key // Prevents this action from being repeated
-        }
-        if (!_this.menuLoaded && i === _menuComponents.length - 1) {
-          _this.menuLoaded = true
-        }
-        return m.menuItem
-      })
+      return (
+        _menuComponents &&
+        _menuComponents.map((m, i) => {
+          if (m.active && !_this.activedItem && !_this.menuLoaded) {
+            _this.activedItem = m.key // Prevents this action from being repeated
+          }
+          if (!_this.menuLoaded && i === _menuComponents.length - 1) {
+            _this.menuLoaded = true
+          }
+          return m.menuItem
+        })
+      )
     } catch (err) {
       // TODO: Figure out how to return an invisible Item.
       return _this.getInvisibleMenuItem() // <Item style={{ display: 'none' }} />
@@ -322,7 +327,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) { }
+    } catch (err) {}
   }
 
   getInvisibleMenuItem () {
@@ -349,14 +354,20 @@ class AdminLTEPage extends React.Component {
 
       const server1 = 'https://api.fullstack.cash/v3/'
       const server2 = 'https://free-main.fullstack.cash/v3/'
+      const server3 = 'https://bchn-free-main.fullstack.cash/v3/'
 
-      const servers = [server1, server2]
+      const servers = [server1, server2, server3]
 
       let selectedServer = server1
       // Assign the second server if the url path
       // is different of 'wallet.fullstack.cash'
       if (accessLocation !== 'wallet.fullstack.cash') {
         selectedServer = server2
+      }
+
+      // BCHN wallet.
+      if (accessLocation === 'bchn-wallet.fullstack.cash') {
+        selectedServer = server3
       }
 
       walletInfo.selectedServer = selectedServer
