@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ScannerModal from '../../qr-scanner/modal'
 const { Text } = Inputs
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 class SendTokens extends React.Component {
@@ -36,80 +33,79 @@ class SendTokens extends React.Component {
       <>
         <Row>
           <Col sm={12}>
-            <Box className=' border-none mt-2' loaded={!this.state.inFetch}>
+            <Box className=" border-none mt-2" loaded={!this.state.inFetch}>
               <Row>
-                <Col sm={12} className='text-center'>
-                  <h1 id='SendTokens'>
+                <Col sm={12} className="text-center">
+                  <h1 id="SendTokens">
                     <FontAwesomeIcon
-                      className='title-icon'
-                      size='xs'
-                      icon='paper-plane'
+                      className="title-icon"
+                      size="xs"
+                      icon="paper-plane"
                     />
                     <span>Send</span>
                   </h1>
 
-                  <Box className='border-none'>
+                  <Box className="border-none">
                     <Text
-                      id='addressToSend'
-                      name='address'
-                      placeholder='Enter simpleledger address to send'
-                      label='SLP Address'
-                      labelPosition='above'
+                      id="addressToSend"
+                      name="address"
+                      placeholder="Enter simpleledger address to send"
+                      label="SLP Address"
+                      labelPosition="above"
                       onChange={_this.handleUpdate}
-                      className='title-icon'
+                      className="title-icon"
                       buttonRight={
-                        <Button icon='fa-qrcode' onClick={_this.handleModal} />
+                        <Button icon="fa-qrcode" onClick={_this.handleModal} />
                       }
                     />
 
                     <Text
-                      id='amountToSend'
-                      name='amountSat'
-                      placeholder='Enter amount to send'
-                      label='Amount'
+                      id="amountToSend"
+                      name="amountSat"
+                      placeholder="Enter amount to send"
+                      label="Amount"
                       value={_this.state.amountSat}
-                      labelPosition='above'
+                      labelPosition="above"
                       onChange={_this.handleUpdate}
                     />
-                    <Row className='token-botton-container'>
+                    <Row className="token-botton-container">
                       <Col xs={12} sm={4}>
                         <Button
-                          text='Send'
-                          type='primary'
-                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          text="Send"
+                          type="primary"
+                          className="btn-lg btn-send-token mr-1 ml-1 mt-1"
                           onClick={_this.handleSend}
                         />
                       </Col>
                       <Col xs={12} sm={4}>
                         <Button
-                          text='Send Max'
-                          type='primary'
-                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          text="Send Max"
+                          type="primary"
+                          className="btn-lg btn-send-token mr-1 ml-1 mt-1"
                           onClick={_this.handleSendMax}
                         />
                       </Col>
                       <Col xs={12} sm={4}>
                         <Button
-                          text='Close'
-                          type='primary'
-                          className='btn-lg btn-send-token mr-1 ml-1 mt-1'
+                          text="Close"
+                          type="primary"
+                          className="btn-lg btn-send-token mr-1 ml-1 mt-1"
                           onClick={_this.props.handleBack}
                         />
                       </Col>
                     </Row>
-
                   </Box>
                 </Col>
-                <Col sm={12} className='text-center'>
+                <Col sm={12} className="text-center">
                   {_this.state.errMsg && (
-                    <p className='error-color'>{_this.state.errMsg}</p>
+                    <p className="error-color">{_this.state.errMsg}</p>
                   )}
                   {_this.state.txId && (
-                    <p className=''>
+                    <p className="">
                       Transaction ID:
                       <a
-                        target='_blank'
-                        rel='noopener noreferrer'
+                        target="_blank"
+                        rel="noopener noreferrer"
                         href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
                       >
                         {_this.state.txId}
@@ -161,15 +157,18 @@ class SendTokens extends React.Component {
       const bchWalletLib = _this.props.bchWallet
       const { address, amountSat } = _this.state
       const { tokenId, qty } = _this.props.selectedToken
+      // console.log(`qty: ${qty}`)
 
       if (!tokenId) {
         throw new Error('There is no token selected')
       }
+
       const receiver = {
         address,
         tokenId,
-        qty: Math.floor(Number(amountSat))
+        qty: amountSat
       }
+
       if (qty < receiver.qty) {
         throw new Error('Insufficient balance')
       }
@@ -187,6 +186,23 @@ class SendTokens extends React.Component {
       // to do it manually.
       bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.getBchUtxos()
       bchWalletLib.utxos.tokenUtxos = await bchWalletLib.utxos.getTokenUtxos()
+
+      // Used for debugging.
+      // console.log(`receiver: ${JSON.stringify(receiver, null, 2)}`)
+      // console.log(
+      //   `bchWalletLib.utxos.bchUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.bchUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
+      // console.log(
+      //   `bchWalletLib.utxos.tokenUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.tokenUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
 
       // Send token.
       const result = await bchWalletLib.sendTokens(receiver, 5.0)
@@ -311,9 +327,9 @@ class SendTokens extends React.Component {
             Rate limits exceeded, increase rate limits with a JWT token from
             <a
               style={{ marginLeft: '5px' }}
-              target='_blank'
-              href='https://fullstack.cash'
-              rel='noopener noreferrer'
+              target="_blank"
+              href="https://fullstack.cash"
+              rel="noopener noreferrer"
             >
               FullStack.cash
             </a>
@@ -336,7 +352,6 @@ class SendTokens extends React.Component {
   componentDidMount () {
     _this.setState({
       tokenId: _this.props.selectedToken.tokenId
-
     })
   }
 
