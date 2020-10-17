@@ -6,10 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ScannerModal from '../../qr-scanner/modal'
 const { Text } = Inputs
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 let _this
 class SendTokens extends React.Component {
@@ -97,7 +94,6 @@ class SendTokens extends React.Component {
                         />
                       </Col>
                     </Row>
-
                   </Box>
                 </Col>
                 <Col sm={12} className='text-center'>
@@ -161,15 +157,18 @@ class SendTokens extends React.Component {
       const bchWalletLib = _this.props.bchWallet
       const { address, amountSat } = _this.state
       const { tokenId, qty } = _this.props.selectedToken
+      // console.log(`qty: ${qty}`)
 
       if (!tokenId) {
         throw new Error('There is no token selected')
       }
+
       const receiver = {
         address,
         tokenId,
-        qty: Math.floor(Number(amountSat))
+        qty: amountSat
       }
+
       if (qty < receiver.qty) {
         throw new Error('Insufficient balance')
       }
@@ -187,6 +186,23 @@ class SendTokens extends React.Component {
       // to do it manually.
       bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.getBchUtxos()
       bchWalletLib.utxos.tokenUtxos = await bchWalletLib.utxos.getTokenUtxos()
+
+      // Used for debugging.
+      // console.log(`receiver: ${JSON.stringify(receiver, null, 2)}`)
+      // console.log(
+      //   `bchWalletLib.utxos.bchUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.bchUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
+      // console.log(
+      //   `bchWalletLib.utxos.tokenUtxos: ${JSON.stringify(
+      //     bchWalletLib.utxos.tokenUtxos,
+      //     null,
+      //     2
+      //   )}`
+      // )
 
       // Send token.
       const result = await bchWalletLib.sendTokens(receiver, 5.0)
@@ -336,7 +352,6 @@ class SendTokens extends React.Component {
   componentDidMount () {
     _this.setState({
       tokenId: _this.props.selectedToken.tokenId
-
     })
   }
 
