@@ -148,7 +148,7 @@ class ImportWallet extends React.Component {
 
       const myBalance = await bchWalletLib.getBalance()
       const bchjs = bchWalletLib.bchjs
-      const currentRate = await bchjs.Price.current('usd')
+      const currentRate = await bchjs.Price.getUsd() * 100
 
       // Update redux state
       _this.props.setWalletInfo(currentWallet)
