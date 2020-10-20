@@ -129,7 +129,7 @@ class AdminLTEPage extends React.Component {
         const myBalance = await bchWalletLib.getBalance()
 
         const bchjs = bchWalletLib.bchjs
-        const currentRate = await bchjs.Price.current('usd')
+        const currentRate = await bchjs.Price.getUsd() * 100
         _this.setState({
           currentRate: currentRate
         })
