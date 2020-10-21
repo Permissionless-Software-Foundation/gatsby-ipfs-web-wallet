@@ -100,7 +100,7 @@ class SendTokens extends React.Component {
                   {_this.state.errMsg && (
                     <p className='error-color'>{_this.state.errMsg}</p>
                   )}
-                  {_this.state.txId && (
+                  {/* {_this.state.txId && (
                     <p className=''>
                       Transaction ID:
                       <a
@@ -111,7 +111,7 @@ class SendTokens extends React.Component {
                         {_this.state.txId}
                       </a>
                     </p>
-                  )}
+                  )} */}
                   {name && (
                     <span>
                       Selected Token : <b>{name}</b>
@@ -213,10 +213,13 @@ class SendTokens extends React.Component {
         inFetch: false
       })
 
+      _this.props.setTxId(result) /* Set the transaction ID in Tokens state */
+
       _this.resetValues()
 
       setTimeout(() => {
         _this.props.handleSend(true)
+        _this.props.handleBack()
       }, 3000)
     } catch (error) {
       _this.handleError(error)
@@ -369,6 +372,7 @@ SendTokens.propTypes = {
   bchWallet: PropTypes.object, // get minimal-slp-wallet instance
   selectedToken: PropTypes.object,
   handleBack: PropTypes.func.isRequired,
-  handleSend: PropTypes.func.isRequired
+  handleSend: PropTypes.func.isRequired,
+  setTxId: PropTypes.func.isRequired
 }
 export default SendTokens
