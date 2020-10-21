@@ -19,7 +19,7 @@ class Tokens extends React.Component {
       inFetch: true,
       errMsg: '',
       selectedTokenToSend: '',
-      showForm: false, 
+      showForm: false,
       txId: null
     }
   }
@@ -36,18 +36,18 @@ class Tokens extends React.Component {
           className='btn-md ml-1 mt-1 mb-1'
           onClick={_this.handleGetTokens}
         />
-        {_this.state.txId && 
-          <div className="txIdContainer">
+        {_this.state.txId &&
+          <div className='txIdContainer'>
             <button
-              onClick={() => _this.setState({txId: null})}
+              onClick={() => _this.setState({ txId: null })}
             >
               &times;
             </button>
-            <Col xs={12} className="text-center mt-1">
-              <Box 
+            <Col xs={12} className='text-center mt-1'>
+              <Box
                 title='Transaction ID'
-                type='primary' 
-                className="p-0"
+                type='primary'
+                className='p-0'
               >
                 <a
                   target='_blank'
@@ -58,8 +58,7 @@ class Tokens extends React.Component {
                 </a>
               </Box>
             </Col>
-          </div>
-        }
+          </div>}
         {_this.state.showForm && (
           <SendTokens
             bchWallet={_this.props.bchWallet}
@@ -124,7 +123,7 @@ class Tokens extends React.Component {
     )
   }
 
-  setTxId (txId = null) { 
+  setTxId (txId = null) {
     _this.setState({
       txId: txId
     })
