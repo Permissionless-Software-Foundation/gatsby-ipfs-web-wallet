@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 // import { withPrefix, Link } from 'gatsby'
 
 // window && typeof window !== 'undefined' && window.test = 'testing'
+import Logo from './images/loader.gif'
 
 export default function HTML (props) {
   return (
@@ -22,11 +23,34 @@ export default function HTML (props) {
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
-        <div
-          key='body'
-          id='___gatsby'
-          dangerouslySetInnerHTML={{ __html: props.body }}
-        />
+        <div>
+          <div
+            key='body'
+            id='___gatsby'
+            dangerouslySetInnerHTML={{ __html: props.body }}
+          />
+          <div
+            className='test'
+            key='loader'
+            id='___loader'
+            style={{
+              alignItems: 'center',
+              backgroundColor: '#F2F2F2',
+              display: 'flex',
+              justifyContent: 'center',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9000,
+              flexDirection: 'column'
+            }}
+          ><img src={Logo} alt='' width='250' />
+          Loading...
+          </div>
+        </div>
+
         {props.postBodyComponents}
       </body>
     </html>

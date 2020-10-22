@@ -741,3 +741,6 @@ pre tt:after {
 .background-none{
   background: none!important;
 }
+.display-none{
+  display: none!important;
+}
