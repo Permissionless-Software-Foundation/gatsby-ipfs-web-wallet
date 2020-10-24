@@ -147,6 +147,15 @@ class AdminLTEPage extends React.Component {
     }
   }
 
+  hideSplashLoader () {
+    try {
+      const loader = document.getElementById('___loader')
+      loader.className = 'display-none'
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   async componentDidMount () {
     _this.customMenuItems()
     // _this.addOnClickEventToScanner()
@@ -158,6 +167,8 @@ class AdminLTEPage extends React.Component {
       _this.dropDownBalance()
 
       _this.handleGetBalance()
+
+      _this.hideSplashLoader()
     }, 250)
   }
 
@@ -327,7 +338,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) {}
+    } catch (err) { }
   }
 
   getInvisibleMenuItem () {
