@@ -72,3 +72,27 @@
     }
   }
  
+.txIdContainer { 
+    position: relative; 
+    margin-bottom: 100px; 
+}
+@media only screen and (min-width: 768px) {
+    .txIdContainer { 
+        margin-bottom: 0px; 
+    }
+}
+.txIdContainer button { 
+    background-color: transparent; 
+    position: absolute; 
+    right: 20px; 
+    top: 20px;
+    font-size: 18px; 
+    font-weight: bold;  
+    z-index: 999;
+    border: none; 
+    color: #606c84; 
+}
+.txIdContainer button:focus { 
+    border: none; 
+    outline: none; 
+}

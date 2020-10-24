@@ -19,7 +19,8 @@ class Tokens extends React.Component {
       inFetch: true,
       errMsg: '',
       selectedTokenToSend: '',
-      showForm: false
+      showForm: false,
+      txId: null
     }
   }
 
@@ -35,6 +36,29 @@ class Tokens extends React.Component {
           className='btn-md ml-1 mt-1 mb-1'
           onClick={_this.handleGetTokens}
         />
+        {_this.state.txId &&
+          <div className='txIdContainer'>
+            <button
+              onClick={() => _this.setState({ txId: null })}
+            >
+              &times;
+            </button>
+            <Col xs={12} className='text-center mt-1'>
+              <Box
+                title='Transaction ID'
+                type='primary'
+                className='p-0'
+              >
+                <a
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
+                >
+                  {_this.state.txId}
+                </a>
+              </Box>
+            </Col>
+          </div>}
         {_this.state.showForm && (
           <SendTokens
             bchWallet={_this.props.bchWallet}
@@ -46,6 +70,7 @@ class Tokens extends React.Component {
                 : {}
             }
             handleSend={_this.onHandleGetTokens}
+            setTxId={_this.setTxId}
           />
         )}
         {_this.state.inFetch ? (
@@ -96,6 +121,12 @@ class Tokens extends React.Component {
         />
       </>
     )
+  }
+
+  setTxId (txId = null) {
+    _this.setState({
+      txId: txId
+    })
   }
 
   onHandleForm () {
@@ -201,7 +232,7 @@ class Tokens extends React.Component {
       return {
         ...prevState,
         errMsg: errMsg,
-        txId: '',
+        txId: null,
         inFetch: false
       }
     })
