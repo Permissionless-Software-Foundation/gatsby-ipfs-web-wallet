@@ -70,9 +70,8 @@ class TokenCard extends React.Component {
   }
 
   round (value, decimals) {
-    return Number(Math.round(value+`e${decimals}`)+`e-${decimals}`); 
+    return Number(Math.round(value + `e${decimals}`) + `e-${decimals}`)
   }
-
 }
 TokenCard.propTypes = {
   token: PropTypes.object.isRequired,
