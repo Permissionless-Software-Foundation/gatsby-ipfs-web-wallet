@@ -34,7 +34,7 @@ class TokenCard extends React.Component {
 
                 <p className='info-content'>
                   <b>Balance</b>
-                  <span>{token.qty}</span>
+                  <span>{_this.round(token.qty, token.decimals)}</span>
                 </p>
               </div>
             </Col>
@@ -67,6 +67,10 @@ class TokenCard extends React.Component {
 
   shouldComponentUpdate () {
     return false
+  }
+
+  round (value, decimals) {
+    return Number(Math.round(value + `e${decimals}`) + `e-${decimals}`)
   }
 }
 TokenCard.propTypes = {
