@@ -6,7 +6,7 @@ const normalConfig = [
   {
     resolve: 'gatsby-source-filesystem',
     options: {
-      start_url: '/',
+      // start_url: '/',
       name: 'images',
       path: `${__dirname}/src/images`
     }
