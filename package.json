@@ -1,6 +1,6 @@
 {
   "name": "gatsby-ipfs-web-wallet",
-  "description": "A gatsbyjs app with adminlte2 integration and basic Bitcoin Cash wallet functionality.",
+  "description": "A GatsbyJS Theme with adminlte2 integration and basic Bitcoin Cash wallet functionality.",
   "version": "1.9.13",
   "main": "index.js",
   "author": "Chris Troutner <chris.troutner@gmail.com>",
