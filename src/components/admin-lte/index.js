@@ -363,9 +363,9 @@ class AdminLTEPage extends React.Component {
       // return if servers configurations exist
       if (walletInfo.selectedServer) return null
 
-      const server1 = 'https://api.fullstack.cash/v3/'
-      const server2 = 'https://free-main.fullstack.cash/v3/'
-      const server3 = 'https://bchn-free-main.fullstack.cash/v3/'
+      const server1 = 'https://bchn.fullstack.cash/v3/'
+      const server2 = 'https://abc.fullstack.cash/v3/'
+      const server3 = 'https://testnet3.fullstack.cash/v3/'
 
       const servers = [server1, server2, server3]
 
@@ -373,11 +373,19 @@ class AdminLTEPage extends React.Component {
       // Assign the second server if the url path
       // is different of 'wallet.fullstack.cash'
       if (accessLocation !== 'wallet.fullstack.cash') {
-        selectedServer = server2
+        selectedServer = server1
       }
 
       // BCHN wallet.
       if (accessLocation === 'bchn-wallet.fullstack.cash') {
+        selectedServer = server1
+      }
+
+      if (accessLocation === 'abc-wallet.fullstack.cash') {
+        selectedServer = server2
+      }
+
+      if (accessLocation === 'testnet-wallet.fullstack.cash') {
         selectedServer = server3
       }
 
