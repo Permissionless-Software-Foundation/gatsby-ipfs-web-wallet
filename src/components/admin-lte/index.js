@@ -48,7 +48,10 @@ class AdminLTEPage extends React.Component {
     // the state to avoid 'setState()' errors inside render()
     _this.activedItem = ''
     _this.menuLoaded = false
-    _this.defaultSection = 'Tokens'
+
+    /* If no wallet exists the default section will be 'Wallet' */
+    const { mnemonic } = _this.props.walletInfo
+    _this.defaultSection = mnemonic ? 'Tokens' : 'Wallet'
   }
 
   render () {
