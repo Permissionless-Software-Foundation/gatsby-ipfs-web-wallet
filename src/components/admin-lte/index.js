@@ -368,9 +368,8 @@ class AdminLTEPage extends React.Component {
 
       const server1 = 'https://bchn.fullstack.cash/v3/'
       const server2 = 'https://abc.fullstack.cash/v3/'
-      const server3 = 'https://testnet3.fullstack.cash/v3/'
 
-      const servers = [server1, server2, server3]
+      const servers = [server1, server2]
 
       let selectedServer = server1
       // Assign the second server if the url path
@@ -386,10 +385,6 @@ class AdminLTEPage extends React.Component {
 
       if (accessLocation === 'abc-wallet.fullstack.cash') {
         selectedServer = server2
-      }
-
-      if (accessLocation === 'testnet-wallet.fullstack.cash') {
-        selectedServer = server3
       }
 
       walletInfo.selectedServer = selectedServer
