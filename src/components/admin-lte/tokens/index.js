@@ -34,7 +34,7 @@ class Tokens extends React.Component {
           icon='fa-redo'
           type='primary'
           className='btn-md ml-1 mt-1 mb-1'
-          onClick={_this.handleGetTokens}
+          onClick={() => _this.handleGetTokens(true)}
         />
         {_this.state.txId &&
           <div className='txIdContainer'>
@@ -69,7 +69,7 @@ class Tokens extends React.Component {
                 ? _this.state.selectedTokenToSend
                 : {}
             }
-            handleSend={_this.onHandleGetTokens}
+            handleSend={() => _this.onHandleGetTokens(true)}
             setTxId={_this.setTxId}
           />
         )}
@@ -158,13 +158,14 @@ class Tokens extends React.Component {
         tokens = await bchWallet.listTokens()
       }
 
-      if (!tokens.length) {
-        throw new Error('No tokens found on this wallet.')
-      }
       _this.setState({
         tokens,
         inFetch: false
       })
+
+      if (!tokens.length) {
+        throw new Error('No tokens found on this wallet.')
+      }
 
       _this.props.setTokensInfo(tokens)
     } catch (error) {
