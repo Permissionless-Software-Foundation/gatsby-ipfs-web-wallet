@@ -23,7 +23,8 @@ class Servers extends React.Component {
       errMsg: '',
       selectedServer: '',
       showAddField: false,
-      newServer: ''
+      newServer: '',
+      inFetch: false
     }
     _this.BchWallet = BchWallet
   }
@@ -32,7 +33,10 @@ class Servers extends React.Component {
     return (
       <Row>
         <Col sm={12}>
-          <Box className='hover-shadow border-none mt-2'>
+          <Box
+            className='hover-shadow border-none mt-2'
+            loaded={!_this.state.inFetch}
+          >
             <Row>
               <Col sm={12} className='text-center'>
                 <h1>
@@ -194,6 +198,11 @@ class Servers extends React.Component {
   }
 
   handleUpdateServer () {
+    // Show loader spinner
+    _this.setState({
+      inFetch: true
+    })
+
     _this.handleNewServerUrl()
     // await for state update delay
     setTimeout(() => {
@@ -224,12 +233,21 @@ class Servers extends React.Component {
         bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
 
         _this.props.setBchWallet(bchWalletLib)
+
+        // update server current price
+        _this.handleUpdateBalance(bchWalletLib)
+      } else {
+        // Hide loader spinner
+        _this.setState({
+          inFetch: false
+        })
       }
       _this.saveServer()
     } catch (error) {
       console.warn(error)
       _this.setState({
-        errMsg: error.message
+        errMsg: error.message,
+        inFetch: false
       })
     }
   }
@@ -263,6 +281,44 @@ class Servers extends React.Component {
     }
   }
 
+  // Get wallet balance
+  async handleUpdateBalance (bchWallet) {
+    try {
+      const { mnemonic } = _this.props.walletInfo
+      if (mnemonic && bchWallet) {
+        const bchWalletLib = bchWallet
+        await bchWalletLib.walletInfoPromise
+        const myBalance = await bchWalletLib.getBalance()
+
+        const bchjs = bchWalletLib.bchjs
+
+        let currentRate
+
+        if (bchjs.restURL.includes('abc.fullstack')) {
+          currentRate = await bchjs.Price.getBchaUsd()
+        } else {
+          // BCHN price.
+          currentRate = (await bchjs.Price.getUsd()) * 100
+        }
+
+        _this.setState({
+          currentRate: currentRate
+        })
+        _this.props.updateBalance({ myBalance, currentRate })
+      }
+      // Hide loader spinner
+      _this.setState({
+        inFetch: false
+      })
+    } catch (error) {
+      console.error(error)
+      // Hide loader spinner
+      _this.setState({
+        inFetch: false
+      })
+    }
+  }
+
   // clean the text form field
   resetForm () {
     _this.setState({
@@ -273,7 +329,8 @@ class Servers extends React.Component {
 Servers.propTypes = {
   setWalletInfo: PropTypes.func.isRequired,
   walletInfo: PropTypes.object.isRequired,
-  setBchWallet: PropTypes.func.isRequired
+  setBchWallet: PropTypes.func.isRequired,
+  updateBalance: PropTypes.func.isRequired
 }
 
 export default Servers
