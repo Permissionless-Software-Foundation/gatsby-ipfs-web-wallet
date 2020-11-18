@@ -371,10 +371,10 @@ class AdminLTEPage extends React.Component {
 
       const servers = [server1, server2]
 
+      // Default server is BCHN.
       let selectedServer = server1
-      // Assign the second server if the url path
-      // is different of 'wallet.fullstack.cash'
-      if (accessLocation !== 'wallet.fullstack.cash') {
+
+      if (accessLocation === 'wallet.fullstack.cash') {
         selectedServer = server1
       }
 
@@ -385,6 +385,11 @@ class AdminLTEPage extends React.Component {
 
       if (accessLocation === 'abc-wallet.fullstack.cash') {
         selectedServer = server2
+      }
+
+      // Split uses BCHN by default
+      if (accessLocation === 'splitbch.com') {
+        selectedServer = server1
       }
 
       walletInfo.selectedServer = selectedServer
