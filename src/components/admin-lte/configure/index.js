@@ -38,6 +38,7 @@ class Configure extends React.Component {
               setWalletInfo={_this.props.setWalletInfo}
               walletInfo={_this.props.walletInfo}
               setBchWallet={_this.props.setBchWallet}
+              updateBalance={_this.props.updateBalance}
             />
 
             <JsonWebTokens
@@ -63,7 +64,9 @@ class Configure extends React.Component {
 Configure.propTypes = {
   setWalletInfo: PropTypes.func.isRequired,
   walletInfo: PropTypes.object.isRequired,
-  setBchWallet: PropTypes.func.isRequired
+  setBchWallet: PropTypes.func.isRequired,
+  updateBalance: PropTypes.func.isRequired
+
 }
 
 export default Configure

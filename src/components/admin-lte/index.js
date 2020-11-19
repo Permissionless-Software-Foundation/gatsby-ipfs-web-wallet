@@ -132,7 +132,16 @@ class AdminLTEPage extends React.Component {
         const myBalance = await bchWalletLib.getBalance()
 
         const bchjs = bchWalletLib.bchjs
-        const currentRate = await bchjs.Price.getUsd() * 100
+
+        let currentRate
+
+        if (bchjs.restURL.includes('abc.fullstack')) {
+          currentRate = await bchjs.Price.getBchaUsd() * 100
+        } else {
+          // BCHN price.
+          currentRate = (await bchjs.Price.getUsd()) * 100
+        }
+
         _this.setState({
           currentRate: currentRate
         })
@@ -188,6 +197,7 @@ class AdminLTEPage extends React.Component {
         _this.changeSection(_this.defaultSection)
       }
     }
+    _this.updateState()
   }
 
   // Update component state when props change
@@ -199,7 +209,11 @@ class AdminLTEPage extends React.Component {
     }
     if (_this.props.bchBalance.bchBalance !== _this.state.bchBalance) {
       _this.setState({
-        bchBalance: _this.props.bchBalance.bchBalance,
+        bchBalance: _this.props.bchBalance.bchBalance
+      })
+    }
+    if (_this.props.bchBalance.usdBalance !== _this.state.usdBalance) {
+      _this.setState({
         usdBalance: _this.props.bchBalance.usdBalance
       })
     }
@@ -341,7 +355,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) { }
+    } catch (err) {}
   }
 
   getInvisibleMenuItem () {
@@ -371,10 +385,10 @@ class AdminLTEPage extends React.Component {
 
       const servers = [server1, server2]
 
+      // Default server is BCHN.
       let selectedServer = server1
-      // Assign the second server if the url path
-      // is different of 'wallet.fullstack.cash'
-      if (accessLocation !== 'wallet.fullstack.cash') {
+
+      if (accessLocation === 'wallet.fullstack.cash') {
         selectedServer = server1
       }
 
@@ -385,6 +399,11 @@ class AdminLTEPage extends React.Component {
 
       if (accessLocation === 'abc-wallet.fullstack.cash') {
         selectedServer = server2
+      }
+
+      // Split uses BCHN by default
+      if (accessLocation === 'splitbch.com') {
+        selectedServer = server1
       }
 
       walletInfo.selectedServer = selectedServer

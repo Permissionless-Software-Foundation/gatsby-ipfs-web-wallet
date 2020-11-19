@@ -28,6 +28,7 @@ const reducer = (state, action) => {
   if (action.type === 'UPDATE_BALANCE') {
     // Convert satoshis to bch
     const { myBalance, currentRate } = action.value
+    console.log(`currentRate: ${currentRate}`)
 
     const satoshis = myBalance
     const bch = satoshis / 100000000
