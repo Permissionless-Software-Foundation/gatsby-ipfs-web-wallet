@@ -60,18 +60,18 @@ class AdminLTEPage extends React.Component {
         <AdminLTE
           title={[siteConfig.title]}
           titleShort={[siteConfig.titleShort]}
-          theme="blue"
+          theme='blue'
         >
           <Sidebar.Core>
-            <Item key="Balance" text="Balance" icon={siteConfig.balanceIcon}>
+            <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
               <Box
-                className="hover-shadow border-none background-none"
+                className='hover-shadow border-none background-none'
                 loaded={!_this.state.inFetch}
               >
-                <div className="sidebar-balance">
+                <div className='sidebar-balance'>
                   <div>
                     {!_this.state.inFetch && (
-                      <div className="siderbar-balance-content">
+                      <div className='siderbar-balance-content'>
                         <span>
                           <h3>{siteConfig.balanceText}</h3>
 
@@ -81,9 +81,9 @@ class AdminLTEPage extends React.Component {
                           <small>USD: ${_this.state.usdBalance}</small>
                         </span>
                         <FontAwesomeIcon
-                          className="ml-1 icon"
-                          size="lg"
-                          icon="redo"
+                          className='ml-1 icon'
+                          size='lg'
+                          icon='redo'
                           onClick={_this.handleGetBalance}
                         />
                       </div>
@@ -101,8 +101,8 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path="/">
-            <div className="components-container">
+          <Layout path='/'>
+            <div className='components-container'>
               {_this.renderNewViewItems(_this.props)}
             </div>
           </Layout>
@@ -136,8 +136,7 @@ class AdminLTEPage extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd()
-          console.log(`currentRate: ${currentRate}`)
+          currentRate = await bchjs.Price.getBchaUsd() * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100
@@ -198,6 +197,7 @@ class AdminLTEPage extends React.Component {
         _this.changeSection(_this.defaultSection)
       }
     }
+    _this.updateState()
   }
 
   // Update component state when props change
@@ -209,7 +209,11 @@ class AdminLTEPage extends React.Component {
     }
     if (_this.props.bchBalance.bchBalance !== _this.state.bchBalance) {
       _this.setState({
-        bchBalance: _this.props.bchBalance.bchBalance,
+        bchBalance: _this.props.bchBalance.bchBalance
+      })
+    }
+    if (_this.props.bchBalance.usdBalance !== _this.state.usdBalance) {
+      _this.setState({
         usdBalance: _this.props.bchBalance.usdBalance
       })
     }
@@ -358,7 +362,7 @@ class AdminLTEPage extends React.Component {
     return (
       <li style={{ display: 'none' }}>
         {/* Adding this childrens prevents console errors */}
-        <a href="#">
+        <a href='#'>
           <span />
           <span />
         </a>
