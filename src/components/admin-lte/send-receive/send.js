@@ -262,8 +262,15 @@ class Send extends React.Component {
         const myBalance = await bchWalletLib.getBalance()
         const bchjs = bchWalletLib.bchjs
 
-        // TODO: Get the current rate of the selected chain (bchn or bcha)
-        const currentRate = await bchjs.Price.getUsd() * 100
+        let currentRate
+
+        if (bchjs.restURL.includes('abc.fullstack')) {
+          currentRate = await bchjs.Price.getBchaUsd() * 100
+        } else {
+          // BCHN price.
+          currentRate = (await bchjs.Price.getUsd()) * 100
+        }
+
         _this.props.updateBalance({ myBalance, currentRate })
       }, 1000)
 
@@ -335,7 +342,16 @@ class Send extends React.Component {
       setTimeout(async () => {
         const myBalance = await bchWalletLib.getBalance()
         const bchjs = bchWalletLib.bchjs
-        const currentRate = await bchjs.Price.getUsd() * 100
+
+        let currentRate
+
+        if (bchjs.restURL.includes('abc.fullstack')) {
+          currentRate = await bchjs.Price.getBchaUsd() * 100
+        } else {
+          // BCHN price.
+          currentRate = (await bchjs.Price.getUsd()) * 100
+        }
+
         _this.props.updateBalance({ myBalance, currentRate })
       }, 1000)
 
