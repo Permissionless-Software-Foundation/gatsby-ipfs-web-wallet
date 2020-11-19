@@ -22,7 +22,8 @@ class Send extends React.Component {
       txId: '',
       showScan: false,
       inFetch: false,
-      sendCurrency: 'USD'
+      sendCurrency: 'USD',
+      sendMax: false
     }
     _this.BchWallet = BchWallet
   }
@@ -74,10 +75,17 @@ class Send extends React.Component {
                         labelPosition='above'
                         onChange={_this.handleUpdate}
                         addonRight={_this.state.sendCurrency}
+                        disabled={_this.state.sendMax}
                         buttonRight={
                           <Button
                             icon='fa-random'
                             onClick={_this.handleChangeCurrency}
+                          />
+                        }
+                        buttonLeft={
+                          <Button
+                            text={_this.state.sendMax ? 'UNDO' : 'MAX'}
+                            onClick={_this.handleSendType}
                           />
                         }
                       />
@@ -85,20 +93,20 @@ class Send extends React.Component {
                         <p>
                           {_this.state.sendCurrency === 'BCH'
                             ? `USD: ${(
-                                _this.state.amountSat *
-                                (_this.props.currentRate / 100)
-                              ).toFixed(2)}`
+                              _this.state.amountSat *
+                              (_this.props.currentRate / 100)
+                            ).toFixed(2)}`
                             : `BCH: ${(
-                                _this.state.amountSat /
-                                (_this.props.currentRate / 100)
-                              ).toFixed(8)}`}
+                              _this.state.amountSat /
+                              (_this.props.currentRate / 100)
+                            ).toFixed(8)}`}
                         </p>
                       </div>
                       <Button
                         text='Send'
                         type='primary'
                         className='btn-lg'
-                        onClick={_this.handleSend}
+                        onClick={_this.state.sendMax ? _this.handleSendAll : _this.handleSend}
                       />
                     </Box>
                   </Col>
@@ -156,6 +164,112 @@ class Send extends React.Component {
           ).toFixed(2)
         })
       }
+    }
+  }
+
+  handleSendType () {
+    const sendMax = !_this.state.sendMax
+    _this.setState({
+      sendMax
+    })
+    if (sendMax) {
+      _this.getMaxAmount()
+    } else {
+      _this.setState({
+        amountSat: ''
+      })
+    }
+  }
+
+  async getMaxAmount () {
+    try {
+      const bchWalletLib = _this.props.bchWallet
+
+      // Ensure the wallet UTXOs are up-to-date.
+      const walletAddr = bchWalletLib.walletInfo.address
+      await bchWalletLib.utxos.initUtxoStore(walletAddr)
+
+      const utxos = bchWalletLib.utxos.bchUtxos
+
+      if (!utxos.length) {
+        throw new Error('No BCH Utxos to spend!')
+      }
+
+      // Get total of satoshis fron the bch utxos
+      let totalAmount = 0
+      utxos.map(val => {
+        totalAmount += val.satoshis
+      })
+
+      // Convert satoshis to bch
+      let amountSat = totalAmount / 100000000
+
+      // Change the amount to send to USD if is the selected currency
+      if (_this.state.sendCurrency === 'USD') {
+        const _usdAmount = amountSat * (_this.props.currentRate / 100)
+        const usdAmount = Number(_usdAmount.toFixed(2)) // usd Amount
+        amountSat = usdAmount
+      }
+
+      _this.setState({
+        amountSat: amountSat
+
+      })
+    } catch (error) {
+      console.error(error)
+      _this.setState({
+        errMsg: error.message,
+        sendMax: false
+      })
+    }
+  }
+
+  async handleSendAll () {
+    try {
+      _this.validateInputs()
+
+      const bchWalletLib = _this.props.bchWallet
+      let { address, amountSat } = _this.state
+
+      if (_this.state.sendCurrency === 'USD') {
+        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
+      }
+
+      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      console.log(`Sending ${amountToSend} satoshis to ${address}`)
+
+      if (!bchWalletLib) {
+        throw new Error('Wallet not found')
+      }
+      _this.setState({
+        inFetch: true
+      })
+
+      // Ensure the wallet UTXOs are up-to-date.
+      const walletAddr = bchWalletLib.walletInfo.address
+      await bchWalletLib.utxos.initUtxoStore(walletAddr)
+
+      // Send the BCH.
+      const result = await bchWalletLib.sendAll(address)
+      // console.log('result',result)
+
+      _this.setState({
+        txId: result
+      })
+
+      // update balance
+      setTimeout(async () => {
+        const myBalance = await bchWalletLib.getBalance()
+        const bchjs = bchWalletLib.bchjs
+
+        // TODO: Get the current rate of the selected chain (bchn or bcha)
+        const currentRate = await bchjs.Price.getUsd() * 100
+        _this.props.updateBalance({ myBalance, currentRate })
+      }, 1000)
+
+      _this.resetValues()
+    } catch (error) {
+      _this.handleError(error)
     }
   }
 
@@ -237,7 +351,8 @@ class Send extends React.Component {
       address: '',
       amountSat: '',
       errMsg: '',
-      inFetch: false
+      inFetch: false,
+      sendMax: ''
     })
     const amountEle = document.getElementById('amountToSend')
     amountEle.value = ''
