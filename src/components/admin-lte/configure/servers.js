@@ -295,7 +295,7 @@ class Servers extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd()
+          currentRate = await bchjs.Price.getBchaUsd() * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100
