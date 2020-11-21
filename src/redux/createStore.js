@@ -78,6 +78,12 @@ const instanceWallet = () => {
     if (restURL) {
       bchjsOptions.restURL = restURL
     }
+
+    // Assign the tx fee based on environment variable
+    const FEE = process.env.FEE ? process.env.FEE : 1
+    bchjsOptions.fee = FEE
+    console.log(`Using ${bchjsOptions.fee} sats per byte for tx fees.`)
+
     const bchWalletLib = new BchWallet(localStorageInfo.mnemonic, bchjsOptions)
 
     // Update bchjs instances  of minimal-slp-wallet libraries
