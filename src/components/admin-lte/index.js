@@ -125,6 +125,7 @@ class AdminLTEPage extends React.Component {
       _this.setState({
         inFetch: true
       })
+
       const { mnemonic } = _this.props.walletInfo
       if (mnemonic && _this.props.bchWallet) {
         const bchWalletLib = _this.props.bchWallet
@@ -136,7 +137,7 @@ class AdminLTEPage extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd() * 100
+          currentRate = (await bchjs.Price.getBchaUsd()) * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100
@@ -415,6 +416,7 @@ class AdminLTEPage extends React.Component {
     }
   }
 }
+
 // Props prvided by redux
 AdminLTEPage.propTypes = {
   walletInfo: PropTypes.object.isRequired, // wallet info
