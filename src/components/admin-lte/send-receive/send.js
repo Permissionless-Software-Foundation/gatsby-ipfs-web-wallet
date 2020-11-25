@@ -23,7 +23,8 @@ class Send extends React.Component {
       showScan: false,
       inFetch: false,
       sendCurrency: 'USD',
-      sendMax: false
+      sendMax: false,
+      explorerURL: ''
     }
     _this.BchWallet = BchWallet
   }
@@ -118,7 +119,7 @@ class Send extends React.Component {
                       <a
                         target='_blank'
                         rel='noopener noreferrer'
-                        href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
+                        href={`${_this.state.explorerURL}/${_this.state.txId}`}
                       >
                         Transaction ID: {_this.state.txId}
                       </a>
@@ -137,6 +138,28 @@ class Send extends React.Component {
         </Content>
       </>
     )
+  }
+
+  componentDidMount () {
+    _this.defineExplorer()
+  }
+
+  // Define the explorer to use
+  // depending on the selected chain
+  defineExplorer () {
+    const bchWalletLib = _this.props.bchWallet
+    const bchjs = bchWalletLib.bchjs
+
+    let explorerURL
+
+    if (bchjs.restURL.includes('abc.fullstack')) {
+      explorerURL = 'https://explorer.bitcoinabc.org/tx'
+    } else {
+      explorerURL = 'https://explorer.bitcoin.com/bch/tx'
+    }
+    _this.setState({
+      explorerURL
+    })
   }
 
   handleChangeCurrency () {
