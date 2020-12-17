@@ -34,12 +34,16 @@ export default function HTML (props) {
             zIndex: 9000,
             flexDirection: 'column'
           }}
-        ><img src='https://i.imgur.com/8n8PYAi.gif' alt='' width='250' />
-        Loading...
+        >
+          <img src='https://i.imgur.com/8n8PYAi.gif' alt='' width='250' />
+          Loading...
         </div>
 
         {/* minimal-slp-wallet */}
         <script src='https://unpkg.com/minimal-slp-wallet' />
+
+        {/* bch-message-lib */}
+        <script src='https://unpkg.com/bch-message-lib' />
 
         {props.headComponents}
       </head>

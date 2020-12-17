@@ -3,34 +3,42 @@ import './footer.css'
 import { Row, Col } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { getWalletInfo } from '../localWallet'
+// import { getWalletInfo } from '../localWallet'
 
 // Get the IPFS hash from the BCH Blockchain.
-import MemoGet from 'memo-get-gatsby'
+import Memo from '../../services/memo-hash'
 
 let _this
 
 class Footer extends React.Component {
   constructor (props) {
     super(props)
-    _this = this
+    this.addr = 'bitcoincash:qqwdv3hkmvd5vk0uhwqrqnef54542e5ctvy3ppt0nq'
+    this.memo = new Memo({ bchAddr: this.addr })
 
-    _this.state = {
+    this.state = {
       ipfsHash: 'No Result',
       ipfsHashLink: ''
     }
-    //  memo-get-gatsby Instance
-    this.memoGet = _this.instantiateMemoLib()
+
+    _this = this
   }
 
   async componentDidMount () {
     try {
-      const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
-      const hash = await _this.memoGet.read(addr)
-      console.log(`hash: ${hash}`)
+      const hash = await this.memo.findHash()
+
+      if (!hash) {
+        console.error(
+          `Could not find IPFS hash in transactions for address ${this.addr}`
+        )
+        return
+      }
+      console.log(`latest IPFS hash: ${hash}`)
+
       this.setState({
         ipfsHash: hash,
-        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+        ipfsHashLink: `https://ipfs.io/ipfs/${hash}`
       })
     } catch (err) {
       console.error('Error trying to retrieve IPFS hash for the site: ', err)
@@ -50,23 +58,23 @@ class Footer extends React.Component {
 
   //  Instantiate the library with the
   //  bchjs options established in the configuration section
-  instantiateMemoLib () {
-    // Get wallet info
-    const localStorageInfo = getWalletInfo()
-
-    // Get bchjs options
-    const jwtToken = localStorageInfo.JWT
-    const restURL = localStorageInfo.selectedServer
-    const bchjsOptions = {}
-
-    if (jwtToken) {
-      bchjsOptions.apiToken = jwtToken
-    }
-    if (restURL) {
-      bchjsOptions.restURL = restURL
-    }
-    return new MemoGet(bchjsOptions)
-  }
+  // instantiateMemoLib () {
+  //   // Get wallet info
+  //   const localStorageInfo = getWalletInfo()
+  //
+  //   // Get bchjs options
+  //   const jwtToken = localStorageInfo.JWT
+  //   const restURL = localStorageInfo.selectedServer
+  //   const bchjsOptions = {}
+  //
+  //   if (jwtToken) {
+  //     bchjsOptions.apiToken = jwtToken
+  //   }
+  //   if (restURL) {
+  //     bchjsOptions.restURL = restURL
+  //   }
+  //   return new MemoGet(bchjsOptions)
+  // }
 
   render () {
     return (
