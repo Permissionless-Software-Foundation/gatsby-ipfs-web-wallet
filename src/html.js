@@ -38,8 +38,8 @@ export default function HTML (props) {
         Loading...
         </div>
 
-        {/* minimal-slp-wallet-web */}
-        <script src='https://unpkg.com/minimal-slp-wallet-web' />
+        {/* minimal-slp-wallet */}
+        <script src='https://unpkg.com/minimal-slp-wallet' />
 
         {props.headComponents}
       </head>

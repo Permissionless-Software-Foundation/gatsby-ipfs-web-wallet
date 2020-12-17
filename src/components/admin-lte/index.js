@@ -186,10 +186,6 @@ class AdminLTEPage extends React.Component {
   }
 
   componentDidUpdate () {
-    _this.updateState()
-  }
-
-  componentWillUpdate () {
     // Update state with the active item-menu selected in component-menu.js
     if (_this.menuLoaded && !_this.state.section) {
       if (_this.activedItem) {
@@ -198,6 +194,7 @@ class AdminLTEPage extends React.Component {
         _this.changeSection(_this.defaultSection)
       }
     }
+
     _this.updateState()
   }
 
