@@ -25,7 +25,7 @@ class Footer extends React.Component {
 
   async componentDidMount () {
     try {
-      const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
+      const addr = 'bitcoincash:qqwdv3hkmvd5vk0uhwqrqnef54542e5ctvy3ppt0nq'
       const hash = await _this.memoGet.read(addr)
       console.log(`hash: ${hash}`)
       this.setState({
