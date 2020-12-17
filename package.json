@@ -44,7 +44,7 @@
   "devDependencies": {
     "husky": "^4.2.5",
     "prettier": "2.0.5",
-    "semantic-release": "^17.2.3",
+    "semantic-release": "^17.3.0",
     "standard": "^14.3.4"
   },
   "keywords": [
