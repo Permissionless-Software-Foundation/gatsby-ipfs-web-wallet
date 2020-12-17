@@ -8,6 +8,9 @@ import { getWalletInfo } from '../localWallet'
 // Get the IPFS hash from the BCH Blockchain.
 import MemoGet from 'memo-get-gatsby'
 
+// Get the IPFS hash from the BCH Blockchain.
+import Memo from '../../services/memo-hash'
+
 let _this
 
 class Footer extends React.Component {
@@ -19,6 +22,10 @@ class Footer extends React.Component {
       ipfsHash: 'No Result',
       ipfsHashLink: ''
     }
+
+    this.memoAddr = 'bitcoincash:qr7u857krgsvq0dwe8rzlt5rcx35r6hnmu6glavtx0'
+    this.memo = new Memo({ bchAddr: this.memoAddr })
+
     //  memo-get-gatsby Instance
     this.memoGet = _this.instantiateMemoLib()
   }
