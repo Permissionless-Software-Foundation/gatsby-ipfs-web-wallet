@@ -3,10 +3,11 @@ import './footer.css'
 import { Row, Col } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { getWalletInfo } from '../localWallet'
+import PropTypes from 'prop-types'
 
 // Get the IPFS hash from the BCH Blockchain.
-import MemoGet from 'memo-get-gatsby'
+import Memo from '../../services/memo-hash'
+const siteConfig = require('../site-config')
 
 let _this
 
@@ -19,53 +20,39 @@ class Footer extends React.Component {
       ipfsHash: 'No Result',
       ipfsHashLink: ''
     }
-    //  memo-get-gatsby Instance
-    this.memoGet = _this.instantiateMemoLib()
+
+    this.memo = new Memo({
+      bchWallet: props.bchWallet,
+      bchAddr: siteConfig.memoAddr
+    })
   }
 
   async componentDidMount () {
-    try {
-      const addr = 'bitcoincash:qqwdv3hkmvd5vk0uhwqrqnef54542e5ctvy3ppt0nq'
-      const hash = await _this.memoGet.read(addr)
-      console.log(`hash: ${hash}`)
-      this.setState({
-        ipfsHash: hash,
-        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
-      })
-    } catch (err) {
-      console.error('Error trying to retrieve IPFS hash for the site: ', err)
-
-      // Manually set an old hash.
-      const hash = 'QmVm1y1MX4YPzmgQiAafY96Pq7j6GTNMFNuvHki1jAwxYg'
-      this.setState({
-        ipfsHash: hash,
-        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
-      })
-    }
-
-    // const bchjs = new BCHJS()
-    // const balance = await bchjs.Blockbook.balance(addr)
-    // console.log(`balance: ${JSON.stringify(balance, null, 2)}`)
+    // Get hash using memo service
+    await this.handleMemoService()
   }
 
-  //  Instantiate the library with the
-  //  bchjs options established in the configuration section
-  instantiateMemoLib () {
-    // Get wallet info
-    const localStorageInfo = getWalletInfo()
+  async handleMemoService () {
+    // This is a hard-coded hash or 'checkpoint' to use in times when the
+    // connection fails.
+    const hash = 'QmXT85Xoi7xMRD9m7Ta4Cx8Yrsd2WSzLrq2VRo26KW4xLu'
 
-    // Get bchjs options
-    const jwtToken = localStorageInfo.JWT
-    const restURL = localStorageInfo.selectedServer
-    const bchjsOptions = {}
+    // Try to retrieve the hash from the BCH blockchain.
+    try {
+      const hash = await this.memo.findHash()
+      console.log(`IPFS hash found: ${hash}`)
 
-    if (jwtToken) {
-      bchjsOptions.apiToken = jwtToken
+      if (!hash) {
+        throw new Error('Hash not found! Falling back to hard coded IPFS hash.')
+      }
+    } catch (err) {
+      console.error('Error trying to retrieve IPFS hash for the site: ', err)
     }
-    if (restURL) {
-      bchjsOptions.restURL = restURL
-    }
-    return new MemoGet(bchjsOptions)
+
+    this.setState({
+      ipfsHash: hash,
+      ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+    })
   }
 
   render () {
@@ -119,8 +106,8 @@ class Footer extends React.Component {
                     <b>Tor</b>
                   </span>
                   <b>|</b>
-                  <a href='http://puh2fyj2ly5b4p5m.onion/'>
-                    puh2fyj2ly5b4p5m.onion
+                  <a href='http://2egutot63q765ciwsenlcy5zdyxwxt7olzbldr5dx5i3ixsef2nvrzid.onion/'>
+                    2egutot63q765ciwsenlcy5zdyxwxt7olzbldr5dx5i3ixsef2nvrzid.onion
                   </a>
                 </li>
 
@@ -135,35 +122,14 @@ class Footer extends React.Component {
             </div>
           </Col>
         </Row>
-        {/*   <center>
-        <a href="https://psfoundation.cash/" target="_blank" rel="noreferrer">
-          Produced by the Permissionless Software Foundation
-        </a>
-
-        <br /><br />
-        <p>Ways to access this web-app:</p>
-        <ul>
-          <li>
-            Web: <a href="https://wallet.fullstack.cash">wallet.fullstack.cash</a>
-          </li>
-
-          <li>
-            Tor: <a href="http://puh2fyj2ly5b4p5m.onion/">puh2fyj2ly5b4p5m.onion</a>
-          </li>
-
-          <li>
-            IPFS: <a href="https://ipfs.io/ipfs/QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf/">QmTMpYt66SGSjckXTHF6bPip6h1V5fXT23tEUJgy7pyTkf</a>
-          </li>
-        </ul>
-        <br />
-
-        <a href="https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet" target="_blank" rel="noreferrer">
-          Source Code
-        </a>
-        </center> */}
       </section>
     )
   }
+}
+
+// Props prvided by redux
+Footer.propTypes = {
+  bchWallet: PropTypes.object // get minimal-slp-wallet instance
 }
 
 export default Footer
