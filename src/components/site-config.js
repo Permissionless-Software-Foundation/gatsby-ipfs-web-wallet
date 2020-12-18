@@ -7,7 +7,8 @@ const config = {
   title: 'FullStack.cash',
   titleShort: 'PSF',
   balanceText: 'BCH Balance',
-  balanceIcon: 'fab-bitcoin'
+  balanceIcon: 'fab-bitcoin',
+  memoAddr: 'bitcoincash:qr7u857krgsvq0dwe8rzlt5rcx35r6hnmu6glavtx0'
 }
 
 module.exports = config

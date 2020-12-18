@@ -16,7 +16,7 @@ import './layout.css'
 const Footer = typeof window !== 'undefined' ? require('./footer').default : null
 // import Footer from "./footer"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, bchWallet }) => {
   /*   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -30,12 +30,14 @@ const Layout = ({ children }) => {
   return (
     <>
       <main>{children}</main>
-      {Footer && <Footer />}{' '}
+      {Footer && <Footer bchWallet={bchWallet} />}{' '}
     </>
   )
 }
 Layout.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  bchWallet: PropTypes.object // get minimal-slp-wallet instance
+
 }
 
 export default Layout

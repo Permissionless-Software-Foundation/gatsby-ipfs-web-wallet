@@ -7,31 +7,46 @@
 // These libraries are retrieved in /src/html.js
 // minimal-slp-wallet-web
 const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
+
 // bch-message-lib
-// const BchMessage = typeof window !== 'undefined' ? window.BchMessage : null
+const BchMessage = typeof window !== 'undefined' ? window.BchMessage : null
 
 class Memo {
   constructor (config) {
+    console.log('Memo config', config)
     // Throw an error if this class is instantiated without passing a BCH address.
     if (!config || !config.bchAddr) {
       throw new Error('Must pass a BCH address to Memo constructor.')
     } else this.bchAddr = config.bchAddr
 
-    if (BchWallet) {
-      // Note: Uncommenting the line below will throw an error. I think it's
-      // a collision in the name space?
-      // this.wallet = new BchWallet()
+    // Use the bchWallet instance if already exists otherwise
+    // creates a new one with default values
+    if (config && config.bchWallet) {
+      this.wallet = config.bchWallet
+      this.bchjs = this.wallet.bchjs
 
-      // this.bchjs = this.wallet.bchjs
+      // The way bchjs is used on the previous line
+      // contains the configuration stablished by
+      // the user ( apiToken, restURL )
+      // for a new instance we could use the folowing code
+      // const BCHJS = props.bchWallet.BCHJS
+      // this.bchjs = new BCHJS()
+
+      // debugger
+    } else if (BchWallet) {
+      this.wallet = new BchWallet()
+      // bchjs instance with default values
+      this.bchjs = this.wallet.bchjs
+      // debugger
     } else {
       console.error('Could not access minimal-slp-wallet library.')
     }
 
-    // if (BchMessage) {
-    //   this.bchMessage = new BchMessage({ bchjs: this.bchjs })
-    // } else {
-    //   console.error('Could not access bch-message-lib library.')
-    // }
+    if (BchMessage) {
+      this.bchMessage = new BchMessage({ bchjs: this.bchjs })
+    } else {
+      console.error('Could not access bch-message-lib library.')
+    }
   }
 
   // Walk the transactions associated with an address until a proper IPFS hash is
