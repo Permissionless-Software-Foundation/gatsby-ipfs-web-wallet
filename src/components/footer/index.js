@@ -35,7 +35,7 @@ class Footer extends React.Component {
   async handleMemoService () {
     // This is a hard-coded hash or 'checkpoint' to use in times when the
     // connection fails.
-    const hash = 'QmXhhzNZ3dcKEC1JE428zVVVfXuzqUAzpWdKf6wdfHPtEi'
+    const hash = 'QmXT85Xoi7xMRD9m7Ta4Cx8Yrsd2WSzLrq2VRo26KW4xLu'
 
     // Try to retrieve the hash from the BCH blockchain.
     try {
