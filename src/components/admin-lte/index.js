@@ -101,7 +101,7 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path='/'>
+          <Layout path='/' {..._this.props}>
             <div className='components-container'>
               {_this.renderNewViewItems(_this.props)}
             </div>

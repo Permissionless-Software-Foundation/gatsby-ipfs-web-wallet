@@ -4,12 +4,14 @@ import { Row, Col } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { getWalletInfo } from '../localWallet'
+import PropTypes from 'prop-types'
 
 // Get the IPFS hash from the BCH Blockchain.
 import MemoGet from 'memo-get-gatsby'
 
 // Get the IPFS hash from the BCH Blockchain.
 import Memo from '../../services/memo-hash'
+const siteConfig = require('../site-config')
 
 let _this
 
@@ -23,14 +25,44 @@ class Footer extends React.Component {
       ipfsHashLink: ''
     }
 
-    this.memoAddr = 'bitcoincash:qr7u857krgsvq0dwe8rzlt5rcx35r6hnmu6glavtx0'
-    this.memo = new Memo({ bchAddr: this.memoAddr })
-
+    this.memo = new Memo({ bchWallet: props.bchWallet, bchAddr: siteConfig.memoAddr })
     //  memo-get-gatsby Instance
     this.memoGet = _this.instantiateMemoLib()
   }
 
   async componentDidMount () {
+    // Get hash using memo service
+    await this.handleMemoService()
+
+    // Get hash using memo-get-gatsby library
+    // await this.handleMemoGet()
+  }
+
+  async handleMemoService () {
+    try {
+      const hash = await this.memo.findHash()
+      console.log(`hash: ${hash}`)
+      if (!hash) {
+        throw new Error('Hash not found!')
+      }
+      this.setState({
+        ipfsHash: hash,
+        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+      })
+    } catch (err) {
+      console.error('Error trying to retrieve IPFS hash for the site: ', err)
+
+      // Manually set an old hash.
+      const hash = 'QmVm1y1MX4YPzmgQiAafY96Pq7j6GTNMFNuvHki1jAwxYg'
+      this.setState({
+        ipfsHash: hash,
+        ipfsHashLink: `https://ipfs-gateway.fullstack.cash/ipfs/${hash}`
+      })
+    }
+  }
+
+  // Get hash using memo-get-gatsby
+  async handleMemoGet () {
     try {
       const addr = 'bitcoincash:qq8mk8etntclfdkny2aknh4ylc0uaewalszh5eytnr'
       const hash = await _this.memoGet.read(addr)
@@ -172,5 +204,8 @@ class Footer extends React.Component {
     )
   }
 }
-
+// Props prvided by redux
+Footer.propTypes = {
+  bchWallet: PropTypes.object // get minimal-slp-wallet instance
+}
 export default Footer
