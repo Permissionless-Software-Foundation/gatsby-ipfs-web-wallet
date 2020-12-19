@@ -65,18 +65,18 @@ class Footer extends React.Component {
                 <p className='section-tittle'>Produced By</p>
 
                 <a
-                  href='https://psfoundation.cash/'
+                  href={siteConfig.hostUrl}
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  Permissionless Software Foundation
+                  {siteConfig.hostText}
                 </a>
               </Col>
               <Col md={12}>
                 <p className='section-tittle'>Source Code</p>
                 <FontAwesomeIcon className='' size='lg' icon={faGithub} />
                 <a
-                  href='https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet'
+                  href={siteConfig.sourceCode}
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -96,8 +96,8 @@ class Footer extends React.Component {
                     <b>Web</b>
                   </span>
                   <b>|</b>
-                  <a href='https://wallet.fullstack.cash'>
-                    wallet.fullstack.cash
+                  <a href={siteConfig.clearWebUrl}>
+                    {siteConfig.clearWebUrl}
                   </a>
                 </li>
 
@@ -106,8 +106,8 @@ class Footer extends React.Component {
                     <b>Tor</b>
                   </span>
                   <b>|</b>
-                  <a href='http://2egutot63q765ciwsenlcy5zdyxwxt7olzbldr5dx5i3ixsef2nvrzid.onion/'>
-                    2egutot63q765ciwsenlcy5zdyxwxt7olzbldr5dx5i3ixsef2nvrzid.onion
+                  <a href={`http://${siteConfig.torUrl}`}>
+                    {siteConfig.torUrl}
                   </a>
                 </li>
 
