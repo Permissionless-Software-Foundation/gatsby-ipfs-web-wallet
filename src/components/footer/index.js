@@ -35,11 +35,11 @@ class Footer extends React.Component {
   async handleMemoService () {
     // This is a hard-coded hash or 'checkpoint' to use in times when the
     // connection fails.
-    const hash = 'QmXT85Xoi7xMRD9m7Ta4Cx8Yrsd2WSzLrq2VRo26KW4xLu'
+    let hash = 'QmXT85Xoi7xMRD9m7Ta4Cx8Yrsd2WSzLrq2VRo26KW4xLu'
 
     // Try to retrieve the hash from the BCH blockchain.
     try {
-      const hash = await this.memo.findHash()
+      hash = await this.memo.findHash()
       console.log(`IPFS hash found: ${hash}`)
 
       if (!hash) {
