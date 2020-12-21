@@ -20,7 +20,8 @@ class Tokens extends React.Component {
       errMsg: '',
       selectedTokenToSend: '',
       showForm: false,
-      txId: null
+      txId: null,
+      explorerURL: ''
     }
   }
 
@@ -52,7 +53,7 @@ class Tokens extends React.Component {
                 <a
                   target='_blank'
                   rel='noopener noreferrer'
-                  href={`https://explorer.bitcoin.com/bch/tx/${_this.state.txId}`}
+                  href={`${_this.state.explorerURL}/${_this.state.txId}`}
                 >
                   {_this.state.txId}
                 </a>
@@ -179,6 +180,7 @@ class Tokens extends React.Component {
   }
 
   async componentDidMount () {
+    _this.defineExplorer()
     await _this.handleGetTokens()
   }
 
@@ -236,6 +238,24 @@ class Tokens extends React.Component {
         txId: null,
         inFetch: false
       }
+    })
+  }
+
+  // Define the explorer to use
+  // depending on the selected chain
+  defineExplorer () {
+    const bchWalletLib = _this.props.bchWallet
+    const bchjs = bchWalletLib.bchjs
+
+    let explorerURL
+
+    if (bchjs.restURL.includes('abc.fullstack')) {
+      explorerURL = 'https://explorer.bitcoinabc.org/tx'
+    } else {
+      explorerURL = 'https://explorer.bitcoin.com/bch/tx'
+    }
+    _this.setState({
+      explorerURL
     })
   }
 }
