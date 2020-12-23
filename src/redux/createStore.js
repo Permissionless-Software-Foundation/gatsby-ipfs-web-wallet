@@ -56,9 +56,9 @@ const reducer = (state, action) => {
     })
   }
 
-  // Funcionalidad para cambiar entre las diferentes secciones del menu
-  // Se puede agregar una propiedad "data" con informacion
-  // que podrán manipular los demas componentes del menu
+  // Fuctionality to change between the different sections of the menu
+  // a "data" property can be added with information
+  // that can be handled by the other menu components
   if (action.type === 'MENU_NAVIGATION') {
     return Object.assign({}, state, {
       menuNavigation: {
