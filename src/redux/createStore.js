@@ -56,6 +56,17 @@ const reducer = (state, action) => {
     })
   }
 
+  // Funcionalidad para cambiar entre las diferentes secciones del menu
+  // Se puede agregar una propiedad "data" con informacion
+  // que podrán manipular los demas componentes del menu
+  if (action.type === 'MENU_NAVIGATION') {
+    return Object.assign({}, state, {
+      menuNavigation: {
+        changeTo: action.value.changeTo || state.menuNavigation.changeTo,
+        data: action.value.data
+      }
+    })
+  }
   return state
 }
 
@@ -102,7 +113,11 @@ const initialState = {
   bchBalance: { bchBalance: 0, usdBalance: 0 }, // Wallet Balance
   bchWallet: instanceWallet(), // minimal-slp-wallet instance
   tokensInfo: [],
-  currentRate: 0
+  currentRate: 0,
+  menuNavigation: {
+    changeTo: () => {},
+    data: null
+  }
 }
 
 const createStore = () => reduxCreateStore(reducer, initialState)

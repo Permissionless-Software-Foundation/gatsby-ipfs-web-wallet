@@ -183,6 +183,9 @@ class AdminLTEPage extends React.Component {
 
       _this.hideSplashLoader()
     }, 250)
+
+    // Add "changeSection" function to redux store
+    _this.props.setMenuNavigation({ changeTo: _this.changeSection })
   }
 
   componentDidUpdate () {
@@ -190,8 +193,10 @@ class AdminLTEPage extends React.Component {
     if (_this.menuLoaded && !_this.state.section) {
       if (_this.activedItem) {
         _this.changeSection(_this.activedItem)
+        _this.toggleMenuInMobile()
       } else {
         _this.changeSection(_this.defaultSection)
+        _this.toggleMenuInMobile()
       }
     }
 
@@ -258,7 +263,11 @@ class AdminLTEPage extends React.Component {
   // Section change, renders the corresponding component
   // to the selected section. each menu item corresponds
   // to a section.
-  changeSection (section) {
+  changeSection (section, data) {
+    if (data) {
+      _this.props.setMenuNavigation({ data })
+    }
+    if (!section) return
     if (_this.state.section === section) return
     _this.activeItemById(section)
     _this.setState({
@@ -287,10 +296,24 @@ class AdminLTEPage extends React.Component {
       const windowWidth = window.innerWidth
       // console.log("Window Width : ",windowWidth)
       if (windowWidth > MENU_HIDE_WIDTH) return
+
+      // Veryfies if the sideba is open
+      const sidebarEle = document.getElementsByClassName('main-sidebar')
+      const style = window.getComputedStyle(sidebarEle[0])
+      const transform = style.transform // get transform property
+
+      // If the transform property has any
+      // negative property, means that the menu
+      // is not visible on the screen
+      if (transform.match('-')) {
+        // Returns if the menu is already hidden
+        return
+      }
+
       const toggleEle = document.getElementsByClassName('sidebar-toggle')
       toggleEle[0].click()
     } catch (error) {
-      console.error(error)
+      // console.error(error)
     }
   }
 
@@ -353,7 +376,7 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) {}
+    } catch (err) { }
   }
 
   getInvisibleMenuItem () {
@@ -412,6 +435,17 @@ class AdminLTEPage extends React.Component {
       console.warn(error)
     }
   }
+
+  // Displays or hides the sidebar
+  // in the responsive design
+  toggleMenuInMobile () {
+    try {
+      const windowWidth = window.innerWidth
+      if (windowWidth > MENU_HIDE_WIDTH) return
+      const toggleEle = document.getElementsByClassName('sidebar-toggle')
+      toggleEle[0].click()
+    } catch (error) {}
+  }
 }
 
 // Props prvided by redux
@@ -423,7 +457,9 @@ AdminLTEPage.propTypes = {
   setBchWallet: PropTypes.func.isRequired, // set minimal-slp-wallet instance
   bchWallet: PropTypes.object, // get minimal-slp-wallet instance
   setTokensInfo: PropTypes.func.isRequired, // set tokens info
-  tokensInfo: PropTypes.array // tokens info
+  tokensInfo: PropTypes.array, // tokens info,
+  setMenuNavigation: PropTypes.func.isRequired,
+  menuNavigation: PropTypes.object
 }
 
 export default AdminLTEPage
