@@ -57,51 +57,49 @@ class Footer extends React.Component {
 
   render () {
     return (
-      <section id='footer'>
-        <Row className='footer-container'>
-          <Col md={5} className='footer-section'>
+      <section id="footer">
+        <Row className="footer-container">
+          <Col md={5} className="footer-section">
             <Row>
-              <Col md={12} className='mb-1'>
-                <p className='section-tittle'>Produced By</p>
+              <Col md={12} className="mb-1">
+                <p className="section-tittle">Produced By</p>
 
                 <a
                   href={siteConfig.hostUrl}
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {siteConfig.hostText}
                 </a>
               </Col>
               <Col md={12}>
-                <p className='section-tittle'>Source Code</p>
-                <FontAwesomeIcon className='' size='lg' icon={faGithub} />
+                <p className="section-tittle">Source Code</p>
+                <FontAwesomeIcon className="" size="lg" icon={faGithub} />
                 <a
                   href={siteConfig.sourceCode}
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Github
                 </a>
               </Col>
             </Row>
           </Col>
-          <Col md={7} className='footer-section'>
-            <div className='pull-right'>
-              <span className='section-tittle'>
+          <Col md={7} className="footer-section">
+            <div className="pull-right">
+              <span className="section-tittle">
                 Ways to access this web-app
               </span>
               <ul>
-                <li id='web'>
+                <li id="web">
                   <span>
                     <b>Web</b>
                   </span>
                   <b>|</b>
-                  <a href={siteConfig.clearWebUrl}>
-                    {siteConfig.clearWebUrl}
-                  </a>
+                  <a href={siteConfig.clearWebUrl}>{siteConfig.clearWebUrl}</a>
                 </li>
 
-                <li id='tor'>
+                <li id="tor">
                   <span>
                     <b>Tor</b>
                   </span>
@@ -111,12 +109,26 @@ class Footer extends React.Component {
                   </a>
                 </li>
 
-                <li id='ipfs'>
+                <li id="ipfs">
                   <span>
                     <b>IPFS</b>
                   </span>
                   <b>|</b>
                   <a href={_this.state.ipfsHashLink}>{this.state.ipfsHash}</a>
+                </li>
+
+                <li id="memo">
+                  <span>
+                    <b>Memo</b>
+                  </span>
+                  <b>|</b>
+                  <a
+                    href={`https://memo.cash/profile/${siteConfig.memoAddr}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {siteConfig.memoAddr}
+                  </a>
                 </li>
               </ul>
             </div>
