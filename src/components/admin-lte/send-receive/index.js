@@ -17,26 +17,28 @@ class SendReceive extends React.Component {
   render () {
     return (
       <>
-        {_this.props.walletInfo.mnemonic ? (
-          <Content>
-            <Receive walletInfo={_this.props.walletInfo} />
-            <Send
-              updateBalance={_this.props.updateBalance}
-              bchWallet={_this.props.bchWallet}
-              currentRate={_this.props.currentRate}
-            />
-          </Content>
-        ) : (
-          <Content>
-            <Box padding='true' className='container-nofound'>
-              <Row>
-                <Col xs={12}>
-                  <em>You need to create or import a wallet first</em>
-                </Col>
-              </Row>
-            </Box>
-          </Content>
-        )}
+        {_this.props.walletInfo.mnemonic
+          ? (
+            <Content>
+              <Receive walletInfo={_this.props.walletInfo} />
+              <Send
+                updateBalance={_this.props.updateBalance}
+                bchWallet={_this.props.bchWallet}
+                currentRate={_this.props.currentRate}
+              />
+            </Content>
+            )
+          : (
+            <Content>
+              <Box padding='true' className='container-nofound'>
+                <Row>
+                  <Col xs={12}>
+                    <em>You need to create or import a wallet first</em>
+                  </Col>
+                </Row>
+              </Box>
+            </Content>
+            )}
       </>
     )
   }

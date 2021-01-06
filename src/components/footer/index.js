@@ -96,9 +96,7 @@ class Footer extends React.Component {
                     <b>Web</b>
                   </span>
                   <b>|</b>
-                  <a href={siteConfig.clearWebUrl}>
-                    {siteConfig.clearWebUrl}
-                  </a>
+                  <a href={siteConfig.clearWebUrl}>{siteConfig.clearWebUrl}</a>
                 </li>
 
                 <li id='tor'>
@@ -117,6 +115,20 @@ class Footer extends React.Component {
                   </span>
                   <b>|</b>
                   <a href={_this.state.ipfsHashLink}>{this.state.ipfsHash}</a>
+                </li>
+
+                <li id='memo'>
+                  <span>
+                    <b>Memo</b>
+                  </span>
+                  <b>|</b>
+                  <a
+                    href={`https://memo.cash/profile/${siteConfig.memoAddr}`}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {siteConfig.memoAddr}
+                  </a>
                 </li>
               </ul>
             </div>

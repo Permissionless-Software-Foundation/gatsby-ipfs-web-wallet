@@ -35,7 +35,7 @@ export default function HTML (props) {
             flexDirection: 'column'
           }}
         ><img src='https://i.imgur.com/8n8PYAi.gif' alt='' width='250' />
-        Loading...
+          Loading...
         </div>
 
         {/* minimal-slp-wallet */}
