@@ -94,20 +94,24 @@ class Send extends React.Component {
                         <p>
                           {_this.state.sendCurrency === 'BCH'
                             ? `USD: ${(
-                              _this.state.amountSat *
-                              (_this.props.currentRate / 100)
-                            ).toFixed(2)}`
+                                _this.state.amountSat *
+                                (_this.props.currentRate / 100)
+                              ).toFixed(2)}`
                             : `BCH: ${(
-                              _this.state.amountSat /
-                              (_this.props.currentRate / 100)
-                            ).toFixed(8)}`}
+                                _this.state.amountSat /
+                                (_this.props.currentRate / 100)
+                              ).toFixed(8)}`}
                         </p>
                       </div>
                       <Button
                         text='Send'
                         type='primary'
                         className='btn-lg'
-                        onClick={_this.state.sendMax ? _this.handleSendAll : _this.handleSend}
+                        onClick={
+                          _this.state.sendMax
+                            ? _this.handleSendAll
+                            : _this.handleSend
+                        }
                       />
                     </Box>
                   </Col>
@@ -220,9 +224,7 @@ class Send extends React.Component {
 
       // Get total of satoshis fron the bch utxos
       let totalAmount = 0
-      utxos.map(val => {
-        totalAmount += val.satoshis
-      })
+      utxos.map(val => (totalAmount += val.satoshis))
 
       // Convert satoshis to bch
       let amountSat = totalAmount / 100000000
@@ -236,7 +238,6 @@ class Send extends React.Component {
 
       _this.setState({
         amountSat: amountSat
-
       })
     } catch (error) {
       console.error(error)
@@ -288,7 +289,7 @@ class Send extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd() * 100
+          currentRate = (await bchjs.Price.getBchaUsd()) * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100
@@ -369,7 +370,7 @@ class Send extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd() * 100
+          currentRate = (await bchjs.Price.getBchaUsd()) * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100

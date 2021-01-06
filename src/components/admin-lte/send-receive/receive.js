@@ -5,7 +5,7 @@ import copy from 'copy-to-clipboard'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-var QRCode = require('qrcode.react')
+const QRCode = require('qrcode.react')
 
 let _this
 class Receive extends React.Component {

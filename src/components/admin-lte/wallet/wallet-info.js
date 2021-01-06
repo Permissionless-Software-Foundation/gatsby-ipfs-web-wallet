@@ -189,7 +189,7 @@ class WalletInfo extends React.Component {
   // copy info  to clipboard
   copyToClipBoard (key) {
     const val = _this.state[key]
-    var textArea = document.createElement('textarea')
+    const textArea = document.createElement('textarea')
     textArea.value = val // copyText.textContent;
     document.body.appendChild(textArea)
     textArea.select()

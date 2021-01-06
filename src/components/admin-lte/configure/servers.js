@@ -4,10 +4,7 @@ import { Row, Col, Box, Inputs, Button } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import BchWallet from 'minimal-slp-wallet'
 
-const BchWallet =
-typeof window !== 'undefined'
-  ? window.SlpWallet
-  : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const { Text, Select } = Inputs
 
@@ -50,39 +47,41 @@ class Servers extends React.Component {
                 <Box className='border-none'>
                   <Row>
                     <Col xs={12}>
-                      {_this.state.showAddField ? (
-                        <Text
-                          id='newServer'
-                          name='newServer'
-                          placeholder='Add New Server url'
-                          label='Add New Server Url'
-                          labelPosition='above'
-                          onChange={_this.handleUpdate}
-                          value={_this.state.newServer}
-                          buttonRight={
-                            <Button
-                              text={_this.state.newServer ? ' ADD ' : 'CLOSE'}
-                              type='primary'
-                              onClick={_this.handleNewServerUrl}
-                            />
+                      {_this.state.showAddField
+                        ? (
+                          <Text
+                            id='newServer'
+                            name='newServer'
+                            placeholder='Add New Server url'
+                            label='Add New Server Url'
+                            labelPosition='above'
+                            onChange={_this.handleUpdate}
+                            value={_this.state.newServer}
+                            buttonRight={
+                              <Button
+                                text={_this.state.newServer ? ' ADD ' : 'CLOSE'}
+                                type='primary'
+                                onClick={_this.handleNewServerUrl}
+                              />
                           }
-                        />
-                      ) : (
-                        <Select
-                          name='selectedServer'
-                          label='Select Server Url'
-                          labelPosition='above'
-                          options={_this.state.selectOptions}
-                          value={_this.state.selectedServer}
-                          onChange={_this.handleUpdate}
-                          buttonRight={
-                            <Button
-                              icon='fa-plus'
-                              onClick={_this.handleTextField}
-                            />
+                          />
+                          )
+                        : (
+                          <Select
+                            name='selectedServer'
+                            label='Select Server Url'
+                            labelPosition='above'
+                            options={_this.state.selectOptions}
+                            value={_this.state.selectedServer}
+                            onChange={_this.handleUpdate}
+                            buttonRight={
+                              <Button
+                                icon='fa-plus'
+                                onClick={_this.handleTextField}
+                              />
                           }
-                        />
-                      )}
+                          />
+                          )}
                     </Col>
                     <Col sm={12} />
                   </Row>
@@ -295,7 +294,7 @@ class Servers extends React.Component {
         let currentRate
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = await bchjs.Price.getBchaUsd() * 100
+          currentRate = (await bchjs.Price.getBchaUsd()) * 100
         } else {
           // BCHN price.
           currentRate = (await bchjs.Price.getUsd()) * 100

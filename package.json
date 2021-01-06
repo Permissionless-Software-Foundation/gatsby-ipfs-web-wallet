@@ -32,19 +32,24 @@
     "gatsby-source-filesystem": "^2.3.8",
     "gatsby-transformer-sharp": "2.7.0",
     "prop-types": "^15.7.2",
-    "qrcode.react": "^1.0.0",
+    "qrcode.react": "^1.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.0.0",
     "react-jdenticon": "0.0.8",
     "react-qr-reader": "^2.2.1",
-    "react-redux": "^7.2.0"
+    "react-redux": "^7.2.2"
   },
   "devDependencies": {
-    "husky": "^4.2.5",
-    "prettier": "2.0.5",
-    "semantic-release": "^17.3.0",
-    "standard": "^14.3.4"
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "husky": "^4.3.6",
+    "prettier": "2.2.1",
+    "semantic-release": "^17.3.1",
+    "standard": "^16.0.3"
   },
   "keywords": [
     "gatsby",

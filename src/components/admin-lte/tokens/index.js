@@ -37,19 +37,13 @@ class Tokens extends React.Component {
           className='btn-md ml-1 mt-1 mb-1'
           onClick={() => _this.handleGetTokens(true)}
         />
-        {_this.state.txId &&
+        {_this.state.txId && (
           <div className='txIdContainer'>
-            <button
-              onClick={() => _this.setState({ txId: null })}
-            >
+            <button onClick={() => _this.setState({ txId: null })}>
               &times;
             </button>
             <Col xs={12} className='text-center mt-1'>
-              <Box
-                title='Transaction ID'
-                type='primary'
-                className='p-0'
-              >
+              <Box title='Transaction ID' type='primary' className='p-0'>
                 <a
                   target='_blank'
                   rel='noopener noreferrer'
@@ -59,7 +53,8 @@ class Tokens extends React.Component {
                 </a>
               </Box>
             </Col>
-          </div>}
+          </div>
+        )}
         {_this.state.showForm && (
           <SendTokens
             bchWallet={_this.props.bchWallet}
@@ -74,43 +69,45 @@ class Tokens extends React.Component {
             setTxId={_this.setTxId}
           />
         )}
-        {_this.state.inFetch ? (
-          <div className='spinner'>
-            <img alt='Loading...' src={Spinner} width={100} />
-          </div>
-        ) : (
-          <Content>
-            {_this.state.errMsg && (
-              <Box padding='true' className='container-nofound'>
-                <Row>
-                  <Col xs={12}>
-                    <em>{_this.state.errMsg}</em>
-                  </Col>
-                </Row>
-              </Box>
-            )}
+        {_this.state.inFetch
+          ? (
+            <div className='spinner'>
+              <img alt='Loading...' src={Spinner} width={100} />
+            </div>
+            )
+          : (
+            <Content>
+              {_this.state.errMsg && (
+                <Box padding='true' className='container-nofound'>
+                  <Row>
+                    <Col xs={12}>
+                      <em>{_this.state.errMsg}</em>
+                    </Col>
+                  </Row>
+                </Box>
+              )}
 
-            {_this.state.tokens.length > 0 && (
-              <>
-                <Row>
-                  {_this.state.tokens.map((val, i) => {
-                    return (
-                      <Col sm={4} key={`token-${i}`}>
-                        <TokenCard
-                          key={`token-${i}`}
-                          id={`token-${i}`}
-                          token={val}
-                          showToken={_this.showToken}
-                          selectToken={_this.selectToken}
-                        />
-                      </Col>
-                    )
-                  })}
-                </Row>
-              </>
+              {_this.state.tokens.length > 0 && (
+                <>
+                  <Row>
+                    {_this.state.tokens.map((val, i) => {
+                      return (
+                        <Col sm={4} key={`token-${i}`}>
+                          <TokenCard
+                            key={`token-${i}`}
+                            id={`token-${i}`}
+                            token={val}
+                            showToken={_this.showToken}
+                            selectToken={_this.selectToken}
+                          />
+                        </Col>
+                      )
+                    })}
+                  </Row>
+                </>
+              )}
+            </Content>
             )}
-          </Content>
-        )}
         <TokenModal
           token={
             _this.state.selectedTokenToView

@@ -8,7 +8,7 @@ const normalConfig = [
     options: {
       // start_url: '/',
       name: 'images',
-      path: `${__dirname}/src/images`
+      path: `${__dirname.toString()}/src/images`
     }
   },
   'gatsby-transformer-sharp',
@@ -47,7 +47,7 @@ const ipfsConfig = [
     options: {
       start_url: '__GATSBY_IPFS_PATH_PREFIX__',
       name: 'images',
-      path: `${__dirname}/src/images`
+      path: `${__dirname.toString()}/src/images`
     }
   },
   'gatsby-transformer-sharp',
