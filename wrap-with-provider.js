@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 
 import createStore from './src/redux/createStore'
 
-// eslint-disable-next-line react/display-name,react/prop-types
+// eslint-disable-next-line
 export default ({ element }) => {
   // Instantiating store in `wrapRootElement` handler ensures:
   //  - there is fresh store for each SSR page
