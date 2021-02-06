@@ -87,15 +87,13 @@ class Footer extends React.Component {
           </Col>
           <Col md={7} className='footer-section'>
             <div className='pull-right'>
-              <span className='section-tittle'>
-                Ways to access this web-app
-              </span>
+              <p className='section-tittle'>Ways to access this web-app</p>
               <ul>
                 <li id='web'>
                   <span>
                     <b>Web</b>
                   </span>
-                  <b>|</b>
+                  <b className='bar-space'>|</b>
                   <a href={siteConfig.clearWebUrl}>{siteConfig.clearWebUrl}</a>
                 </li>
 
@@ -103,7 +101,7 @@ class Footer extends React.Component {
                   <span>
                     <b>Tor</b>
                   </span>
-                  <b>|</b>
+                  <b className='bar-space'>|</b>
                   <a href={`http://${siteConfig.torUrl}`}>
                     {siteConfig.torUrl}
                   </a>
@@ -113,7 +111,7 @@ class Footer extends React.Component {
                   <span>
                     <b>IPFS</b>
                   </span>
-                  <b>|</b>
+                  <b className='bar-space'>|</b>
                   <a href={_this.state.ipfsHashLink}>{this.state.ipfsHash}</a>
                 </li>
 
@@ -121,7 +119,7 @@ class Footer extends React.Component {
                   <span>
                     <b>Memo</b>
                   </span>
-                  <b>|</b>
+                  <b className='bar-space'>|</b>
                   <a
                     href={`https://memo.cash/profile/${siteConfig.memoAddr}`}
                     target='_blank'

@@ -60,4 +60,20 @@
 ul #tor span{
   margin-right: 9px;
 }
- 
+
+@media screen and (max-width: 500px) {
+ .section-tittle{
+   margin-bottom: 1rem!important;
+ }
+ #footer ul li{
+   margin-left: 0;
+   margin-bottom: 1em;
+ }
+ #footer ul li a{
+  display: block!important;
+}
+
+ #footer ul li .bar-space{
+  display: none!important;
+}
+}
