@@ -224,7 +224,7 @@ class Send extends React.Component {
 
       // Get total of satoshis fron the bch utxos
       let totalAmount = 0
-      utxos.map(val => (totalAmount += val.satoshis))
+      utxos.map(val => (totalAmount += val.value))
 
       // Convert satoshis to bch
       let amountSat = totalAmount / 100000000
