@@ -20,24 +20,31 @@ class Wallet extends React.Component {
     return (
       <Content>
         <InfoWallets />
-
+        {/* Show wallet info is this exists */}
         {_this.props.walletInfo.mnemonic && (
           <WalletInfo walletInfo={_this.props.walletInfo} />
         )}
 
-        <NewWallet
-          updateBalance={_this.props.updateBalance}
-          setWalletInfo={_this.props.setWalletInfo}
-          setBchWallet={_this.props.setBchWallet}
-          walletInfo={_this.props.walletInfo}
-        />
+        {/** Shows the 'create' and 'import' cards
+         *   if there's not a wallet created
+         */}
+        {!_this.props.walletInfo.mnemonic && (
+          <>
+            <NewWallet
+              updateBalance={_this.props.updateBalance}
+              setWalletInfo={_this.props.setWalletInfo}
+              setBchWallet={_this.props.setBchWallet}
+              walletInfo={_this.props.walletInfo}
+            />
 
-        <ImportWallet
-          updateBalance={_this.props.updateBalance}
-          setWalletInfo={_this.props.setWalletInfo}
-          setBchWallet={_this.props.setBchWallet}
-          walletInfo={_this.props.walletInfo}
-        />
+            <ImportWallet
+              updateBalance={_this.props.updateBalance}
+              setWalletInfo={_this.props.setWalletInfo}
+              setBchWallet={_this.props.setBchWallet}
+              walletInfo={_this.props.walletInfo}
+            />
+          </>
+        )}
 
         {this.props.importComponents}
       </Content>
