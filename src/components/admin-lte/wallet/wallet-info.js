@@ -19,7 +19,8 @@ class WalletInfo extends React.Component {
       legacyAddress: '',
       hdPath: '',
       blurredMnemonic: true,
-      blurredPrivateKey: true
+      blurredPrivateKey: true,
+      copySuccess: ''
     }
   }
 
@@ -50,43 +51,77 @@ class WalletInfo extends React.Component {
                 <Row className='wallet-info-content mt-1 text-left'>
                   <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Mnemonic:</b> <span className={_this.state.blurredMnemonic ? 'blurred' : ''}> {_this.state.mnemonic} </span>
+                      <b>Mnemonic:</b>{' '}
+                      <span
+                        className={_this.state.blurredMnemonic ? 'blurred' : ''}
+                      >
+                        {' '}
+                        {_this.state.mnemonic}{' '}
+                      </span>
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.blurMnemonic()}
-                      icon={eyeIcon.mnemonic}
-                    />
-                    <FontAwesomeIcon
-                      className='icon btn-animation ml-1'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('mnemonic')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'mnemonic'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <>
+                          <FontAwesomeIcon
+                            className='icon btn-animation'
+                            size='lg'
+                            onClick={() => _this.blurMnemonic()}
+                            icon={eyeIcon.mnemonic}
+                          />
+                          <FontAwesomeIcon
+                            className='icon btn-animation ml-1'
+                            size='lg'
+                            onClick={() => _this.copyToClipBoard('mnemonic')}
+                            icon='copy'
+                          />
+                        </>
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
                   <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Private Key: </b> <span className={_this.state.blurredPrivateKey ? 'blurred' : ''}> {_this.state.privateKey} </span>
+                      <b>Private Key: </b>{' '}
+                      <span
+                        className={
+                          _this.state.blurredPrivateKey ? 'blurred' : ''
+                        }
+                      >
+                        {' '}
+                        {_this.state.privateKey}{' '}
+                      </span>
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.blurPrivateKey()}
-                      icon={eyeIcon.privateKey}
-                    />
-                    <FontAwesomeIcon
-                      className='icon btn-animation ml-1'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('privateKey')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'privateKey'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <>
+                          <FontAwesomeIcon
+                            className='icon btn-animation'
+                            size='lg'
+                            onClick={() => _this.blurPrivateKey()}
+                            icon={eyeIcon.privateKey}
+                          />
+                          <FontAwesomeIcon
+                            className='icon btn-animation ml-1'
+                            size='lg'
+                            onClick={() => _this.copyToClipBoard('privateKey')}
+                            icon='copy'
+                          />
+                        </>
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
@@ -96,12 +131,20 @@ class WalletInfo extends React.Component {
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('cashAddress')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'cashAddress'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <FontAwesomeIcon
+                          className='icon btn-animation'
+                          size='lg'
+                          onClick={() => _this.copyToClipBoard('cashAddress')}
+                          icon='copy'
+                        />
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
@@ -111,12 +154,20 @@ class WalletInfo extends React.Component {
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('address')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'address'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <FontAwesomeIcon
+                          className='icon btn-animation'
+                          size='lg'
+                          onClick={() => _this.copyToClipBoard('address')}
+                          icon='copy'
+                        />
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
@@ -126,12 +177,20 @@ class WalletInfo extends React.Component {
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('slpAddress')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'slpAddress'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <FontAwesomeIcon
+                          className='icon btn-animation'
+                          size='lg'
+                          onClick={() => _this.copyToClipBoard('slpAddress')}
+                          icon='copy'
+                        />
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
@@ -141,12 +200,20 @@ class WalletInfo extends React.Component {
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('legacyAddress')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'legacyAddress'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <FontAwesomeIcon
+                          className='icon btn-animation'
+                          size='lg'
+                          onClick={() => _this.copyToClipBoard('legacyAddress')}
+                          icon='copy'
+                        />
+                        )}
                   </Col>
                 </Row>
                 <Row className='wallet-info-content mt-1 text-left'>
@@ -157,12 +224,20 @@ class WalletInfo extends React.Component {
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>
-                    <FontAwesomeIcon
-                      className='icon btn-animation'
-                      size='lg'
-                      onClick={() => _this.copyToClipBoard('hdPath')}
-                      icon='copy'
-                    />
+                    {_this.state.copySuccess === 'hdPath'
+                      ? (
+                        <div className='copied-text'>
+                          <span>Copied!</span>
+                        </div>
+                        )
+                      : (
+                        <FontAwesomeIcon
+                          className='icon btn-animation'
+                          size='lg'
+                          onClick={() => _this.copyToClipBoard('hdPath')}
+                          icon='copy'
+                        />
+                        )}
                   </Col>
                 </Row>
               </Col>
@@ -176,13 +251,13 @@ class WalletInfo extends React.Component {
 
   blurMnemonic () {
     _this.setState({
-      blurredMnemonic: (!_this.state.blurredMnemonic)
+      blurredMnemonic: !_this.state.blurredMnemonic
     })
   }
 
   blurPrivateKey () {
     _this.setState({
-      blurredPrivateKey: (!_this.state.blurredPrivateKey)
+      blurredPrivateKey: !_this.state.blurredPrivateKey
     })
   }
 
@@ -195,6 +270,19 @@ class WalletInfo extends React.Component {
     textArea.select()
     document.execCommand('Copy')
     textArea.remove()
+
+    _this.handleCopySuccess(key)
+  }
+
+  handleCopySuccess (key) {
+    _this.setState({
+      copySuccess: key
+    })
+    setTimeout(() => {
+      _this.setState({
+        copySuccess: ''
+      })
+    }, 1000)
   }
 
   componentDidMount () {
