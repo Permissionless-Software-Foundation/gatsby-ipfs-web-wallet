@@ -96,3 +96,12 @@
     border: none; 
     outline: none; 
 }
+
+.copied-text{
+    width: 100%;
+    text-align: center;
+    color: var(--main-color);
+  }
+.nopadding{
+      padding: 0!important;
+  }

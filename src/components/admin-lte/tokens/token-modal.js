@@ -9,7 +9,9 @@ class TokenModal extends React.Component {
   constructor (props) {
     super(props)
     _this = this
-    this.state = {}
+    this.state = {
+      copySuccess: ''
+    }
 
     this.modalFooter = (
       <>
@@ -44,16 +46,31 @@ class TokenModal extends React.Component {
                           <Col xs={12} sm={3}>
                             <b>TokenId:</b>
                           </Col>
-                          <Col xs={10} sm={8}>
+                          <Col xs={9} sm={7}>
                             {token.tokenId}
                           </Col>
-                          <Col xs={2} sm={1}>
-                            <FontAwesomeIcon
-                              className='icon btn-animation'
-                              size='lg'
-                              onClick={() => _this.copyToClipBoard('tokenId')}
-                              icon='copy'
-                            />
+                          <Col
+                            xs={3}
+                            sm={2}
+                            className={
+                              _this.state.copySuccess ? 'nopadding' : ''
+                            }
+                          >
+                            {_this.state.copySuccess === 'tokenId'
+                              ? (
+                                <div className='copied-text'>
+                                  <span>Copied!</span>
+                                </div>
+                                )
+                              : (
+                                <FontAwesomeIcon
+                                  className='icon btn-animation'
+                                  style={{ cssFloat: 'right' }}
+                                  size='lg'
+                                  onClick={() => _this.copyToClipBoard('tokenId')}
+                                  icon='copy'
+                                />
+                                )}
                           </Col>
                         </Row>
                       </Col>
@@ -155,6 +172,19 @@ class TokenModal extends React.Component {
     textArea.select()
     document.execCommand('Copy')
     textArea.remove()
+
+    _this.handleCopySuccess(key)
+  }
+
+  handleCopySuccess (key) {
+    _this.setState({
+      copySuccess: key
+    })
+    setTimeout(() => {
+      _this.setState({
+        copySuccess: ''
+      })
+    }, 1000)
   }
 }
 TokenModal.propTypes = {
