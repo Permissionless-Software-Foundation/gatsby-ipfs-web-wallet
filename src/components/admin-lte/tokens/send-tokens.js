@@ -283,7 +283,7 @@ class SendTokens extends React.Component {
   }
 
   onHandleOnScan (data) {
-    const validateAdrrs = ['simpleledger']
+    const validateAdrrs = ['simpleledger', 'bitcoincash']
     try {
       _this.resetAddressValue()
       if (!data) {
