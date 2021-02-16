@@ -20,3 +20,9 @@
     filter: blur(2.7px);
     -webkit-filter: blur(2.7px);
 }
+
+.copied-text{
+  width: 100%;
+  text-align: center;
+  color: var(--main-color);
+}
