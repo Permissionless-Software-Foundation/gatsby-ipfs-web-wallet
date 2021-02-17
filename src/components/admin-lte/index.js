@@ -401,8 +401,8 @@ class AdminLTEPage extends React.Component {
       // return if servers configurations exist
       if (walletInfo.selectedServer) return null
 
-      const server1 = 'https://bchn.fullstack.cash/v3/'
-      const server2 = 'https://abc.fullstack.cash/v3/'
+      const server1 = 'https://bchn.fullstack.cash/v4/'
+      const server2 = 'https://abc.fullstack.cash/v4/'
 
       const servers = [server1, server2]
 
