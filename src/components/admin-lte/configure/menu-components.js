@@ -6,7 +6,7 @@ import React from 'react'
 
 export default [
   {
-    key: 'Some key',
+    key: '',
     icon: 'fas-message',
     component: <><p>test</p></>
   }
