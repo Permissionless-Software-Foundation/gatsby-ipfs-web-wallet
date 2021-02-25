@@ -13,6 +13,8 @@ class TokenCard extends React.Component {
 
   render () {
     const token = _this.props.token
+    console.log(`token: ${JSON.stringify(token, null, 2)}`)
+
     return (
       <>
         <Box className='hover-shadow border-none mt-2' id='token-card'>
