@@ -51,6 +51,9 @@ class Memo {
 
   // Walk the transactions associated with an address until a proper IPFS hash is
   // found. If one is not found, will return false.
+  //
+  // See this Issue with ABC wallets:
+  // https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet/issues/136
   async findHash () {
     try {
       console.log(`finding latest IPFS hash for address: ${this.bchAddr}...`)
