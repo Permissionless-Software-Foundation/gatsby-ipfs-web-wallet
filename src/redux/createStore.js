@@ -2,10 +2,7 @@ import { createStore as reduxCreateStore } from 'redux'
 // Wallet from localStorage
 import { getWalletInfo, setWalletInfo } from '../components/localWallet'
 // import BchWallet from 'minimal-slp-wallet'
-const BchWallet =
-  typeof window !== 'undefined'
-    ? window.SlpWallet
-    : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const reducer = (state, action) => {
   // Update walletInfo state property
@@ -120,5 +117,14 @@ const initialState = {
   }
 }
 
-const createStore = () => reduxCreateStore(reducer, initialState)
+const createStore = () =>
+  reduxCreateStore(
+    reducer,
+    initialState,
+    /** Redux DevTools
+     *  https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=es
+     *
+     */
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 export default createStore
