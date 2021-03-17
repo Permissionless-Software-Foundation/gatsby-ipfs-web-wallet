@@ -150,29 +150,6 @@ class WalletInfo extends React.Component {
                 <Row className='wallet-info-content mt-1 text-left'>
                   <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Address: </b> {_this.state.address}
-                    </span>
-                  </Col>
-                  <Col xs={4} sm={3} lg={2} className='text-right'>
-                    {_this.state.copySuccess === 'address'
-                      ? (
-                        <div className='copied-text'>
-                          <span>Copied!</span>
-                        </div>
-                        )
-                      : (
-                        <FontAwesomeIcon
-                          className='icon btn-animation'
-                          size='lg'
-                          onClick={() => _this.copyToClipBoard('address')}
-                          icon='copy'
-                        />
-                        )}
-                  </Col>
-                </Row>
-                <Row className='wallet-info-content mt-1 text-left'>
-                  <Col xs={8} sm={9} lg={10}>
-                    <span>
                       <b>Slp Address: </b> {_this.state.slpAddress}
                     </span>
                   </Col>
