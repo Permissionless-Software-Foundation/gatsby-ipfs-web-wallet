@@ -247,7 +247,7 @@ class Tokens extends React.Component {
     let explorerURL
 
     if (bchjs.restURL.includes('abc.fullstack')) {
-      explorerURL = 'https://explorer.bitcoinabc.org/tx'
+      explorerURL = 'https://explorer.be.cash/tx'
     } else {
       explorerURL = 'https://explorer.bitcoin.com/bch/tx'
     }
