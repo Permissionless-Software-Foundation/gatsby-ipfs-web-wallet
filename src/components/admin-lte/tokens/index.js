@@ -91,17 +91,21 @@ class Tokens extends React.Component {
                 <>
                   <Row>
                     {_this.state.tokens.map((val, i) => {
-                      return (
-                        <Col sm={4} key={`token-${i}`}>
-                          <TokenCard
-                            key={`token-${i}`}
-                            id={`token-${i}`}
-                            token={val}
-                            showToken={_this.showToken}
-                            selectToken={_this.selectToken}
-                          />
-                        </Col>
-                      )
+                      if (val.qty > 0) {
+                        return (
+                          <Col sm={4} key={`token-${i}`}>
+                            <TokenCard
+                              key={`token-${i}`}
+                              id={`token-${i}`}
+                              token={val}
+                              showToken={_this.showToken}
+                              selectToken={_this.selectToken}
+                            />
+                          </Col>
+                        )
+                      } else {
+                        return <span key={`token-${i}`} />
+                      }
                     })}
                   </Row>
                 </>
@@ -109,6 +113,7 @@ class Tokens extends React.Component {
             </Content>
             )}
         <TokenModal
+          bchWallet={_this.props.bchWallet}
           token={
             _this.state.selectedTokenToView
               ? _this.state.selectedTokenToView
@@ -116,6 +121,7 @@ class Tokens extends React.Component {
           }
           handleOnHide={_this.onHandleToggleModal}
           show={_this.state.showModal}
+          explorerURL={_this.state.explorerURL}
         />
       </>
     )
@@ -198,10 +204,13 @@ class Tokens extends React.Component {
     ele.scrollIntoView({ behavior: 'smooth' })
   }
 
-  onHandleToggleModal () {
+  onHandleToggleModal (refresh = null) {
     _this.setState({
       showModal: !_this.state.showModal
     })
+    if (refresh) {
+      _this.handleGetTokens(true)
+    }
   }
 
   handleError (error) {

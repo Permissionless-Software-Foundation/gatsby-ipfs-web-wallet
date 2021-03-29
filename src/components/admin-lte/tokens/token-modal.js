@@ -11,7 +11,10 @@ class TokenModal extends React.Component {
     _this = this
     this.state = {
       copySuccess: '',
-      isBurnView: false
+      isBurnView: false,
+      txId: '',
+      errMsg: '',
+      inFetch: false
     }
 
     this.modalFooter = (
@@ -36,6 +39,15 @@ class TokenModal extends React.Component {
         />
       </>
     )
+    this.onDoneFooter = (
+      <>
+        <Button
+          text='Close'
+          pullLeft
+          onClick={() => this.handleBurnAll(false)}
+        />
+      </>
+    )
   }
 
   render () {
@@ -46,7 +58,11 @@ class TokenModal extends React.Component {
           title={_this.state.isBurnView ? `Burn All ${token.name}` : token.name}
           modal
           modalFooter={
-            _this.state.isBurnView ? this.burnFooter : this.modalFooter
+            !_this.state.isBurnView
+              ? this.modalFooter
+              : _this.state.txId || _this.state.errMsg
+                ? this.onDoneFooter
+                : this.burnFooter
           }
           show={_this.props.show}
           modalCloseButton
@@ -54,138 +70,159 @@ class TokenModal extends React.Component {
         >
           <Row>
             <Col sm={12}>
-              {_this.state.isBurnView
-                ? (
+              {_this.state.isBurnView && !_this.state.txId && (
+                <Box loaded={!_this.state.inFetch} className='border-none'>
                   <p>
                     Are you sure you want to burn {`${token.qty} `}
                     tokens?
                   </p>
-                  )
-                : (
-                  <Box className=' border-none '>
-                    <Row>
-                      <Col
-                        sm={12}
-                        className='text-center   tokenModal-info-container'
-                      >
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>TokenId:</b>
-                              </Col>
-                              <Col xs={9} sm={7}>
-                                {token.tokenId}
-                              </Col>
-                              <Col
-                                xs={3}
-                                sm={2}
-                                className={
+                </Box>
+              )}
+
+              {_this.state.isBurnView && _this.state.txId && (
+                <div className='text-center '>
+                  <p>Transaction ID:</p>
+                  <a
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    href={`${_this.props.explorerURL}/${_this.state.txId}`}
+                  >
+                    {_this.state.txId}
+                  </a>
+                </div>
+              )}
+
+              {_this.state.isBurnView && _this.state.errMsg && (
+                <div className='text-center'>
+                  <p className='error-color'> {_this.state.errMsg}</p>
+                </div>
+              )}
+
+              {!_this.state.isBurnView && (
+                <Box className=' border-none '>
+                  <Row>
+                    <Col
+                      sm={12}
+                      className='text-center   tokenModal-info-container'
+                    >
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>TokenId:</b>
+                            </Col>
+                            <Col xs={9} sm={7}>
+                              {token.tokenId}
+                            </Col>
+                            <Col
+                              xs={3}
+                              sm={2}
+                              className={
                                 _this.state.copySuccess ? 'nopadding' : ''
                               }
+                            >
+                              {_this.state.copySuccess === 'tokenId'
+                                ? (
+                                  <div className='copied-text'>
+                                    <span>Copied!</span>
+                                  </div>
+                                  )
+                                : (
+                                  <FontAwesomeIcon
+                                    className='icon btn-animation'
+                                    style={{ cssFloat: 'right' }}
+                                    size='lg'
+                                    onClick={() =>
+                                      _this.copyToClipBoard('tokenId')}
+                                    icon='copy'
+                                  />
+                                  )}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>URL:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              <a
+                                href={`http://${token.url}`}
+                                target='_blank'
+                                rel='noopener noreferrer'
                               >
-                                {_this.state.copySuccess === 'tokenId'
-                                  ? (
-                                    <div className='copied-text'>
-                                      <span>Copied!</span>
-                                    </div>
-                                    )
-                                  : (
-                                    <FontAwesomeIcon
-                                      className='icon btn-animation'
-                                      style={{ cssFloat: 'right' }}
-                                      size='lg'
-                                      onClick={() =>
-                                        _this.copyToClipBoard('tokenId')}
-                                      icon='copy'
-                                    />
-                                    )}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>URL:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                <a
-                                  href={`http://${token.url}`}
-                                  target='_blank'
-                                  rel='noopener noreferrer'
-                                >
-                                  {token.url}
-                                </a>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>Ticker:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                {token.ticker}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>Name:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                {token.name}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>Balance:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                {token.qty}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>Decimals:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                {token.decimals}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className='tokenModal-info-content mt-1 text-left'>
-                          <Col xs={12}>
-                            <Row>
-                              <Col xs={12} sm={3}>
-                                <b>TokenType:</b>
-                              </Col>
-                              <Col xs={12} sm={9}>
-                                {token.tokenType}
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Box>
-                  )}
+                                {token.url}
+                              </a>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>Ticker:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              {token.ticker}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>Name:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              {token.name}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>Balance:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              {token.qty}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>Decimals:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              {token.decimals}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className='tokenModal-info-content mt-1 text-left'>
+                        <Col xs={12}>
+                          <Row>
+                            <Col xs={12} sm={3}>
+                              <b>TokenType:</b>
+                            </Col>
+                            <Col xs={12} sm={9}>
+                              {token.tokenType}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Box>
+              )}
             </Col>
           </Row>
         </Content>
@@ -224,19 +261,24 @@ class TokenModal extends React.Component {
   }
 
   handleModal () {
-    _this.props.handleOnHide()
+    // if txId exist refresh tokens on close
+    _this.props.handleOnHide(_this.state.txId)
+
     setTimeout(() => {
       _this.setState({
-        isBurnView: false
+        isBurnView: false,
+        txId: '',
+        errMsg: '',
+        inFetch: false
       })
     }, 200)
   }
 
-  handleBurnAll (isConfirmed) {
+  async handleBurnAll (isConfirmed) {
     try {
       // Dismiss
       if (!isConfirmed) {
-        _this.hideModal()
+        _this.handleModal()
         return
       }
 
@@ -244,13 +286,31 @@ class TokenModal extends React.Component {
        *  BURN ALL
        *
        */
-      console.log('Hello Word')
-    } catch (error) {}
+      _this.setState({
+        inFetch: true
+      })
+      const { bchWallet, token } = _this.props
+
+      const result = await bchWallet.burnTokens(token.qty, token.tokenId)
+      console.log('result', result)
+      _this.setState({
+        txId: result,
+        inFetch: false
+      })
+    } catch (error) {
+      console.warn(error)
+      _this.setState({
+        errMsg: error.message,
+        inFetch: false
+      })
+    }
   }
 }
 TokenModal.propTypes = {
   token: PropTypes.object.isRequired,
   show: PropTypes.bool.isRequired,
-  handleOnHide: PropTypes.func.isRequired
+  handleOnHide: PropTypes.func.isRequired,
+  bchWallet: PropTypes.object, // get minimal-slp-wallet instance
+  explorerURL: PropTypes.string
 }
 export default TokenModal
