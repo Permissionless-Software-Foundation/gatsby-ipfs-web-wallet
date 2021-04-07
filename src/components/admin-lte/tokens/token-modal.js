@@ -291,8 +291,8 @@ class TokenModal extends React.Component {
       })
       const { bchWallet, token } = _this.props
 
-      const result = await bchWallet.burnTokens(token.qty, token.tokenId)
-      console.log('result', result)
+      const result = await bchWallet.burnAll(token.tokenId)
+      console.log('burn txid: ', result)
       _this.setState({
         txId: result,
         inFetch: false
