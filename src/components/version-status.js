@@ -3,17 +3,23 @@ import React from 'react'
 class VersionStatus extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      show: false
+    }
   }
 
   render () {
     return (
       <>
-        <div className='version-status'>
-          <div>
-            <p><b>Warning: Open Alpha - things will break</b></p>
+        {this.state.show && (
+          <div className='version-status'>
+            <div>
+              <p>
+                <b>Warning: Open Alpha - things will break</b>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </>
     )
   }
