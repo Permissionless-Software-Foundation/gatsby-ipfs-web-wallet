@@ -46,7 +46,7 @@ class JsonWebTokens extends React.Component {
                     id='jwt'
                     name='JWT'
                     placeholder='Enter FullStack.cash JWT'
-                    label='FullStack.cash JWT'
+                    label='Enter FullStack.cash JWT to increase rate limits.'
                     labelPosition='above'
                     onChange={_this.handleUpdate}
                   />
