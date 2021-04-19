@@ -15,7 +15,7 @@ class VersionStatus extends React.Component {
           <div className='version-status'>
             <div>
               <p>
-                <b>Warning: Open Alpha - things will break</b>
+                <b>Warning: Open Beta - this app is under active develpment.</b>
               </p>
             </div>
           </div>
