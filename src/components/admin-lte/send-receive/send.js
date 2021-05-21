@@ -211,13 +211,11 @@ class Send extends React.Component {
   async getMaxAmount () {
     try {
       const bchWalletLib = _this.props.bchWallet
-
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
       await bchWalletLib.utxos.initUtxoStore(walletAddr)
 
-      const utxos = bchWalletLib.utxos.bchUtxos
-
+      const utxos = bchWalletLib.utxos.utxoStore.bchUtxos
       if (!utxos.length) {
         throw new Error('No BCH Utxos to spend!')
       }

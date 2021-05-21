@@ -4,10 +4,7 @@ import { Row, Col, Box, Button, Inputs } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import BchWallet from 'minimal-slp-wallet'
 
-const BchWallet =
-  typeof window !== 'undefined'
-    ? window.SlpWallet
-    : null
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const { Text } = Inputs
 
@@ -50,7 +47,7 @@ class ImportWallet extends React.Component {
               <Col sm={12} className='text-center mt-2 mb-2'>
                 <Row className='flex justify-content-center'>
                   <Col sm={8}>
-                    <div>
+                    <form autoComplete='off'>
                       <Text
                         id='import-mnemonic'
                         name='mnemonic'
@@ -59,7 +56,7 @@ class ImportWallet extends React.Component {
                         labelPosition='above'
                         onChange={_this.handleUpdate}
                       />
-                    </div>
+                    </form>
                   </Col>
                 </Row>
               </Col>
@@ -151,7 +148,7 @@ class ImportWallet extends React.Component {
       let currentRate
 
       if (bchjs.restURL.includes('abc.fullstack')) {
-        currentRate = await bchjs.Price.getBchaUsd() * 100
+        currentRate = (await bchjs.Price.getBchaUsd()) * 100
       } else {
         // BCHN price.
         currentRate = (await bchjs.Price.getUsd()) * 100

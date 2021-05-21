@@ -139,10 +139,23 @@ class SendTokens extends React.Component {
     // console.log(_this.state)
   }
 
+  // Sets the qty property with
+  // the corresponding token decimals
+  floorQty (qty, decimals) {
+    try {
+      const a = qty * Math.pow(10, decimals)
+      const b = Math.floor(a)
+      const result = b / Math.pow(10, decimals)
+      return result
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
   async handleSendMax () {
-    const { qty } = _this.props.selectedToken
+    const { qty, decimals } = _this.props.selectedToken
     _this.setState({
-      amountSat: qty
+      amountSat: _this.floorQty(qty, decimals)
     })
   }
 
@@ -181,11 +194,6 @@ class SendTokens extends React.Component {
       // Ensure the wallet UTXOs are up-to-date.
       const walletAddr = bchWalletLib.walletInfo.address
       await bchWalletLib.utxos.initUtxoStore(walletAddr)
-
-      // For some reason, the utxo categories do not get populated, so we have
-      // to do it manually.
-      bchWalletLib.utxos.bchUtxos = await bchWalletLib.utxos.getBchUtxos()
-      bchWalletLib.utxos.tokenUtxos = await bchWalletLib.utxos.getTokenUtxos()
 
       // Used for debugging.
       // console.log(`receiver: ${JSON.stringify(receiver, null, 2)}`)
