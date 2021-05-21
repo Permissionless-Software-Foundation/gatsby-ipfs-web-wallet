@@ -139,10 +139,23 @@ class SendTokens extends React.Component {
     // console.log(_this.state)
   }
 
+  // Sets the qty property with
+  // the corresponding token decimals
+  floorQty (qty, decimals) {
+    try {
+      const a = qty * Math.pow(10, decimals)
+      const b = Math.floor(a)
+      const result = b / Math.pow(10, decimals)
+      return result
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
   async handleSendMax () {
-    const { qty } = _this.props.selectedToken
+    const { qty, decimals } = _this.props.selectedToken
     _this.setState({
-      amountSat: qty
+      amountSat: _this.floorQty(qty, decimals)
     })
   }
 
