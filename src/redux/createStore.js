@@ -116,15 +116,18 @@ const initialState = {
     data: null
   }
 }
-
-const createStore = () =>
-  reduxCreateStore(
-    reducer,
-    initialState,
-    /** Redux DevTools
-     *  https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=es
-     *
-     */
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+let createStore
+typeof window !== 'undefined'
+  ? (createStore = () =>
+      reduxCreateStore(
+        reducer,
+        initialState,
+        /** Redux DevTools
+         *  https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=es
+         *
+         */
+        window.__REDUX_DEVTOOLS_EXTENSION__ &&
+          window.__REDUX_DEVTOOLS_EXTENSION__()
+      ))
+  : (createStore = () => reduxCreateStore(reducer, initialState))
 export default createStore
