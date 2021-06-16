@@ -13,6 +13,7 @@ const normalConfig = [
   },
   'gatsby-transformer-sharp',
   'gatsby-plugin-sharp',
+  'gatsby-plugin-image',
   {
     resolve: 'gatsby-plugin-manifest',
     options: {
@@ -52,6 +53,7 @@ const ipfsConfig = [
   },
   'gatsby-transformer-sharp',
   'gatsby-plugin-sharp',
+  'gatsby-plugin-image',
   {
     resolve: 'gatsby-plugin-manifest',
     options: {
