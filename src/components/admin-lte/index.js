@@ -60,18 +60,18 @@ class AdminLTEPage extends React.Component {
         <AdminLTE
           title={[siteConfig.title]}
           titleShort={[siteConfig.titleShort]}
-          theme='blue'
+          theme="blue"
         >
           <Sidebar.Core>
-            <Item key='Balance' text='Balance' icon={siteConfig.balanceIcon}>
+            <Item key="Balance" text="Balance" icon={siteConfig.balanceIcon}>
               <Box
-                className='hover-shadow border-none background-none'
+                className="hover-shadow border-none background-none"
                 loaded={!_this.state.inFetch}
               >
-                <div className='sidebar-balance'>
+                <div className="sidebar-balance">
                   <div>
                     {!_this.state.inFetch && (
-                      <div className='siderbar-balance-content'>
+                      <div className="siderbar-balance-content">
                         <span>
                           <h3>{siteConfig.balanceText}</h3>
 
@@ -81,9 +81,9 @@ class AdminLTEPage extends React.Component {
                           <small>USD: ${_this.state.usdBalance}</small>
                         </span>
                         <FontAwesomeIcon
-                          className='ml-1 icon'
-                          size='lg'
-                          icon='redo'
+                          className="ml-1 icon"
+                          size="lg"
+                          icon="redo"
                           onClick={_this.handleGetBalance}
                         />
                       </div>
@@ -101,8 +101,8 @@ class AdminLTEPage extends React.Component {
           <Navbar.Core>
             <VersionStatus />
           </Navbar.Core>
-          <Layout path='/' {..._this.props}>
-            <div className='components-container'>
+          <Layout path="/" {..._this.props}>
+            <div className="components-container">
               {_this.renderNewViewItems(_this.props)}
             </div>
           </Layout>
@@ -376,14 +376,14 @@ class AdminLTEPage extends React.Component {
           return ''
         })
       )
-    } catch (err) { }
+    } catch (err) {}
   }
 
   getInvisibleMenuItem () {
     return (
       <li style={{ display: 'none' }}>
         {/* Adding this childrens prevents console errors */}
-        <a href='#'>
+        <a href="#">
           <span />
           <span />
         </a>
@@ -401,8 +401,8 @@ class AdminLTEPage extends React.Component {
       // return if servers configurations exist
       if (walletInfo.selectedServer) return null
 
-      const server1 = 'https://bchn.fullstack.cash/v4/'
-      const server2 = 'https://abc.fullstack.cash/v4/'
+      const server1 = 'https://bchn.fullstack.cash/v5/'
+      const server2 = 'https://abc.fullstack.cash/v5/'
 
       const servers = [server1, server2]
 
