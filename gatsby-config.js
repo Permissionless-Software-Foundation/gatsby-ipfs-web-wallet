@@ -41,7 +41,7 @@ const normalConfig = [
 
 // Building for deployment over IPFS or with UncensorablePublishing.com tools.
 const ipfsConfig = [
-  'gatsby-plugin-ipfs',
+  '@chris.troutner/gatsby-plugin-ipfs',
   'gatsby-plugin-react-helmet',
   {
     resolve: 'gatsby-source-filesystem',
