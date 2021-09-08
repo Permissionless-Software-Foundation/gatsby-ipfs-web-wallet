@@ -3,11 +3,15 @@
 // export default MenuComponents
 
 import React from 'react'
-
+import Ipfs from './ipfs-tab'
 export default [
   {
-    key: '',
+    key: 'IPFS',
     icon: 'fas-message',
-    component: <><p>test</p></>
+    component: (
+      <>
+        <Ipfs />
+      </>
+    )
   }
 ]
