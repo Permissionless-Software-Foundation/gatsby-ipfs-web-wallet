@@ -2,12 +2,10 @@ import React from 'react'
 
 import { Tabs, Row, Col, TabContent } from 'adminlte-2-react'
 
-// let _this
 class IPFSTabs extends React.Component {
   constructor (props) {
     super(props)
     this.state = {}
-    // _this = this
   }
 
   render () {

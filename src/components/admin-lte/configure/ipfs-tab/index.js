@@ -18,6 +18,11 @@ class IPFS extends React.Component {
       ipfsConnection: false
     }
     _this = this
+
+    // Starts ipfs control if there is a wallet registered already
+    // console.log('props', props)
+
+    this.initIPFSControl()
   }
 
   render () {
@@ -45,6 +50,12 @@ class IPFS extends React.Component {
     )
   }
 
+  async componentDidMount () {
+    await this.ipfsControl.startIpfs()
+    const nodeInfo = this.ipfsControl.getNodeInfo()
+    console.log('nodeInfo', nodeInfo)
+  }
+
   handleIpfs () {
     _this.setState(prevState => ({
       ipfsConnection: !_this.state.ipfsConnection
@@ -61,9 +72,13 @@ class IPFS extends React.Component {
         privateLog: _this.privLogChat
       }
       // Retrieve last ipfs control
-      const { data } = _this.props.menuNavigation
-      if (data && data.chatInfo.ipfsControl) {
-        this.ipfsControl = data.chatInfo.ipfsControl
+      const { menuNavigation } = _this.props
+      if (
+        menuNavigation &&
+        menuNavigation.data &&
+        menuNavigation.data.chatInfo.ipfsControl
+      ) {
+        this.ipfsControl = menuNavigation.data.chatInfo.ipfsControl
       } else {
         // Instantiate a new ipfs control
         this.ipfsControl = new IpfsControl(ipfsConfig)
