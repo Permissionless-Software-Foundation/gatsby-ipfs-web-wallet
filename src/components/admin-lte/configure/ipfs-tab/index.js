@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { Content, Row, Col, Inputs, Box } from 'adminlte-2-react'
-
-import IPFSTabs from './ipfs-tabs'
-
 import IpfsControl from '../lib/ipfs-control'
+import IPFSTabs from './ipfs-tabs'
+import CommandRouter from '../lib/commands'
 
+import './ipfs.css'
 // const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const { Checkbox } = Inputs
@@ -15,13 +15,21 @@ class IPFS extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      ipfsConnection: false
+      isStarted: false,
+      ipfsConnection: false,
+      appStatusOutput: '',
+      statusOutput: '',
+      commandOutput: "Enter 'help' to see available commands.",
+      commandInput: '',
+      peers: [],
+      chatOutputs: {
+        All: {
+          output: '',
+          nickname: ''
+        }
+      }
     }
     _this = this
-
-    // Starts ipfs control if there is a wallet registered already
-    // console.log('props', props)
-
     this.initIPFSControl()
   }
 
@@ -30,36 +38,114 @@ class IPFS extends React.Component {
     return (
       <Content>
         <Row>
-          <Col sm={2} />
-          <Col sm={8}>
-            <Box className='text-center'>
+          <Col sm={12}>
+            <Box className="text-center ipfs-checkbox-container">
               <Checkbox
+                id="ipfs-checkbox"
+                className="ipfs-checkbox"
                 value={ipfsConnection} // mark as checked
-                text='Connect to wallet services over IPFS'
-                labelPosition='none'
+                text="Connect to wallet services over IPFS"
+                labelPosition="none"
                 labelXs={0}
-                name='ipfsConnection'
+                name="ipfsConnection"
                 onChange={this.handleIpfs}
               />
             </Box>
           </Col>
-          <Col sm={2} />
         </Row>
-        {ipfsConnection && <IPFSTabs />}
+        {ipfsConnection && (
+          <IPFSTabs
+            ipfsControl={_this.ipfsControl}
+            handleCommandLog={_this.onCommandLog}
+            commandOutput={_this.state.commandOutput}
+            statusOutput={_this.state.statusOutput}
+            appStatusOutput={_this.state.appStatusOutput}
+          />
+        )}
       </Content>
     )
   }
 
-  async componentDidMount () {
-    await this.ipfsControl.startIpfs()
-    const nodeInfo = this.ipfsControl.getNodeInfo()
-    console.log('nodeInfo', nodeInfo)
+  async handleIpfs () {
+    const connect = !_this.state.ipfsConnection
+    const { isStarted } = _this.state
+    _this.setState(prevState => ({
+      ipfsConnection: connect
+    }))
+
+    // Save checkbox state into localstorage
+    const { walletInfo } = _this.props
+    walletInfo.ipfsService = connect
+
+    _this.props.setWalletInfo(walletInfo)
+
+    if (!isStarted && connect) {
+      try {
+        await _this.ipfsControl.startIpfs()
+        const nodeInfo = _this.ipfsControl.getNodeInfo()
+        console.log('nodeInfo', nodeInfo)
+        _this.setState({
+          isStarted: true
+        })
+      } catch (error) {
+        console.warn(error.message)
+      }
+    }
   }
 
-  handleIpfs () {
-    _this.setState(prevState => ({
-      ipfsConnection: !_this.state.ipfsConnection
-    }))
+  async componentDidMount () {
+    await _this.getLastIpfsCoordInstance()
+  }
+
+  async componentWillUnmount () {
+    try {
+      const data = {
+        ipfsInfo: {
+          ipfsIsStarted: true,
+          savedState: _this.state,
+          ipfsControl: _this.ipfsControl
+        }
+      }
+      // Save the current state
+      _this.props.setMenuNavigation({ data })
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  async getLastIpfsCoordInstance () {
+    try {
+      const { menuNavigation, walletInfo } = _this.props
+      const data = menuNavigation.data
+      // console.log('menuNavigation', menuNavigation)
+      // console.log('walletInfo', walletInfo)
+      // console.log('data', data)
+
+      // Get local info and
+      // Verify if checkbox has been marked
+      // Return for unmarked checkbox
+      if (!walletInfo.ipfsService) return
+
+      _this.setState(prevState => ({
+        ipfsConnection: true
+      }))
+
+      // Don't start ipfs if it has started already
+      if (!data || !data.ipfsInfo.ipfsIsStarted) {
+        await this.ipfsControl.startIpfs()
+        _this.setState({
+          isStarted: true
+        })
+      }
+
+      // Loads the previous information and states
+      if (data && data.ipfsInfo) {
+        const { savedState } = data.ipfsInfo
+        _this.setState(savedState)
+      }
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   initIPFSControl (bchWallet) {
@@ -76,32 +162,16 @@ class IPFS extends React.Component {
       if (
         menuNavigation &&
         menuNavigation.data &&
-        menuNavigation.data.chatInfo.ipfsControl
+        menuNavigation.data.ipfsInfo.ipfsControl
       ) {
-        this.ipfsControl = menuNavigation.data.chatInfo.ipfsControl
+        this.ipfsControl = menuNavigation.data.ipfsInfo.ipfsControl
       } else {
         // Instantiate a new ipfs control
         this.ipfsControl = new IpfsControl(ipfsConfig)
       }
+      this.commandRouter = new CommandRouter({ ipfsControl: this.ipfsControl })
     } catch (err) {
       console.error(err)
-    }
-  }
-
-  // Adds a line to the Command terminal
-  onCommandLog (msg) {
-    try {
-      let commandOutput
-      if (!msg) {
-        commandOutput = ''
-      } else {
-        commandOutput = _this.state.commandOutput + '   ' + msg + '\n'
-      }
-      _this.setState({
-        commandOutput
-      })
-    } catch (error) {
-      console.warn(error)
     }
   }
 
@@ -120,27 +190,6 @@ class IPFS extends React.Component {
       }
     } catch (error) {
       console.warn(error)
-    }
-  }
-
-  // Handle decrypted, private messages and send them to the right terminal.
-  privLogChat (str, from) {
-    try {
-      // console.log(`privLogChat str: ${str}`)
-      // console.log(`privLogChat from: ${from}`)
-
-      const { chatOutputs } = _this.state
-
-      const terminalOut = `peer: ${str}`
-
-      // Asigns the output to the corresponding peer
-      chatOutputs[from].output = chatOutputs[from].output + terminalOut + '\n'
-
-      _this.setState({
-        chatOutputs
-      })
-    } catch (err) {
-      console.warn('Error in privLogChat():', err)
     }
   }
 
@@ -172,6 +221,93 @@ class IPFS extends React.Component {
       console.warn(err)
       // Don't throw an error as this is a top-level handler.
     }
+  }
+
+  // Handle decrypted, private messages and send them to the right terminal.
+  privLogChat (str, from) {
+    try {
+      // console.log(`privLogChat str: ${str}`)
+      // console.log(`privLogChat from: ${from}`)
+
+      const { chatOutputs } = _this.state
+
+      const terminalOut = `peer: ${str}`
+
+      // Asigns the output to the corresponding peer
+      chatOutputs[from].output = chatOutputs[from].output + terminalOut + '\n'
+
+      _this.setState({
+        chatOutputs
+      })
+    } catch (err) {
+      console.warn('Error in privLogChat():', err)
+    }
+  }
+
+  // This function is triggered when a new peer is detected.
+  handleNewPeer (ipfsId) {
+    try {
+      console.log(`New IPFS peer discovered. ID: ${ipfsId}`)
+
+      // Use the peer IPFS ID to identify the peers state.
+      const { peers, chatOutputs } = _this.state
+
+      // Add the new peer to the peers array.
+      peers.push(ipfsId)
+
+      // Add a chatOutput entry for the new peer.
+      const obj = {
+        output: '',
+        nickname: ''
+      }
+      // chatOutputs[shortIpfsId] = obj
+      chatOutputs[ipfsId] = obj
+
+      _this.setState({
+        peers,
+        chatOutputs
+      })
+    } catch (err) {
+      console.warn('Error in handleNewPeer(): ', err)
+    }
+  }
+
+  // Adds a line to the Command terminal
+  onCommandLog (msg) {
+    try {
+      let commandOutput
+      if (!msg) {
+        commandOutput = ''
+      } else {
+        commandOutput = _this.state.commandOutput + '   ' + msg + '\n'
+      }
+      _this.setState({
+        commandOutput
+      })
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  onAppStatus (msg) {
+    try {
+      let output
+      if (!msg) {
+        output = ''
+      } else {
+        output = _this.state.appStatusOutput + '   ' + msg + '\n'
+      }
+      _this.setState({
+        appStatusOutput: output
+      })
+    } catch (error) {
+      console.warn(error)
+      // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
 
