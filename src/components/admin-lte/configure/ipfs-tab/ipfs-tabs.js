@@ -34,16 +34,16 @@ class IPFSTabs extends React.Component {
       <Row>
         <Col md={12}>
           <Tabs
-            defaultActiveKey="status"
-            id="ipfs-coord-tabs"
-            className="mb-3 nav-tabs-custom"
+            defaultActiveKey='status'
+            id='ipfs-coord-tabs'
+            className='mb-3 nav-tabs-custom'
           >
-            <Tab eventKey="status" title="Status">
+            <Tab eventKey='status' title='Status'>
               <Text
-                id="statusLog"
-                name="statusLog"
-                inputType="textarea"
-                labelPosition="none"
+                id='statusLog'
+                name='statusLog'
+                inputType='textarea'
+                labelPosition='none'
                 rows={20}
                 readOnly
                 value={appStatusOutput}
@@ -52,12 +52,12 @@ class IPFSTabs extends React.Component {
                 }}
               />
             </Tab>
-            <Tab eventKey="ipfs-coord" title="IPFS Coord">
+            <Tab eventKey='ipfs-coord' title='IPFS Coord'>
               <Text
-                id="ipfsCoordLog"
-                name="ipfsCoordLog"
-                inputType="textarea"
-                labelPosition="none"
+                id='ipfsCoordLog'
+                name='ipfsCoordLog'
+                inputType='textarea'
+                labelPosition='none'
                 rows={20}
                 readOnly
                 value={statusOutput}
@@ -66,12 +66,12 @@ class IPFSTabs extends React.Component {
                 }}
               />
             </Tab>
-            <Tab eventKey="command" title="Command">
+            <Tab eventKey='command' title='Command'>
               <Text
-                id="commandLog"
-                name="commandLog"
-                inputType="textarea"
-                labelPosition="none"
+                id='commandLog'
+                name='commandLog'
+                inputType='textarea'
+                labelPosition='none'
                 rows={20}
                 readOnly
                 value={`${commandOutput ? `${commandOutput}>` : '>'}`}
@@ -80,10 +80,10 @@ class IPFSTabs extends React.Component {
                 }}
               />
               <Text
-                id="commandInput"
-                name="commandInput"
-                inputType="tex"
-                labelPosition="none"
+                id='commandInput'
+                name='commandInput'
+                inputType='tex'
+                labelPosition='none'
                 value={this.state.commandInput}
                 onChange={this.handleTextInput}
                 onKeyDown={_this.handleCommandKeyDown}

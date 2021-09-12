@@ -39,15 +39,15 @@ class IPFS extends React.Component {
       <Content>
         <Row>
           <Col sm={12}>
-            <Box className="text-center ipfs-checkbox-container">
+            <Box className='text-center ipfs-checkbox-container'>
               <Checkbox
-                id="ipfs-checkbox"
-                className="ipfs-checkbox"
+                id='ipfs-checkbox'
+                className='ipfs-checkbox'
                 value={ipfsConnection} // mark as checked
-                text="Connect to wallet services over IPFS"
-                labelPosition="none"
+                text='Connect to wallet services over IPFS'
+                labelPosition='none'
                 labelXs={0}
-                name="ipfsConnection"
+                name='ipfsConnection'
                 onChange={this.handleIpfs}
               />
             </Box>
