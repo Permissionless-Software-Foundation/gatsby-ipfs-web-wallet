@@ -3,9 +3,10 @@ import { Tabs, Tab } from 'react-bootstrap'
 import MenuComponents from './menu-components'
 
 function TabsMenu (props) {
+  const menuComponents = MenuComponents(props)
   return (
     <>
-      {MenuComponents.length > 0 && (
+      {menuComponents.length > 0 && (
         <Tabs
           defaultActiveKey='Configure'
           id='configure-tabs'
@@ -13,11 +14,12 @@ function TabsMenu (props) {
         >
           <Tab title='General' eventKey='Configure' />
 
-          {MenuComponents.map((menuItem, i) => (
+          {menuComponents.map((menuItem, i) => (
             <Tab
               key={`${menuItem.id}-${i}`}
               eventKey={menuItem.key}
               title={menuItem.key}
+              {...props}
             />
           ))}
         </Tabs>

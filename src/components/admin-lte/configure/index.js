@@ -21,7 +21,7 @@ class Configure extends React.Component {
     }
 
     _this.BchWallet = BchWallet
-
+    _this.tabsComponents = MenuComponents(props)
     this.handleSelect = key => {
       _this.setState({ menuItem: key })
     }
@@ -53,7 +53,7 @@ class Configure extends React.Component {
 
         {/* // Load Plugin Views */}
         {_this.state.menuItem !== 'Configure' &&
-          MenuComponents.filter(
+          _this.tabsComponents.filter(
             menuItem => menuItem.key === _this.state.menuItem
           )[0].component}
       </Content>
@@ -66,7 +66,6 @@ Configure.propTypes = {
   walletInfo: PropTypes.object.isRequired,
   setBchWallet: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired
-
 }
 
 export default Configure

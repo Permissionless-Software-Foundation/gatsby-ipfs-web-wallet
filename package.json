@@ -21,8 +21,12 @@
   },
   "dependencies": {
     "@chris.troutner/gatsby-plugin-ipfs": "^2.0.3",
+    "@chris.troutner/ipfs": "^2.0.2",
     "adminlte-2-react": "^0.1.27",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
     "copy-to-clipboard": "^3.3.1",
+    "crypto-browserify": "^3.12.0",
     "gatsby": "^3.7.2",
     "gatsby-plugin-image": "^1.7.1",
     "gatsby-plugin-manifest": "^3.7.1",
@@ -31,6 +35,10 @@
     "gatsby-plugin-sharp": "^3.7.1",
     "gatsby-source-filesystem": "^3.7.1",
     "gatsby-transformer-sharp": "3.7.1",
+    "https-browserify": "^1.0.0",
+    "ipfs-coord": "^6.6.4",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "prop-types": "^15.7.2",
     "qrcode.react": "^1.0.1",
     "react": "^17.0.1",
@@ -38,7 +46,9 @@
     "react-helmet": "^6.1.0",
     "react-jdenticon": "0.0.9",
     "react-qr-reader": "^2.2.1",
-    "react-redux": "^7.2.4"
+    "react-redux": "^7.2.4",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0"
   },
   "devDependencies": {
     "eslint": "^7.18.0",

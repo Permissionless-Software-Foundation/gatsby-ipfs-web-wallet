@@ -1,13 +1,16 @@
-// const MenuComponents = () => {}
-
-// export default MenuComponents
-
 import React from 'react'
-
-export default [
-  {
-    key: '',
-    icon: 'fas-message',
-    component: <><p>test</p></>
-  }
-]
+import Ipfs from './ipfs-tab'
+const MenuComponents = props => {
+  return [
+    {
+      key: 'IPFS',
+      icon: 'fas-message',
+      component: (
+        <>
+          <Ipfs {...props} />
+        </>
+      )
+    }
+  ]
+}
+export default MenuComponents
