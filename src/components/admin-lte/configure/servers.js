@@ -44,6 +44,14 @@ class Servers extends React.Component {
                   />
                   <span>Back End Server</span>
                 </h1>
+                <p>
+                  Currently connected to the
+                  {_this.props.walletInfo.selectedServer ==
+                  'https://bchn.fullstack.cash/v5/'
+                    ? ' Bitcoin Cash '
+                    : ' Ecash '}
+                  network.
+                </p>
                 <Box className='border-none'>
                   <Row>
                     <Col xs={12}>

@@ -73,7 +73,12 @@ class AdminLTEPage extends React.Component {
                     {!_this.state.inFetch && (
                       <div className='siderbar-balance-content'>
                         <span>
-                          <h3>{siteConfig.balanceText}</h3>
+                          <h3>
+                            {_this.props.walletInfo.selectedServer ==
+                            'https://bchn.fullstack.cash/v5/'
+                              ? 'BCH Balance'
+                              : 'XEC Balance'}
+                          </h3>
 
                           <span style={{ fontSize: '18px' }}>
                             {_this.state.bchBalance}
