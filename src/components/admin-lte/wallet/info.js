@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 let _this
 class InfoWallets extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     _this = this
     this.state = {}
@@ -32,7 +32,7 @@ class InfoWallets extends React.Component {
               <Col sm={12} className='text-center mt-2 mb-2'>
                 <p>
                   This is an open source, non-custodial web wallet supporting
-                  {_this.props.walletInfo.selectedServer ==
+                  {_this.props.walletInfo.selectedServer ===
                   'https://bchn.fullstack.cash/v5/'
                     ? ' Bitcoin Cash (BCH) '
                     : ' Ecash (XEC) '}

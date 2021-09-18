@@ -46,7 +46,7 @@ class Servers extends React.Component {
                 </h1>
                 <p>
                   Currently connected to the
-                  {_this.props.walletInfo.selectedServer ==
+                  {_this.props.walletInfo.selectedServer ===
                   'https://bchn.fullstack.cash/v5/'
                     ? ' Bitcoin Cash '
                     : ' Ecash '}
