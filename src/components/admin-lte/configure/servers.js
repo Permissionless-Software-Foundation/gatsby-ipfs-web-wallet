@@ -283,9 +283,17 @@ class Servers extends React.Component {
       walletInfo.servers = servers
       walletInfo.selectedServer = selectedValue
       _this.props.setWalletInfo(walletInfo)
+      _this.applyCurrencyColor()
     } catch (error) {
       console.warn(error)
     }
+  }
+
+  applyCurrencyColor () {
+    let color = '#00A74F'
+    const root = document.querySelector(':root')
+    if (_this.state.selectedServer === 'https://abc.fullstack.cash/v5/') color = '#001137'
+    root.style.setProperty('--main-color', color)
   }
 
   // Get wallet balance

@@ -406,6 +406,12 @@ class AdminLTEPage extends React.Component {
       const accessLocation = window.location.hostname
       console.log('accessLocation', accessLocation)
 
+      // apply different color for BCH and XEC
+      if (walletInfo.selectedServer === 'https://abc.fullstack.cash/v5/') {
+        const root = document.querySelector(':root')
+        root.style.setProperty('--main-color', '#001137')
+      }
+
       // return if servers configurations exist
       if (walletInfo.selectedServer) return null
 
