@@ -81,11 +81,10 @@ class AdminLTEPage extends React.Component {
                           </h3>
 
                           <span style={{ fontSize: '18px' }}>
-                          {_this.props.walletInfo.selectedServer ===
+                            {_this.props.walletInfo.selectedServer ===
                             'https://bchn.fullstack.cash/v5/'
                               ? _this.state.bchBalance
-                              : _this.state.bchBalance * 1000000
-                            }
+                              : (_this.state.bchBalance * 1000000).toFixed(2)}
                           </span>
                           <small>USD: ${_this.state.usdBalance}</small>
                         </span>

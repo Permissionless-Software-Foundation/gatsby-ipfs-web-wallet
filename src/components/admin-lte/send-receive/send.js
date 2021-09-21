@@ -15,14 +15,23 @@ class Send extends React.Component {
 
     _this = this
 
+    const coin = _this.props.walletInfo.selectedServer === 'https://bchn.fullstack.cash/v5/'
+      ? 'BCH'
+      : 'XEC'
+
+    const unitConversion = coin === 'XEC' ? 1 / 1000000 : 1
+    // for the conversion of Bcha price to Xec denomination
+
     this.state = {
       address: '',
+      unitConversion: unitConversion,
       amountSat: '',
       errMsg: '',
       txId: '',
       showScan: false,
       inFetch: false,
       sendCurrency: 'USD',
+      coin: coin,
       sendMax: false,
       explorerURL: ''
     }
@@ -54,8 +63,8 @@ class Send extends React.Component {
                       <Text
                         id='addressToSend'
                         name='address'
-                        placeholder='Enter bch address to send'
-                        label='BCH Address'
+                        placeholder={`Enter ${_this.state.coin} address to send`}
+                        label={`${_this.state.coin} Address`}
                         labelPosition='above'
                         onChange={_this.handleUpdate}
                         className='title-icon'
@@ -92,14 +101,16 @@ class Send extends React.Component {
                       />
                       <div className='text-left pb-4'>
                         <p>
-                          {_this.state.sendCurrency === 'BCH'
+                          {_this.state.sendCurrency === _this.state.coin
                             ? `USD: ${(
                                 _this.state.amountSat *
-                                (_this.props.currentRate / 100)
+                                (_this.props.currentRate *
+                                  _this.state.unitConversion / 100)
                               ).toFixed(2)}`
-                            : `BCH: ${(
+                            : `${_this.state.coin}: ${(
                                 _this.state.amountSat /
-                                (_this.props.currentRate / 100)
+                                (_this.props.currentRate *
+                                  _this.state.unitConversion / 100)
                               ).toFixed(8)}`}
                         </p>
                       </div>
@@ -169,13 +180,14 @@ class Send extends React.Component {
   handleChangeCurrency () {
     if (_this.state.sendCurrency === 'USD') {
       _this.setState({
-        sendCurrency: 'BCH'
+        sendCurrency: `${_this.state.coin}`
       })
       if (_this.state.amountSat > 0) {
         _this.setState({
           amountSat: (
             _this.state.amountSat /
-            (_this.props.currentRate / 100)
+            (_this.props.currentRate *
+              _this.state.unitConversion / 100)
           ).toFixed(8)
         })
       }
@@ -187,7 +199,8 @@ class Send extends React.Component {
         _this.setState({
           amountSat: (
             _this.state.amountSat *
-            (_this.props.currentRate / 100)
+            (_this.props.currentRate *
+              _this.state.unitConversion / 100)
           ).toFixed(2)
         })
       }
@@ -217,7 +230,7 @@ class Send extends React.Component {
 
       const utxos = bchWalletLib.utxos.utxoStore.bchUtxos
       if (!utxos.length) {
-        throw new Error('No BCH Utxos to spend!')
+        throw new Error(`No ${_this.state.coin} Utxos to spend!`)
       }
 
       // Get total of satoshis fron the bch utxos
@@ -257,7 +270,12 @@ class Send extends React.Component {
         amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
       }
 
-      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      let amountToSend = Math.floor(Number(amountSat) * 100000000)
+
+      if (_this.state.coin === 'XEC') {
+        amountToSend = Math.floor(Number(amountSat) * 100)
+      }
+
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
 
       if (!bchWalletLib) {
@@ -320,7 +338,12 @@ class Send extends React.Component {
         amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
       }
 
-      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      let amountToSend = Math.floor(Number(amountSat) * 100000000)
+
+      if (_this.state.coin === 'XEC') {
+        amountToSend = Math.floor(Number(amountSat) * 100)
+      }
+
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
 
       const receivers = [
