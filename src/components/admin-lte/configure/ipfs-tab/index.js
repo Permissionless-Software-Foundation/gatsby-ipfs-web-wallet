@@ -155,7 +155,8 @@ class IPFS extends React.Component {
         // handleChatLog: _this.onCommandLog
         handleChatLog: _this.incommingChat,
         bchWallet: bchWallet || _this.props.bchWallet, // bch wallet instance
-        privateLog: _this.privLogChat
+        privateLog: _this.privLogChat,
+        pollLog: _this.onAppStatus
       }
       // Retrieve last ipfs control
       const { menuNavigation } = _this.props
