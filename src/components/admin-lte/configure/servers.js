@@ -300,18 +300,20 @@ class Servers extends React.Component {
         const bchjs = bchWalletLib.bchjs
 
         let currentRate
+        let currency
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = (await bchjs.Price.getBchaUsd()) * 100
+          currency = 'XEC'
+          currentRate = (await bchjs.Price.getXecUsd()) * 100
         } else {
-          // BCHN price.
+          currency = 'BCH'
           currentRate = (await bchjs.Price.getUsd()) * 100
         }
 
         _this.setState({
           currentRate: currentRate
         })
-        _this.props.updateBalance({ myBalance, currentRate })
+        _this.props.updateBalance({ myBalance, currentRate, currency })
       }
       // Hide loader spinner
       _this.setState({

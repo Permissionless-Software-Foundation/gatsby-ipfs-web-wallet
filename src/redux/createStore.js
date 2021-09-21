@@ -24,13 +24,15 @@ const reducer = (state, action) => {
   // Update bchBalance state property
   if (action.type === 'UPDATE_BALANCE') {
     // Convert satoshis to bch
-    const { myBalance, currentRate } = action.value
-    console.log(`currentRate: ${currentRate}`)
+    const { myBalance, currentRate, currency } = action.value
+    console.log(`currentRate ${currency}: ${currentRate} dollarcent`)
 
     const satoshis = myBalance
-    const bch = satoshis / 100000000
 
-    const bchBalance = Number(bch.toFixed(8))
+    let coin = satoshis / 100000000
+    if (currency === 'XEC') coin = satoshis / 100
+
+    const bchBalance = Number(coin.toFixed(8))
     const _usdBalance = bchBalance * (currentRate / 100)
     const usdBalance = Number(_usdBalance.toFixed(2)) // usd balance
 

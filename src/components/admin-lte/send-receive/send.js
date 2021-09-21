@@ -15,14 +15,19 @@ class Send extends React.Component {
 
     _this = this
 
+    const coin = _this.props.walletInfo.selectedServer === 'https://bchn.fullstack.cash/v5/'
+      ? 'BCH'
+      : 'XEC'
+
     this.state = {
       address: '',
-      amountSat: '',
+      amountEntered: '',
       errMsg: '',
       txId: '',
       showScan: false,
       inFetch: false,
       sendCurrency: 'USD',
+      coin: coin,
       sendMax: false,
       explorerURL: ''
     }
@@ -54,8 +59,8 @@ class Send extends React.Component {
                       <Text
                         id='addressToSend'
                         name='address'
-                        placeholder='Enter bch address to send'
-                        label='BCH Address'
+                        placeholder={`Enter ${_this.state.coin} address to send`}
+                        label={`${_this.state.coin} Address`}
                         labelPosition='above'
                         onChange={_this.handleUpdate}
                         className='title-icon'
@@ -69,8 +74,8 @@ class Send extends React.Component {
 
                       <Text
                         id='amountToSend'
-                        name='amountSat'
-                        value={_this.state.amountSat}
+                        name='amountEntered'
+                        value={_this.state.amountEntered}
                         placeholder={`Enter amount to send in ${_this.state.sendCurrency}`}
                         label='Amount'
                         labelPosition='above'
@@ -92,13 +97,13 @@ class Send extends React.Component {
                       />
                       <div className='text-left pb-4'>
                         <p>
-                          {_this.state.sendCurrency === 'BCH'
+                          {_this.state.sendCurrency === _this.state.coin
                             ? `USD: ${(
-                                _this.state.amountSat *
+                                _this.state.amountEntered *
                                 (_this.props.currentRate / 100)
                               ).toFixed(2)}`
-                            : `BCH: ${(
-                                _this.state.amountSat /
+                            : `${_this.state.coin}: ${(
+                                _this.state.amountEntered /
                                 (_this.props.currentRate / 100)
                               ).toFixed(8)}`}
                         </p>
@@ -169,12 +174,12 @@ class Send extends React.Component {
   handleChangeCurrency () {
     if (_this.state.sendCurrency === 'USD') {
       _this.setState({
-        sendCurrency: 'BCH'
+        sendCurrency: `${_this.state.coin}`
       })
-      if (_this.state.amountSat > 0) {
+      if (_this.state.amountEntered > 0) {
         _this.setState({
-          amountSat: (
-            _this.state.amountSat /
+          amountEntered: (
+            _this.state.amountEntered /
             (_this.props.currentRate / 100)
           ).toFixed(8)
         })
@@ -183,10 +188,10 @@ class Send extends React.Component {
       _this.setState({
         sendCurrency: 'USD'
       })
-      if (_this.state.amountSat > 0) {
+      if (_this.state.amountEntered > 0) {
         _this.setState({
-          amountSat: (
-            _this.state.amountSat *
+          amountEntered: (
+            _this.state.amountEntered *
             (_this.props.currentRate / 100)
           ).toFixed(2)
         })
@@ -203,7 +208,7 @@ class Send extends React.Component {
       _this.getMaxAmount()
     } else {
       _this.setState({
-        amountSat: ''
+        amountEntered: ''
       })
     }
   }
@@ -217,25 +222,30 @@ class Send extends React.Component {
 
       const utxos = bchWalletLib.utxos.utxoStore.bchUtxos
       if (!utxos.length) {
-        throw new Error('No BCH Utxos to spend!')
+        throw new Error(`No ${_this.state.coin} Utxos to spend!`)
       }
 
-      // Get total of satoshis fron the bch utxos
+      // Get total of satoshis from the bch utxos
       let totalAmount = 0
       utxos.map(val => (totalAmount += val.value))
 
       // Convert satoshis to bch
-      let amountSat = totalAmount / 100000000
+      let amountCoins = totalAmount / 100000000
+
+      // Convert satoshis to xec
+      if (_this.state.coin === 'XEC') {
+        amountCoins = totalAmount / 100
+      }
 
       // Change the amount to send to USD if is the selected currency
       if (_this.state.sendCurrency === 'USD') {
-        const _usdAmount = amountSat * (_this.props.currentRate / 100)
+        const _usdAmount = amountCoins * (_this.props.currentRate / 100)
         const usdAmount = Number(_usdAmount.toFixed(2)) // usd Amount
-        amountSat = usdAmount
+        amountCoins = usdAmount
       }
 
       _this.setState({
-        amountSat: amountSat
+        amountEntered: amountCoins
       })
     } catch (error) {
       console.error(error)
@@ -251,13 +261,18 @@ class Send extends React.Component {
       _this.validateInputs()
 
       const bchWalletLib = _this.props.bchWallet
-      let { address, amountSat } = _this.state
+      let { address, amountEntered } = _this.state
 
       if (_this.state.sendCurrency === 'USD') {
-        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
+        amountEntered = (amountEntered / (_this.props.currentRate / 100)).toFixed(8)
       }
 
-      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      let amountToSend = Math.floor(Number(amountEntered) * 100000000)
+
+      if (_this.state.coin === 'XEC') {
+        amountToSend = Math.floor(Number(amountEntered) * 100)
+      }
+
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
 
       if (!bchWalletLib) {
@@ -285,15 +300,17 @@ class Send extends React.Component {
         const bchjs = bchWalletLib.bchjs
 
         let currentRate
+        let currency
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = (await bchjs.Price.getBchaUsd()) * 100
+          currency = 'XEC'
+          currentRate = (await bchjs.Price.getXecUsd()) * 100
         } else {
-          // BCHN price.
+          currency = 'BCH'
           currentRate = (await bchjs.Price.getUsd()) * 100
         }
 
-        _this.props.updateBalance({ myBalance, currentRate })
+        _this.props.updateBalance({ myBalance, currentRate, currency })
       }, 1000)
 
       _this.resetValues()
@@ -314,13 +331,18 @@ class Send extends React.Component {
       _this.validateInputs()
 
       const bchWalletLib = _this.props.bchWallet
-      let { address, amountSat } = _this.state
+      let { address, amountEntered } = _this.state
 
       if (_this.state.sendCurrency === 'USD') {
-        amountSat = (amountSat / (_this.props.currentRate / 100)).toFixed(8)
+        amountEntered = (amountEntered / (_this.props.currentRate / 100)).toFixed(8)
       }
 
-      const amountToSend = Math.floor(Number(amountSat) * 100000000)
+      let amountToSend = Math.floor(Number(amountEntered) * 100000000)
+
+      if (_this.state.coin === 'XEC') {
+        amountToSend = Math.floor(Number(amountEntered) * 100)
+      }
+
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
 
       const receivers = [
@@ -366,15 +388,17 @@ class Send extends React.Component {
         const bchjs = bchWalletLib.bchjs
 
         let currentRate
+        let currency
 
         if (bchjs.restURL.includes('abc.fullstack')) {
-          currentRate = (await bchjs.Price.getBchaUsd()) * 100
+          currency = 'XEC'
+          currentRate = (await bchjs.Price.getXecUsd()) * 100
         } else {
-          // BCHN price.
+          currency = 'BCH'
           currentRate = (await bchjs.Price.getUsd()) * 100
         }
 
-        _this.props.updateBalance({ myBalance, currentRate })
+        _this.props.updateBalance({ myBalance, currentRate, currency })
       }, 1000)
 
       _this.resetValues()
@@ -387,7 +411,7 @@ class Send extends React.Component {
   resetValues () {
     _this.setState({
       address: '',
-      amountSat: '',
+      amountEntered: '',
       errMsg: '',
       inFetch: false,
       sendMax: ''
@@ -400,14 +424,14 @@ class Send extends React.Component {
   }
 
   validateInputs () {
-    const { address, amountSat } = _this.state
-    const amountNumber = Number(amountSat)
+    const { address, amountEntered } = _this.state
+    const amountNumber = Number(amountEntered)
 
     if (!address) {
       throw new Error('Address is required')
     }
 
-    if (!amountSat) {
+    if (!amountEntered) {
       throw new Error('Amount is required')
     }
 

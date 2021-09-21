@@ -110,18 +110,20 @@ class NewWallet extends React.Component {
       const bchjs = bchWalletLib.bchjs
 
       let currentRate
+      let currency
 
       if (bchjs.restURL.includes('abc.fullstack')) {
-        currentRate = await bchjs.Price.getBchaUsd() * 100
+        currency = 'XEC'
+        currentRate = (await bchjs.Price.getXecUsd()) * 100
       } else {
-        // BCHN price.
+        currency = 'BCH'
         currentRate = (await bchjs.Price.getUsd()) * 100
       }
 
       // console.log("myBalance", myBalance)
       // Update redux state
       _this.props.setWalletInfo(currentWallet)
-      _this.props.updateBalance({ myBalance, currentRate })
+      _this.props.updateBalance({ myBalance, currentRate, currency })
       _this.props.setBchWallet(bchWalletLib)
 
       _this.setState({
