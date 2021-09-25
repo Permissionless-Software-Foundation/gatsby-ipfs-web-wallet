@@ -6,7 +6,9 @@ import IPFSTabs from './ipfs-tabs'
 import CommandRouter from '../lib/commands'
 
 import './ipfs.css'
-// const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
+
+const WalletService = require('../lib/wallet-service')
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const { Checkbox } = Inputs
 
@@ -30,6 +32,9 @@ class IPFS extends React.Component {
       }
     }
     _this = this
+    _this.BchWallet = BchWallet
+    _this.WalletService = WalletService
+
     this.initIPFSControl()
   }
 
@@ -290,6 +295,7 @@ class IPFS extends React.Component {
     }
   }
 
+  // pollForServices callback
   onAppStatus (msg) {
     try {
       let output
@@ -301,9 +307,74 @@ class IPFS extends React.Component {
       _this.setState({
         appStatusOutput: output
       })
+
+      // Updates the bchWallet instance so it works
+      // under the ipfs services
+      _this.reInitialize()
     } catch (error) {
       console.warn(error)
       // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  // Updates the bchWallet instance so it works
+  // under the ipfs services
+  async reInitialize () {
+    try {
+      const currentWallet = _this.props.walletInfo
+      const { JWT, selectedServer, mnemonic } = currentWallet
+
+      const apiToken = JWT
+      const restURL = selectedServer
+
+      const bchjsOptions = {}
+
+      if (apiToken || restURL) {
+        if (apiToken) {
+          bchjsOptions.apiToken = apiToken
+        }
+        if (restURL) {
+          bchjsOptions.restURL = restURL
+        }
+      }
+      bchjsOptions.interface = 'json-rpc'
+
+      const walletService = new _this.WalletService({
+        ipfsControl: this.ipfsControl
+      })
+      bchjsOptions.jsonRpcWalletService = walletService
+
+      const bchWalletLib = new _this.BchWallet(mnemonic, bchjsOptions)
+      // Update bchjs instances  of minimal-slp-wallet libraries
+
+      bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+      bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+
+      await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+
+      const walletInfo = bchWalletLib.walletInfo
+
+      Object.assign(currentWallet, walletInfo)
+
+      const myBalance = await bchWalletLib.getBalance()
+
+      const bchjs = bchWalletLib.bchjs
+      let currentRate
+
+      if (bchjs.restURL.includes('abc.fullstack')) {
+        currentRate = (await bchjs.Price.getBchaUsd()) * 100
+      } else {
+        // BCHN price.
+        currentRate = (await bchjs.Price.getUsd()) * 100
+      }
+
+      // Update redux state
+      _this.props.setWalletInfo(currentWallet)
+      _this.props.updateBalance({ myBalance, currentRate })
+      _this.props.setBchWallet(bchWalletLib)
+    } catch (error) {
+      _this.onStatusLog('Error on re-initialize')
+      _this.onStatusLog(error.message)
     }
   }
 
