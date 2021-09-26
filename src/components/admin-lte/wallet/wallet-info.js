@@ -127,7 +127,10 @@ class WalletInfo extends React.Component {
                 <Row className='wallet-info-content mt-1 text-left'>
                   <Col xs={8} sm={9} lg={10}>
                     <span>
-                      <b>Cash Address: </b> {_this.state.cashAddress}
+                      <b>Cash Address: </b>
+                      {_this.state.walletInfo.selectedServer === 'https://bchn.fullstack.cash/v5/'
+                        ? _this.props.walletInfo.cashAddress
+                        : _this.props.walletInfo.ecashAddress}
                     </span>
                   </Col>
                   <Col xs={4} sm={3} lg={2} className='text-right'>

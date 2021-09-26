@@ -12,8 +12,12 @@ class Receive extends React.Component {
   constructor (props) {
     super(props)
     _this = this
+    const addr = _this.props.walletInfo.selectedServer === 'https://bchn.fullstack.cash/v5/'
+      ? _this.props.walletInfo.cashAddress
+      : _this.props.walletInfo.ecashAddress
     this.state = {
-      addr: _this.props.walletInfo.cashAddress,
+      defaultAddr: addr,
+      addr: addr,
       copySuccess: false
     }
   }
@@ -74,13 +78,13 @@ class Receive extends React.Component {
 
   handleChangeAddr () {
     const checkbox = document.getElementById('address-checkbox')
-    const { cashAddress, slpAddress } = _this.props.walletInfo
+    const { slpAddress } = _this.props.walletInfo
 
     let addr
     if (checkbox.checked) {
       addr = slpAddress
     } else {
-      addr = cashAddress
+      addr = _this.state.defaultAddr
     }
     _this.setState({
       addr
