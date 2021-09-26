@@ -271,6 +271,7 @@ class Send extends React.Component {
 
       if (_this.state.coin === 'XEC') {
         amountToSend = Math.floor(Number(amountEntered) * 100)
+        address = await _this.checkEcashAddr()
       }
 
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
@@ -341,6 +342,7 @@ class Send extends React.Component {
 
       if (_this.state.coin === 'XEC') {
         amountToSend = Math.floor(Number(amountEntered) * 100)
+        address = await _this.checkEcashAddr()
       }
 
       console.log(`Sending ${amountToSend} satoshis to ${address}`)
@@ -404,6 +406,20 @@ class Send extends React.Component {
       _this.resetValues()
     } catch (error) {
       _this.handleError(error)
+    }
+  }
+
+  // check for ecash addr format
+  async checkEcashAddr () {
+    try {
+      let addr = _this.state.address
+      const bchWalletLib = _this.props.bchWallet
+      const bchjs = bchWalletLib.bchjs
+      addr = (await bchjs.Address.ecashtoCashAddress(addr))
+      return addr
+    } catch (e) {
+      console.log(e)
+      return _this.state.address
     }
   }
 
