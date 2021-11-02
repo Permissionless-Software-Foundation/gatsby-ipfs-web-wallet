@@ -6,7 +6,9 @@ import IPFSTabs from './ipfs-tabs'
 import CommandRouter from '../lib/commands'
 
 import './ipfs.css'
-// const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
+
+const WalletService = require('../lib/wallet-service')
+const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
 const { Checkbox } = Inputs
 
@@ -30,6 +32,9 @@ class IPFS extends React.Component {
       }
     }
     _this = this
+    _this.BchWallet = BchWallet
+    _this.WalletService = WalletService
+
     this.initIPFSControl()
   }
 
@@ -178,6 +183,7 @@ class IPFS extends React.Component {
 
   // Adds a line to the Status terminal
   onStatusLog (str) {
+    console.log('onStatusLog', str)
     try {
       // Update the Status terminal
       _this.setState({
@@ -227,8 +233,9 @@ class IPFS extends React.Component {
   // Handle decrypted, private messages and send them to the right terminal.
   privLogChat (str, from) {
     try {
-      // console.log(`privLogChat str: ${str}`)
+      console.log(`privLogChat str: ${str}`)
       // console.log(`privLogChat from: ${from}`)
+      _this.handleRpcDataQueue(str)
 
       const { chatOutputs } = _this.state
 
@@ -290,7 +297,8 @@ class IPFS extends React.Component {
     }
   }
 
-  onAppStatus (msg) {
+  // pollForServices callback
+  async onAppStatus (msg) {
     try {
       let output
       if (!msg) {
@@ -301,8 +309,64 @@ class IPFS extends React.Component {
       _this.setState({
         appStatusOutput: output
       })
+
+      // Updates the bchWallet instance so it works
+      // under the ipfs services
+      await _this.reInitialize()
     } catch (error) {
       console.warn(error)
+      // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  // Updates the bchWallet instance so it works
+  // under the ipfs services
+  async reInitialize () {
+    try {
+      _this.onStatusLog('waiting for re-initialize...')
+
+      const currentWallet = _this.props.walletInfo
+      const { mnemonic } = currentWallet
+
+      const walletService = new _this.WalletService({
+        ipfsControl: this.ipfsControl
+      })
+      const advancedConfig = {
+        interface: 'json-rpc',
+        jsonRpcWalletService: walletService
+      }
+
+      _this.bchWalletLib = new _this.BchWallet(mnemonic, advancedConfig)
+
+      await _this.bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+
+      // If UTXOs fail to update, try one more time.
+      if (!_this.bchWalletLib.utxos.utxoStore) {
+        await _this.bchWalletLib.getUtxos()
+
+        // Throw an error if UTXOs are still not updated.
+        if (!_this.bchWalletLib.utxos.utxoStore) {
+          throw new Error('UTXOs failed to update. Try again.')
+        }
+      }
+
+      // Update redux state
+      _this.props.setBchWallet(_this.bchWalletLib)
+      _this.onStatusLog('re-initialize success!')
+    } catch (error) {
+      _this.onStatusLog('Error on re-initialize')
+      _this.onStatusLog(error.message)
+      // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  // Fill the queue with the incoming data (private messages) from the petitions
+  // So it will be sweeped by the lib/wallet-service/waitForRPCResponse() function
+  handleRpcDataQueue (data) {
+    try {
+      _this.bchWalletLib.ar.jsonRpcWalletService.rpcHandler(data)
+    } catch (error) {
+      console.warn('Error in handleRpcDataQueue', error)
       // Don't throw an error as this is a top-level handler.
     }
   }
