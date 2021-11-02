@@ -26,7 +26,8 @@ class WalletService {
   // This handler is triggered when RPC data comes in over IPFS.
   // Handle RPC input, and match the input to the RPC queue.
 
-  // NOTE: This function is currently not called or controlled
+  // NOTE: This function is called when a private message
+  // is sent to this node
 
   rpcHandler (data) {
     try {
@@ -154,6 +155,8 @@ class WalletService {
       // Generate a JSON RPC command.
       const cmd = this.jsonrpc.request(rpcId, 'bch', rpcData)
       const cmdStr = JSON.stringify(cmd)
+      console.log('cmdStr', cmdStr)
+
       const thisNode = this.ipfsControl.ipfsCoord.thisNode
 
       await this.ipfsControl.ipfsCoord.useCases.peer.sendPrivateMessage(
@@ -203,7 +206,7 @@ class WalletService {
 
         // Wait between loops.
         // await this.sleep(1000)
-        await this.ipfsControl.wallet.bchjs.Util.sleep(13000)
+        await this.ipfsControl.wallet.bchjs.Util.sleep(5000)
 
         cnt++
 

@@ -145,6 +145,8 @@ class Send extends React.Component {
   }
 
   componentDidMount () {
+    const { bchWallet } = _this.props
+    console.log('bchWallet', bchWallet)
     _this.defineExplorer()
   }
 
@@ -354,10 +356,10 @@ class Send extends React.Component {
 
       // Send the BCH.
       const result = await bchWalletLib.send(receivers)
-      // console.log('result',result)
+      console.log('result', result)
 
       _this.setState({
-        txId: result
+        txId: result.txid || result
       })
 
       // update balance

@@ -183,6 +183,7 @@ class IPFS extends React.Component {
 
   // Adds a line to the Status terminal
   onStatusLog (str) {
+    console.log('onStatusLog', str)
     try {
       // Update the Status terminal
       _this.setState({
@@ -232,8 +233,9 @@ class IPFS extends React.Component {
   // Handle decrypted, private messages and send them to the right terminal.
   privLogChat (str, from) {
     try {
-      // console.log(`privLogChat str: ${str}`)
+      console.log(`privLogChat str: ${str}`)
       // console.log(`privLogChat from: ${from}`)
+      _this.handleRpcDataQueue(str)
 
       const { chatOutputs } = _this.state
 
@@ -296,7 +298,7 @@ class IPFS extends React.Component {
   }
 
   // pollForServices callback
-  onAppStatus (msg) {
+  async onAppStatus (msg) {
     try {
       let output
       if (!msg) {
@@ -310,7 +312,7 @@ class IPFS extends React.Component {
 
       // Updates the bchWallet instance so it works
       // under the ipfs services
-      _this.reInitialize()
+      await _this.reInitialize()
     } catch (error) {
       console.warn(error)
       // Don't throw an error as this is a top-level handler.
@@ -321,60 +323,51 @@ class IPFS extends React.Component {
   // under the ipfs services
   async reInitialize () {
     try {
+      _this.onStatusLog('waiting for re-initialize...')
+
       const currentWallet = _this.props.walletInfo
-      const { JWT, selectedServer, mnemonic } = currentWallet
-
-      const apiToken = JWT
-      const restURL = selectedServer
-
-      const bchjsOptions = {}
-
-      if (apiToken || restURL) {
-        if (apiToken) {
-          bchjsOptions.apiToken = apiToken
-        }
-        if (restURL) {
-          bchjsOptions.restURL = restURL
-        }
-      }
-      bchjsOptions.interface = 'json-rpc'
+      const { mnemonic } = currentWallet
 
       const walletService = new _this.WalletService({
         ipfsControl: this.ipfsControl
       })
-      bchjsOptions.jsonRpcWalletService = walletService
+      const advancedConfig = {
+        interface: 'json-rpc',
+        jsonRpcWalletService: walletService
+      }
 
-      const bchWalletLib = new _this.BchWallet(mnemonic, bchjsOptions)
-      // Update bchjs instances  of minimal-slp-wallet libraries
+      _this.bchWalletLib = new _this.BchWallet(mnemonic, advancedConfig)
 
-      bchWalletLib.tokens.sendBch.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
-      bchWalletLib.tokens.utxos.bchjs = new bchWalletLib.BCHJS(bchjsOptions)
+      await _this.bchWalletLib.walletInfoPromise // Wait for wallet to be created.
 
-      await bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+      // If UTXOs fail to update, try one more time.
+      if (!_this.bchWalletLib.utxos.utxoStore) {
+        await _this.bchWalletLib.getUtxos()
 
-      const walletInfo = bchWalletLib.walletInfo
-
-      Object.assign(currentWallet, walletInfo)
-
-      const myBalance = await bchWalletLib.getBalance()
-
-      const bchjs = bchWalletLib.bchjs
-      let currentRate
-
-      if (bchjs.restURL.includes('abc.fullstack')) {
-        currentRate = (await bchjs.Price.getBchaUsd()) * 100
-      } else {
-        // BCHN price.
-        currentRate = (await bchjs.Price.getUsd()) * 100
+        // Throw an error if UTXOs are still not updated.
+        if (!_this.bchWalletLib.utxos.utxoStore) {
+          throw new Error('UTXOs failed to update. Try again.')
+        }
       }
 
       // Update redux state
-      _this.props.setWalletInfo(currentWallet)
-      _this.props.updateBalance({ myBalance, currentRate })
-      _this.props.setBchWallet(bchWalletLib)
+      _this.props.setBchWallet(_this.bchWalletLib)
+      _this.onStatusLog('re-initialize success!')
     } catch (error) {
       _this.onStatusLog('Error on re-initialize')
       _this.onStatusLog(error.message)
+      // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  // Fill the queue with the incoming data (private messages) from the petitions
+  // So it will be sweeped by the lib/wallet-service/waitForRPCResponse() function
+  handleRpcDataQueue (data) {
+    try {
+      _this.bchWalletLib.ar.jsonRpcWalletService.rpcHandler(data)
+    } catch (error) {
+      console.warn('Error in handleRpcDataQueue', error)
+      // Don't throw an error as this is a top-level handler.
     }
   }
 
