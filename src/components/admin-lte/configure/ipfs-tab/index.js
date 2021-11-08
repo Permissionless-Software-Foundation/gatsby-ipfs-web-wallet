@@ -366,6 +366,8 @@ class IPFS extends React.Component {
             `Attempt ${cnt} to re-initialize wallet failed. Will try again.`
           )
           console.log(err)
+
+          await _this.sleep(5000)
         }
         // } while (!utxosInitialized)
       } while (!utxosInitialized && cnt < 10)
