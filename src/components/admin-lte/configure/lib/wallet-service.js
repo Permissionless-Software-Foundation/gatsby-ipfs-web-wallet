@@ -206,7 +206,7 @@ class WalletService {
 
         // Wait between loops.
         // await this.sleep(1000)
-        await this.ipfsControl.wallet.bchjs.Util.sleep(5000)
+        await this.ipfsControl.wallet.bchjs.Util.sleep(4500)
 
         cnt++
 
