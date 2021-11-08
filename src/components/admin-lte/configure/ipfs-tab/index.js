@@ -338,17 +338,70 @@ class IPFS extends React.Component {
 
       _this.bchWalletLib = new _this.BchWallet(mnemonic, advancedConfig)
 
-      await _this.bchWalletLib.walletInfoPromise // Wait for wallet to be created.
+      let utxosInitialized = false
+      let cnt = 0
+      do {
+        cnt++
 
-      // If UTXOs fail to update, try one more time.
-      if (!_this.bchWalletLib.utxos.utxoStore) {
-        await _this.bchWalletLib.getUtxos()
+        try {
+          // Wait for wallet to be created.
+          await _this.bchWalletLib.walletInfoPromise
 
-        // Throw an error if UTXOs are still not updated.
-        if (!_this.bchWalletLib.utxos.utxoStore) {
-          throw new Error('UTXOs failed to update. Try again.')
+          // await _this.bchWalletLib.bchjs.Util.sleep(5000)
+          await _this.sleep(5000)
+
+          const utxos = await _this.bchWalletLib.getUtxos()
+          if (_this.bchWalletLib.utxos.utxoStore) {
+            _this.onStatusLog(
+              `utxo initialization succeeded: ${JSON.stringify(utxos, null, 2)}`
+            )
+            utxosInitialized = true
+          } else {
+            _this.onStatusLog(
+              `Attempt ${cnt} to re-initialize timed out. Will try again.`
+            )
+          }
+        } catch (err) {
+          _this.onStatusLog(
+            `Attempt ${cnt} to re-initialize wallet failed. Will try again.`
+          )
+          console.log(err)
+
+          await _this.sleep(5000)
         }
-      }
+        // } while (!utxosInitialized)
+      } while (!utxosInitialized && cnt < 10)
+
+      // console.log('_this.bchWalletLib: ', _this.bchWalletLib)
+      //
+      // setInterval(async function () {
+      //   const now = new Date()
+      //   console.log(`Getting UTXOs at ${now.toLocaleString()}`)
+      //   await _this.bchWalletLib.getUtxos()
+      //   console.log(
+      //     `_this.bchWalletLib.utxos.utxoStore: ${JSON.stringify(
+      //       _this.bchWalletLib.utxos.utxoStore,
+      //       null,
+      //       2
+      //     )}`
+      //   )
+      // }, 20000)
+
+      // let now = new Date()
+      // console.log(`Starting at ${now.toLocaleString()}`)
+      // await _this.bchWalletLib.bchjs.Util.sleep(5000)
+      // now = new Date()
+      // console.log(`Finished at ${now.toLocaleString()}`)
+
+      // // If UTXOs fail to update, try one more time.
+      // if (!_this.bchWalletLib.utxos.utxoStore) {
+      //   await _this.bchWalletLib.getUtxos()
+      //
+      //   // Throw an error if UTXOs are still not updated.
+      //   if (!_this.bchWalletLib.utxos.utxoStore) {
+      //     throw new Error('UTXOs failed to update. Try again.')
+      //   }
+      // }
 
       // Update redux state
       _this.props.setBchWallet(_this.bchWalletLib)

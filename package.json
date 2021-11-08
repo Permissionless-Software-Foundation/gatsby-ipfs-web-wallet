@@ -17,7 +17,8 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "unit": "mocha"
   },
   "dependencies": {
     "@chris.troutner/gatsby-plugin-ipfs": "^2.0.3",
@@ -38,6 +39,8 @@
     "https-browserify": "^1.0.0",
     "ipfs-coord": "^6.7.3",
     "jsonrpc-lite": "^2.2.0",
+    "p-queue": "^7.1.0",
+    "p-retry": "^5.0.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "prop-types": "^15.7.2",
