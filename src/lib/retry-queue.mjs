@@ -65,7 +65,7 @@ class RetryQueue {
   // function 'funcHandle'.
   async retryWrapper (funcHandle, inputObj) {
     try {
-      console.log('retryWrapper inputObj: ', inputObj)
+      // console.log('retryWrapper inputObj: ', inputObj)
 
       if (!funcHandle) {
         throw new Error('function handler is required')
@@ -88,7 +88,7 @@ class RetryQueue {
         }
       )
     } catch (err) {
-      console.error('Error in retryWrapper: ', err)
+      console.error('Error in retryWrapper()')
       throw err
     }
   }
