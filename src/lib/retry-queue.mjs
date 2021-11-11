@@ -9,9 +9,6 @@
   pay-to-write-access-controller.js depends on this library.
 */
 
-// const PQueue = require('p-queue').default
-'use strict'
-
 import PQueue from 'p-queue'
 import pRetry from 'p-retry'
 
@@ -55,7 +52,7 @@ class RetryQueue {
       )
       return returnVal
     } catch (err) {
-      console.error('Error in addToQueue(): ', err)
+      console.error('Error in addToQueue()')
       throw err
     }
   }
@@ -99,11 +96,12 @@ class RetryQueue {
     try {
       const errorMsg = `Attempt ${error.attemptNumber} to validate entry. There are ${error.retriesLeft} retries left. Waiting before trying again.`
       console.log(errorMsg)
-      const SLEEP_TIME = 30000
+
+      const SLEEP_TIME = _this.retryPeriod
       console.log(`Waiting ${SLEEP_TIME} milliseconds before trying again.\n`)
-      await _this.bchjs.Util.sleep(SLEEP_TIME) // 30 sec
+      await _this.sleep(SLEEP_TIME) // 30 sec
     } catch (err) {
-      console.error('Error in handleValidationError(): ', err)
+      console.error('Error in handleValidationError()')
       throw err
     }
   }
