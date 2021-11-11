@@ -10,8 +10,12 @@
 */
 
 // const PQueue = require('p-queue').default
+'use strict'
+
 import PQueue from 'p-queue'
-const pRetry = require('p-retry')
+import pRetry from 'p-retry'
+
+// const pRetry = require('p-retry')
 
 let _this
 
@@ -108,5 +112,4 @@ class RetryQueue {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
-
-module.exports = RetryQueue
+export default RetryQueue

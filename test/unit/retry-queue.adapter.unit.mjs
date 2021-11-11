@@ -2,11 +2,13 @@
   Unit tests for the retry-queue library.
 */
 
-const sinon = require('sinon')
-const assert = require('chai').assert
-// const BCHJS = require('@psf/bch-js')
+import chai from 'chai'
+import sinon from 'sinon'
 
-const RetryQueue = require('../../src/lib/retry-queue')
+// const BCHJS = require('@psf/bch-js')
+import RetryQueue from '../../src/lib/retry-queue.mjs'
+
+const assert = chai.assert
 
 // const bchjs = new BCHJS()
 let uut
