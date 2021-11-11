@@ -10,8 +10,12 @@
 */
 
 // const PQueue = require('p-queue').default
+'use strict'
+
 import PQueue from 'p-queue'
-const pRetry = require('p-retry')
+import pRetry from 'p-retry'
+
+// const pRetry = require('p-retry')
 
 let _this
 
@@ -61,7 +65,7 @@ class RetryQueue {
   // function 'funcHandle'.
   async retryWrapper (funcHandle, inputObj) {
     try {
-      console.log('retryWrapper inputObj: ', inputObj)
+      // console.log('retryWrapper inputObj: ', inputObj)
 
       if (!funcHandle) {
         throw new Error('function handler is required')
@@ -84,7 +88,7 @@ class RetryQueue {
         }
       )
     } catch (err) {
-      console.error('Error in retryWrapper: ', err)
+      console.error('Error in retryWrapper()')
       throw err
     }
   }
@@ -108,5 +112,4 @@ class RetryQueue {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 }
-
-module.exports = RetryQueue
+export default RetryQueue

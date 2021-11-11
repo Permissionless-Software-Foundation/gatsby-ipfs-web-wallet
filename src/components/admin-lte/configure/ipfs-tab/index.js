@@ -7,6 +7,9 @@ import CommandRouter from '../lib/commands'
 
 import './ipfs.css'
 
+// import RetryQueue from '../../../../lib/retry-queue.mjs'
+// const queue = new RetryQueue()
+
 const WalletService = require('../lib/wallet-service')
 const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
 
