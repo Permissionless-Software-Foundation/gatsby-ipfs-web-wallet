@@ -96,7 +96,8 @@ class RetryQueue {
     try {
       const errorMsg = `Attempt ${error.attemptNumber} to validate entry. There are ${error.retriesLeft} retries left. Waiting before trying again.`
       console.log(errorMsg)
-      const SLEEP_TIME = 30000
+
+      const SLEEP_TIME = _this.retryPeriod
       console.log(`Waiting ${SLEEP_TIME} milliseconds before trying again.\n`)
       await _this.sleep(SLEEP_TIME) // 30 sec
     } catch (err) {

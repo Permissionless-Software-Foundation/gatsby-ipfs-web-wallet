@@ -7,8 +7,8 @@ import CommandRouter from '../lib/commands'
 
 import './ipfs.css'
 
-// import RetryQueue from '../../../../lib/retry-queue.mjs'
-// const queue = new RetryQueue()
+import RetryQueue from '../../../../lib/retry-queue.mjs'
+const queue = new RetryQueue()
 
 const WalletService = require('../lib/wallet-service')
 const BchWallet = typeof window !== 'undefined' ? window.SlpWallet : null
@@ -301,6 +301,8 @@ class IPFS extends React.Component {
   }
 
   // pollForServices callback
+  // This method is called from lib/ipfs-control.js. It executes when a BCH
+  // wallet service is found.
   async onAppStatus (msg) {
     try {
       let output
@@ -339,80 +341,45 @@ class IPFS extends React.Component {
         jsonRpcWalletService: walletService
       }
 
-      _this.bchWalletLib = new _this.BchWallet(mnemonic, advancedConfig)
-
-      let utxosInitialized = false
-      let cnt = 0
-      do {
-        cnt++
-
-        try {
-          // Wait for wallet to be created.
-          await _this.bchWalletLib.walletInfoPromise
-
-          // await _this.bchWalletLib.bchjs.Util.sleep(5000)
-          await _this.sleep(5000)
-
-          const utxos = await _this.bchWalletLib.getUtxos()
-          if (_this.bchWalletLib.utxos.utxoStore) {
-            _this.onStatusLog(
-              `utxo initialization succeeded: ${JSON.stringify(utxos, null, 2)}`
-            )
-            utxosInitialized = true
-          } else {
-            _this.onStatusLog(
-              `Attempt ${cnt} to re-initialize timed out. Will try again.`
-            )
-          }
-        } catch (err) {
-          _this.onStatusLog(
-            `Attempt ${cnt} to re-initialize wallet failed. Will try again.`
-          )
-          console.log(err)
-
-          await _this.sleep(5000)
-        }
-        // } while (!utxosInitialized)
-      } while (!utxosInitialized && cnt < 10)
-
-      // console.log('_this.bchWalletLib: ', _this.bchWalletLib)
-      //
-      // setInterval(async function () {
-      //   const now = new Date()
-      //   console.log(`Getting UTXOs at ${now.toLocaleString()}`)
-      //   await _this.bchWalletLib.getUtxos()
-      //   console.log(
-      //     `_this.bchWalletLib.utxos.utxoStore: ${JSON.stringify(
-      //       _this.bchWalletLib.utxos.utxoStore,
-      //       null,
-      //       2
-      //     )}`
-      //   )
-      // }, 20000)
-
-      // let now = new Date()
-      // console.log(`Starting at ${now.toLocaleString()}`)
-      // await _this.bchWalletLib.bchjs.Util.sleep(5000)
-      // now = new Date()
-      // console.log(`Finished at ${now.toLocaleString()}`)
-
-      // // If UTXOs fail to update, try one more time.
-      // if (!_this.bchWalletLib.utxos.utxoStore) {
-      //   await _this.bchWalletLib.getUtxos()
-      //
-      //   // Throw an error if UTXOs are still not updated.
-      //   if (!_this.bchWalletLib.utxos.utxoStore) {
-      //     throw new Error('UTXOs failed to update. Try again.')
-      //   }
-      // }
+      // Initialize the wallet, using auth-rety on failure.
+      const walletIn = { mnemonic, advancedConfig }
+      await queue.retryWrapper(_this.initWallet, walletIn)
 
       // Update redux state
       _this.props.setBchWallet(_this.bchWalletLib)
       _this.onStatusLog('re-initialize success!')
     } catch (error) {
-      _this.onStatusLog('Error on re-initialize')
+      _this.onStatusLog('Error in reInitialize()')
       _this.onStatusLog(error.message)
       // Don't throw an error as this is a top-level handler.
+    }
+  }
+
+  // Initialize the wallet and retrieve the UTXOs for the wallet.
+  // This function is called by the queue library, to do automatic retry on
+  // network failure.
+  async initWallet (walletIn) {
+    try {
+      const { mnemonic, advancedConfig } = walletIn
+
+      _this.bchWalletLib = new _this.BchWallet(mnemonic, advancedConfig)
+
+      // Wait for wallet to be created.
+      await _this.bchWalletLib.walletInfoPromise
+
+      // If auto UTXO initialization fails, do it manually.
+      let utxos = _this.bchWalletLib.utxos.utxoStore
+      if (!utxos) {
+        utxos = await _this.bchWalletLib.getUtxos()
+      }
+
+      _this.onStatusLog(
+      `utxo initialization succeeded: ${JSON.stringify(utxos, null, 2)}`
+      )
+
+      return _this.bchWalletLib
+    } catch (err) {
+      console.error('Error in initWallet(): ', err)
     }
   }
 
