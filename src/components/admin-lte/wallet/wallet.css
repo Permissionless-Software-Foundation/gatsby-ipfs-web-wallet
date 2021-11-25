@@ -1,0 +1,28 @@
+.wallet-info-content{
+   /*  border:0.7px solid var(--main-color); */
+    border-radius: 5px;
+    max-width: 100%;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-right: 0px;
+    margin-left: 0px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+.wallet-info-content div{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.blurred { 
+    filter: blur(2.7px);
+    -webkit-filter: blur(2.7px);
+}
+
+.copied-text{
+  width: 100%;
+  text-align: center;
+  color: var(--main-color);
+}

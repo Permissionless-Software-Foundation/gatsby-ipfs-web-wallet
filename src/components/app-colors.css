@@ -1,0 +1,38 @@
+/* Variables ============ */
+
+:root {
+  --main-color:#00A74F;
+  --footer-height: 170px;
+}
+.skin-blue .main-header .logo {
+	
+	background-color: var(--main-color)!important
+	
+}
+
+ .skin-blue .main-header .navbar {
+
+    background-color:  var(--main-color)!important
+
+}
+
+.btn-primary{
+  background-color: var(--main-color)!important;
+  border-color: var(--main-color)!important;
+}
+.modal-header{
+  background-color: var(--main-color);
+}
+.modal-header button , .modal-header h4{
+  color: white;
+  opacity: inherit;
+}
+.box{
+  border-color: var(--main-color)!important;
+}
+.error-color{
+  color: red;
+}
+.input-group-btn svg{
+  color : var(--main-color)
+}

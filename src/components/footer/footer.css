@@ -1,0 +1,79 @@
+#footer {
+  width: 100%;
+  /*max-height: 50px;*/
+  min-height: var(--footer-height);
+  background-color: var(--main-color);
+  /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+  padding: 1em;
+}
+#footer a {
+  color: white;
+  font-size: 16px;
+  text-decoration: underline white;
+}
+#footer ul {
+  margin: 0px;
+  list-style-type: lower-roman;
+  display: grid;
+}
+#footer li {
+  display: inline;
+  margin-left: 1em;
+  word-break: break-all;
+}
+#footer li b {
+  margin-right: 1em;
+}
+.footer-section {
+  text-align: start;
+  color: white;
+  margin-top: 15px;
+}
+.footer-section .section-tittle {
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+/* .footer-section div{
+  width: fit-content;
+  float: right;
+} */
+
+#footer ul li::before {
+  content: "\2022";
+  color: white;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 25px;
+  line-height: 15px;
+  vertical-align: -6px;
+}
+#footer svg {
+  margin-right: 5px;
+}
+ ul #web span{
+  margin-right: 3.5px;
+}
+ul #tor span{
+  margin-right: 9px;
+}
+
+@media screen and (max-width: 500px) {
+ .section-tittle{
+   margin-bottom: 1rem!important;
+ }
+ #footer ul li{
+   margin-left: 0;
+   margin-bottom: 1em;
+ }
+ #footer ul li a{
+  display: block!important;
+}
+
+ #footer ul li .bar-space{
+  display: none!important;
+}
+}

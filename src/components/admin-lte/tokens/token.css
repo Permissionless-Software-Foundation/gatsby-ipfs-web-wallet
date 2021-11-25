@@ -1,0 +1,107 @@
+#token-card .info-container{
+    width: fit-content;
+}
+#token-card .info-container .info-content{
+    display: flex;
+    justify-content: space-between;
+    font-size: medium;
+}
+#token-card .info-container .info-content b{
+    margin-right: 15px;
+}
+#token-card .info-container .info-content span{
+    text-align: end;
+}
+#token-card .divider{
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+.tokenModal-info-content{
+    /*  border:0.7px solid var(--main-color); */
+     border-radius: 5px;
+     max-width: 100%;
+     padding-top: 4px;
+     padding-bottom: 4px;
+     margin-right: 0px;
+     margin-left: 0px;
+     border-top: none;
+     border-right: none;
+     border-left: none;
+     font-size: medium;
+ }
+ .tokenModal-info-content div{
+     overflow:hidden;
+     white-space:nowrap;
+     text-overflow: ellipsis;
+ }
+ .tokenModal-info-content div b{
+    margin-right: 5px;
+}
+ .container-nofound {
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: large;
+  }
+  .spinner{
+      display: flex;
+      height: calc(100vh - var(--footer-height) - 50px);
+      width: 100%!important;
+      justify-content: center;
+      align-items: center;
+  }
+  .btn-send-token{
+      width: 120px;
+  }
+  .token-botton-container{
+    max-width: 70%;
+    margin: 0 auto!important;
+  }
+  .btn-send-token{
+    min-width: 100%;
+}
+  @media (max-width: 740px) {
+    .token-botton-container{
+        max-width: 100%;
+    }
+    .btn-send-token{
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+  }
+ 
+.txIdContainer { 
+    position: relative; 
+    margin-bottom: 100px; 
+}
+@media only screen and (min-width: 768px) {
+    .txIdContainer { 
+        margin-bottom: 0px; 
+    }
+}
+.txIdContainer button { 
+    background-color: transparent; 
+    position: absolute; 
+    right: 20px; 
+    top: 20px;
+    font-size: 18px; 
+    font-weight: bold;  
+    z-index: 999;
+    border: none; 
+    color: #606c84; 
+}
+.txIdContainer button:focus { 
+    border: none; 
+    outline: none; 
+}
+
+.copied-text{
+    width: 100%;
+    text-align: center;
+    color: var(--main-color);
+  }
+.nopadding{
+      padding: 0!important;
+  }
