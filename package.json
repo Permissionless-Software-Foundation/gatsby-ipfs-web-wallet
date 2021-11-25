@@ -1,7 +1,7 @@
 {
   "name": "gatsby-theme-bch-wallet",
   "description": "A GatsbyJS Theme with AdminLTE integration and basic Bitcoin Cash wallet functionality.",
-  "version": "1.9.13",
+  "version": "1.0.0",
   "main": "index.js",
   "author": "Chris Troutner <chris.troutner@gmail.com>",
   "contributors": [
