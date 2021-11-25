@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-ipfs-web-wallet",
+  "name": "gatsby-theme-bch-wallet",
   "description": "A GatsbyJS Theme with AdminLTE integration and basic Bitcoin Cash wallet functionality.",
   "version": "1.9.13",
   "main": "index.js",
@@ -74,10 +74,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet"
+    "url": "https://github.com/Permissionless-Software-Foundation/gatsby-theme-bch-wallet"
   },
   "bugs": {
-    "url": "https://github.com/Permissionless-Software-Foundation/gatsby-ipfs-web-wallet/issues"
+    "url": "https://github.com/Permissionless-Software-Foundation/gatsby-theme-bch-wallet/issues"
   },
   "husky": {
     "hooks": {
