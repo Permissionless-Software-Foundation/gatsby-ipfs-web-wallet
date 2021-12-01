@@ -6,7 +6,7 @@ import TokenModal from './token-modal'
 import Spinner from '../../../images/loader.gif'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SendTokens from './send-tokens'
-
+import { SlpMutableData } from 'slp-mutable-data'
 let _this
 class Tokens extends React.Component {
   constructor (props) {
@@ -161,9 +161,10 @@ class Tokens extends React.Component {
       } else {
         tokens = await bchWallet.listTokens()
       }
+      const mutableTokens = await _this.handleMutableData(tokens)
 
       _this.setState({
-        tokens,
+        tokens: mutableTokens,
         inFetch: false
       })
 
@@ -171,7 +172,7 @@ class Tokens extends React.Component {
         throw new Error('No tokens found on this wallet.')
       }
 
-      _this.props.setTokensInfo(tokens)
+      _this.props.setTokensInfo(mutableTokens)
     } catch (error) {
       _this.handleError(error)
     }
@@ -263,6 +264,30 @@ class Tokens extends React.Component {
     _this.setState({
       explorerURL
     })
+  }
+
+  // try to get mutable data from token id
+  async handleMutableData (tokensArr) {
+    try {
+      const tokens = []
+      const slpMutableLib = new SlpMutableData()
+      for (let i = 0; i < tokensArr.length; i++) {
+        const token = tokensArr[i]
+        try {
+          const data = await slpMutableLib.get.mutableData(token.tokenId)
+          token.mutableData = data
+          // console.log(`data: ${JSON.stringify(data, null, 2)}`)
+        } catch (error) {
+          console.warn(error)
+          // Skip error
+        }
+        tokens.push(token)
+      }
+
+      return tokens
+    } catch (error) {
+      console.warn(error)
+    }
   }
 }
 Tokens.propTypes = {

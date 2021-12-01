@@ -51,6 +51,8 @@
     "react-qr-reader": "^2.2.1",
     "react-redux": "^7.2.4",
     "semver": "^7.3.5",
+    "sharp": "^0.29.3",
+    "slp-mutable-data": "^1.2.2",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0"
   },
