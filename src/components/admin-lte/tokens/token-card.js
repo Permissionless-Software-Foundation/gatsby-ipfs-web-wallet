@@ -13,6 +13,7 @@ class TokenCard extends React.Component {
 
   render () {
     const token = _this.props.token
+    const mutableData = token.mutableData
     // console.log(`token: ${JSON.stringify(token, null, 2)}`)
 
     return (
@@ -20,7 +21,7 @@ class TokenCard extends React.Component {
         <Box className='hover-shadow border-none mt-2' id='token-card'>
           <Row className='text-center'>
             <Col sm={12} className='text-center mt-2 '>
-              <Jdenticon size='100' value={token.tokenId} />
+              {mutableData && mutableData.tokenIcon ? <img className='mutable-img' src={mutableData.tokenIcon} width={100} /> : <Jdenticon size='100' value={token.tokenId} />}
               <hr />
             </Col>
             <Col sm={12} className='flex justify-content-center  '>
