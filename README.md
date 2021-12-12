@@ -22,6 +22,20 @@ Standard workflow for setting up a development environment for working on this r
 - `npm install`
 - `npm start`
 
+## Compiling Android App
+
+Hooks are provided for compiling this code base into an Android App using [Capacitor](https://capacitorjs.com/). It's possible to use this code to also compile an iOS app, but it is untested. Here is the flow for building the Android app:
+
+- Follow the instructions above to install the Dev Environment
+- Download and install [Android Studio](https://developer.android.com/studio)
+- Update the capacitor.config file with the route where Android studio is installed.
+- `npm run build` (generates the public folder)
+- `npm run android:setup` (generates the android folder)
+- `npm run android:open` (opens the android studio with the project)
+- Compile the APK with Android Studio.
+
+Note: The `gcradle` and `sdk` versions must be compatible.
+
 ## License
 
 [MIT](./LICENSE.md)

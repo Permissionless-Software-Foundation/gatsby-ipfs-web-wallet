@@ -12,6 +12,8 @@
   "scripts": {
     "build": "gatsby build",
     "build:ipfs": "gatsby build --prefix-paths",
+    "android:setup": "npx cap add android; npx cap update android; npx cap update android; npx cap copy android; capacitor-resources -p android -I",
+    "android:open": "npx cap open android",
     "develop": "gatsby develop",
     "lint": "standard --env mocha --fix",
     "start": "npm run develop",
@@ -21,11 +23,15 @@
     "unit": "mocha test/unit/"
   },
   "dependencies": {
+    "@capacitor/android": "^3.3.2",
+    "@capacitor/cli": "^3.3.2",
+    "@capacitor/core": "^3.3.2",
     "@chris.troutner/gatsby-plugin-ipfs": "^2.0.3",
     "@chris.troutner/ipfs": "^2.0.2",
     "adminlte-2-react": "^0.1.27",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
+    "capacitor-resources": "^2.0.5",
     "copy-to-clipboard": "^3.3.1",
     "crypto-browserify": "^3.12.0",
     "gatsby": "^4.1.0",
