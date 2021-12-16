@@ -11,7 +11,6 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "build:ipfs": "gatsby build --prefix-paths",
     "develop": "gatsby develop",
     "lint": "standard --env mocha --fix",
     "start": "npm run develop",
@@ -21,7 +20,6 @@
     "unit": "mocha test/unit/"
   },
   "dependencies": {
-    "@chris.troutner/gatsby-plugin-ipfs": "^2.0.3",
     "@chris.troutner/ipfs": "^2.0.2",
     "adminlte-2-react": "^0.1.27",
     "assert": "^2.0.0",
