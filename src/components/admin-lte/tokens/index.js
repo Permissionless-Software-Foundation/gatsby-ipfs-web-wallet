@@ -250,19 +250,22 @@ class Tokens extends React.Component {
   // Define the explorer to use
   // depending on the selected chain
   defineExplorer () {
-    const bchWalletLib = _this.props.bchWallet
-    const bchjs = bchWalletLib.bchjs
+    const { mnemonic } = _this.props.walletInfo
+    if (mnemonic && _this.props.bchWallet) {
+      const bchWalletLib = _this.props.bchWallet
+      const bchjs = bchWalletLib.bchjs
 
-    let explorerURL
+      let explorerURL
 
-    if (bchjs.restURL.includes('abc.fullstack')) {
-      explorerURL = 'https://explorer.be.cash/tx'
-    } else {
-      explorerURL = 'https://explorer.bitcoin.com/bch/tx'
+      if (bchjs.restURL.includes('abc.fullstack')) {
+        explorerURL = 'https://explorer.be.cash/tx'
+      } else {
+        explorerURL = 'https://explorer.bitcoin.com/bch/tx'
+      }
+      _this.setState({
+        explorerURL
+      })
     }
-    _this.setState({
-      explorerURL
-    })
   }
 }
 Tokens.propTypes = {
