@@ -6,7 +6,6 @@
 const config = {
   title: 'FullStack.cash',
   titleShort: 'PSF',
-  balanceText: 'BCH Balance',
   balanceIcon: 'fab-bitcoin',
 
   // The BCH address used in a memo.cash account. Used for tracking the IPFS

@@ -3,8 +3,13 @@ import React from 'react'
 import { Row, Col, Box } from 'adminlte-2-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+let _this
 class InfoWallets extends React.Component {
-  // state = {}
+  constructor (props) {
+    super(props)
+    _this = this
+    this.state = {}
+  }
 
   render () {
     return (
@@ -26,8 +31,12 @@ class InfoWallets extends React.Component {
 
               <Col sm={12} className='text-center mt-2 mb-2'>
                 <p>
-                  This is an open source, non-custodial web wallet
-                  supporting Bitcoin Cash (BCH) and SLP tokens. Web wallets
+                  This is an open source, non-custodial web wallet supporting
+                  {_this.props.walletInfo.selectedServer ===
+                  'https://bchn.fullstack.cash/v5/'
+                    ? ' Bitcoin Cash (BCH) '
+                    : ' Ecash (XEC) '}
+                  and SLP tokens. Web wallets
                   offer user convenience, but they are inherently insecure and
                   bad for privacy.{' '}
                   <b>Storing large amounts of money on a web wallet is not

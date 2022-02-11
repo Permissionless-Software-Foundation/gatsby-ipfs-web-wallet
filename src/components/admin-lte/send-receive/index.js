@@ -22,6 +22,7 @@ class SendReceive extends React.Component {
             <Content>
               <Receive walletInfo={_this.props.walletInfo} />
               <Send
+                walletInfo={_this.props.walletInfo}
                 updateBalance={_this.props.updateBalance}
                 bchWallet={_this.props.bchWallet}
                 currentRate={_this.props.currentRate}

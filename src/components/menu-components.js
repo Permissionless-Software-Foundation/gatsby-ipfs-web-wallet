@@ -21,7 +21,13 @@ const MenuComponents = props => {
       key: 'Send/Receive BCH',
       component: <SendReceive key='Send/Receive BCH' {...props} />,
       menuItem: (
-        <Item icon='fa-exchange-alt' key='Send/Receive BCH' text='Send/Receive BCH' />
+        <Item
+          icon='fa-exchange-alt' key='Send/Receive BCH' text={`Send/Receive ${
+          props.walletInfo.selectedServer === 'https://bchn.fullstack.cash/v5/'
+            ? 'BCH'
+            : 'XEC'
+          }`}
+        />
       )
     },
     {

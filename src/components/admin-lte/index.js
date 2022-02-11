@@ -73,10 +73,18 @@ class AdminLTEPage extends React.Component {
                     {!_this.state.inFetch && (
                       <div className='siderbar-balance-content'>
                         <span>
-                          <h3>{siteConfig.balanceText}</h3>
+                          <h3>
+                            {_this.props.walletInfo.selectedServer ===
+                            'https://bchn.fullstack.cash/v5/'
+                              ? 'BCH Balance'
+                              : 'XEC Balance'}
+                          </h3>
 
                           <span style={{ fontSize: '18px' }}>
-                            {_this.state.bchBalance}
+                            {_this.props.walletInfo.selectedServer ===
+                            'https://bchn.fullstack.cash/v5/'
+                              ? _this.state.bchBalance
+                              : (_this.state.bchBalance * 1000000).toFixed(2)}
                           </span>
                           <small>USD: ${_this.state.usdBalance}</small>
                         </span>
@@ -236,9 +244,10 @@ class AdminLTEPage extends React.Component {
       if (childrens && childrens.length) {
         for (let i = 0; i < childrens.length; i++) {
           // const href = childrens[i].children[0].href
-          const textValue = childrens[i].children[0].children[1].textContent
+          let textValue = childrens[i].children[0].children[1].textContent
           childrens[i].id = textValue
           const ignore = ignoreItems.find(val => textValue === val)
+          if (textValue === 'Send/Receive XEC') textValue = 'Send/Receive BCH'
           // Ignore menu items without link to components
           if (!ignore && childrens[i]) {
             childrens[i].onclick = () => this.changeSection(textValue)

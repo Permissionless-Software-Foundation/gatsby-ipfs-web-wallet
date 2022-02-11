@@ -19,7 +19,7 @@ class Wallet extends React.Component {
   render() {
     return (
       <Content>
-        <InfoWallets />
+        <InfoWallets walletInfo={_this.props.walletInfo} />
         {/* Show wallet info is this exists */}
         {_this.props.walletInfo.mnemonic && (
           <WalletInfo walletInfo={_this.props.walletInfo} />
